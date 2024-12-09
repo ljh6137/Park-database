@@ -77,9 +77,9 @@ WSGI_APPLICATION = "lease_management_system.wsgi.application"
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': '',
-        'USER': '',
-        'PASSWORD': '',
+        'NAME': 'demo',
+        'USER': 'ljh',
+        'PASSWORD': 'demo',
         'HOST': '127.0.0.1',
         'PORT': '5432',
     }
