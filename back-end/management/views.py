@@ -6,13 +6,13 @@ from django.template import loader
 # Create your views here.
 
 
-def detail(request, question_id):
-    return HttpResponse()
+# def detail(request, question_id):
+#     return HttpResponse()
 
 
 
+# management/views.py
+from django.shortcuts import render
 
 def login(request):
-    # latest_question_list = Question.objects.order_by("-pub_date")[:5]
-    template = loader.get_template("login.html")
-    return HttpResponse(template.render(None, request))
+    return render(request, 'management/login.html')  # 渲染登录模板
