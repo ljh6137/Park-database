@@ -81,14 +81,16 @@
 </head>
 <body>
     <div class="registration-container">
+        
         <h1>User Registration</h1>
-        <form action="/register" method="post">
+        <form action="/management/register/" method="post">
+            {% csrf_token %}
             <label for="username">Username</label>
             <input type="text" id="username" name="username" required>
 
             <label for="password">Password</label>
             <input type="password" id="password" name="password" required>
 
-            <button type="submit">Register or Login up</button>
+            <button type="submit">Register</button>
         </form>
         <div class

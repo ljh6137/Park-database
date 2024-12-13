@@ -1,10 +1,13 @@
 from django.urls import path
-from django.conf.urls import url
+from django.urls import re_path
+# from django.conf.urls import url
 from . import views
 
 urlpatterns = [
+    path("register/", views.register),
     # ex: /polls/
-    url(r"^login/$", views.login),
+    # re_path(r"^register/$", views.register),
+    # path("management/register/", views.register),
     # # ex: /polls/5/
     # path("<int:question_id>/", views.detail, name="detail"),
     # # ex: /polls/5/results/
