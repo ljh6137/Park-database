@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rent a Car</title>
+</head>
+<body>
+    <h1>Rent a Car</h1>
+
+    {% if messages %}
+        <ul>
+            {% for message in messages %}
+                <li>{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+    <form method="POST">
+        {% csrf_token %}
+        
+        <label for="customer_id">Customer ID</label>
+        <input type="text" id="customer_id" name="customer_id" required><br><br>
+
+        <label for="vehicle_id">Select a Vehicle</label>
+        <select id="vehicle_id" name="vehicle_id" required>
+            {% for vehicle in vehicles %}
+                <option value="{{ vehicle.Model }}">{{ vehicle.Model }} - ${{ vehicle.Price }}</option>
+            {% endfor %}
+        </select><br><br>
+
+        <button type="submit">Rent Car</button>
+    </form>
+</body>
+</html>
+
