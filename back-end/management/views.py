@@ -104,6 +104,14 @@ def login_view(request):
 
 @login_required
 def rent_car_view(request):
+    if request.method == 'POST':
+        vehicle_id = request.POST['vehicle_id']
+        try:
+            # 获取客户实例
+            customer = get_object_or_404(Customer, user=request.user)
+        except Customer.DoesNotExist:
+            messages.error(request, "No Customer found for this user.")
+            return redirect('rent_car')
     # 获取所有可租赁的车辆
     available_vehicles = Vehicle.objects.filter(info_model__Car_ID__Is_leased=False)
 
