@@ -44,6 +44,9 @@ def register(request):
         # 创建用户并加密密码
         user = User.objects.create_user(username=username, password=password)
         
+        # 创建对应的 Customer 实例
+        customer = Customer.objects.create(user=user, ID=username, name=username, contact="")  # 可以根据需要设置默认的 contact
+        
         # 提示用户注册成功
         messages.success(request, 'Registration successful! Please log in.')
         
@@ -51,6 +54,7 @@ def register(request):
         return redirect('login')
     
     return render(request, 'management/register.html')
+
 
 
 
@@ -105,42 +109,31 @@ def login_view(request):
 @login_required
 def rent_car_view(request):
     if request.method == 'POST':
-        vehicle_id = request.POST['vehicle_id']
+        vehicle_id = request.POST.get('vehicle_id')
+
         try:
-            # 获取客户实例
+            # 获取当前登录的用户来查找关联的 Customer 实例
             customer = get_object_or_404(Customer, user=request.user)
         except Customer.DoesNotExist:
-            messages.error(request, "No Customer found for this user.")
-            return redirect('rent_car')
-    # 获取所有可租赁的车辆
-    available_vehicles = Vehicle.objects.filter(info_model__Car_ID__Is_leased=False)
+            messages.error(request, "You need to complete your customer profile before renting a car.")
+            return redirect('profile')  # 重定向到用户个人资料页面或其他页面
 
-    if request.method == 'POST':
-        vehicle_id = request.POST['vehicle_id']
-
-        # 使用当前登录的用户来获取对应的 Customer 实例
-        customer = get_object_or_404(Customer, user=request.user)  # 使用 'user' 字段来查找 Customer
-
-        # 查找车辆
         try:
             vehicle = Vehicle.objects.get(Model=vehicle_id)
         except Vehicle.DoesNotExist:
             messages.error(request, "Vehicle not found.")
             return redirect('rent_car')
 
-        # 查找仓库条目
         try:
             repository = Repository.objects.get(Car_ID=vehicle_id)
         except Repository.DoesNotExist:
             messages.error(request, "Repository entry for vehicle not found.")
             return redirect('rent_car')
 
-        # 检查车辆是否已经租赁
         if repository.Is_leased:
             messages.error(request, "This vehicle is already leased!")
             return redirect('rent_car')
 
-        # 创建租赁记录并更新仓库中的租赁状态
         Lease.objects.create(Car_ID=repository, ID=customer)
         repository.Is_leased = True
         repository.save()
@@ -148,7 +141,7 @@ def rent_car_view(request):
         messages.success(request, "Vehicle leased successfully!")
         return redirect('rent_car')
 
-    # 将可租赁的车辆传递给模板
+    available_vehicles = Vehicle.objects.filter(info_model__Car_ID__Is_leased=False)
     return render(request, 'management/rent_car.html', {'vehicles': available_vehicles})
 
 
