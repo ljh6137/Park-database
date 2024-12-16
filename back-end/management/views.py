@@ -44,6 +44,7 @@ def register(request):
         return render(request, 'management/register.html')
     
     if request.method == 'POST':
+        # print(1)
         # 获取提交的用户名和密码
         username = request.POST['username']
         password = request.POST['password']
