@@ -28,25 +28,29 @@ from django.shortcuts import render
 
 
 def register(request):
+    if request.method == 'GET':
+        return render(request, 'management/register.html')
+    
     if request.method == 'POST':
         # 获取提交的用户名和密码
         username = request.POST['username']
         password = request.POST['password']
-
+        
         # 检查用户名是否已经存在
         if User.objects.filter(username=username).exists():
             messages.error(request, 'Username already exists. Please choose another one.')
             return render(request, 'management/register.html')
-
+        
         # 创建用户并加密密码
         user = User.objects.create_user(username=username, password=password)
-
-        # 为用户创建一个 Customer 实例
-        Customer.objects.create(ID=user.username, name='', Contact='')  # 根据需要填充字段
-
+        
+        # 提示用户注册成功
         messages.success(request, 'Registration successful! Please log in.')
+        
+        # 注册成功后，跳转到登录页面
         return redirect('login')
-
+    
+    return render(request, 'management/register.html')
 
 
 

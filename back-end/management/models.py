@@ -2,20 +2,20 @@ from django.db import models
 from django.contrib.auth.models import User
 
 
-# class Customer(models.Model):
-#     user = models.OneToOneField(User, on_delete=models.CASCADE)
-#     ID = models.CharField(max_length=10, primary_key=True)  # 使用 'ID' 作为主键
-#     name = models.CharField(max_length=50)
-#     contact = models.CharField(max_length=15)
-
-#     def __str__(self):
-#         return self.name
-
-
 class Customer(models.Model):
-    ID=models.CharField(max_length=10,primary_key=True)
-    name=models.CharField(max_length=50)
-    Contact=models.CharField(max_length=15)
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    ID = models.CharField(max_length=10, primary_key=True)  # 使用 'ID' 作为主键
+    name = models.CharField(max_length=50)
+    contact = models.CharField(max_length=15)
+
+    def __str__(self):
+        return self.name
+
+
+# class Customer(models.Model):
+#     ID=models.CharField(max_length=10,primary_key=True)
+#     name=models.CharField(max_length=50)
+#     Contact=models.CharField(max_length=15)
 
 class Vehicle(models.Model):
     # Brand=models.CharField(max_length=50,primary_key=True)
