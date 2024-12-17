@@ -189,13 +189,12 @@
                 <a href="#" onclick="toggleCarList(event)">租车</a>
                 <ul id="car-list" style="display: none; padding-left: 20px;">
                     {% for car in cars %}
-                        <li>{{ car.Model }}</li>
+                        <li>{{ car.name }}</li>
                     {% empty %}
                         <li>暂无车辆信息</li>
                     {% endfor %}
                 </ul>
             </li>
-            {% comment %} <li><a href="#">还车</a></li> {% endcomment %}
         </ul>
     </div>
 
@@ -213,7 +212,34 @@
                     <a href="{% url 'register' %}" class="register-button">Register</a>
                 {% endif %}
             </div>
+            {% comment %} <div id="repository-container">
+                <p>点击左侧车辆名称，查看相关 Repository 数据。</p>
+            </div> {% endcomment %}
         </div>
+        <!-- JavaScript 脚本 -->
+        <script>
+            function fetchRepository(name) {
+                // 发送 AJAX 请求到后端
+                fetch(`/api/get-repository/?name=${name}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        const container = document.getElementById('repository-container');
+                        if (data.status === "success") {
+                            let html = `<h3>Repository 列表关联名称: ${name}</h3><ul>`;
+                            data.data.forEach(item => {
+                                html += `<li>ID: ${item.id}, 描述: ${item.description}, 时间: ${item.created_at}</li>`;
+                            });
+                            html += `</ul>`;
+                            container.innerHTML = html;
+                        } else {
+                            container.innerHTML = `<p style="color: red;">${data.message}</p>`;
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error fetching repository:', error);
+                    });
+            }
+        </script>
 
         <script>
             function toggleCarList(event) {

@@ -180,3 +180,16 @@ def home(request):
 def car_list(request):
     cars = Vehicle.objects.all()
     return render(request, 'management/UI.html', {'cars': cars})
+
+def get_repository_by_name(request):
+    if request.method == "GET":
+        name = request.GET.get("name")  # 获取点击的 name 参数
+        try:
+            # 查询 Vehicle 表中匹配的 name，并关联查询 Repository 表
+            vehicle = Vehicle.objects.get(name=name)
+            repositories = Repository.objects.filter(model=vehicle)
+            # 构建返回数据
+            data = list(repositories.values("id", "description", "created_at"))
+            return JsonResponse({"status": "success", "data": data})
+        except Vehicle.DoesNotExist:
+            return JsonResponse({"status": "error", "message": "Vehicle not found"})
