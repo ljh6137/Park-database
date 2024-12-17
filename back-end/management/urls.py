@@ -19,8 +19,10 @@ from . import views
 
 urlpatterns = [
     path('rented_vehicles/', views.rented_vehicles_view, name='rented_vehicles'),
-    path('', views.home_view, name='home'),
+    # path('', views.home_view, name='home'),
     path('register/', views.register, name='register'),
     path('login/', views.login_view, name='login'),
     path('rent_car/', views.rent_car_view, name='rent_car'),
+    path('', views.home, name='home'),
+    path('cars/', views.car_list, name='car_list'),
 ]

@@ -173,3 +173,10 @@ def rented_vehicles_view(request):
         rented_vehicles = []
 
     return render(request, 'management/rented_vehicles.html', {'rented_vehicles': rented_vehicles})
+
+def home(request):
+    return render(request, 'management/UI.html')
+
+def car_list(request):
+    cars = Vehicle.objects.all()
+    return render(request, 'management/UI.html', {'cars': cars})
