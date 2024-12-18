@@ -12,6 +12,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from .models import Vehicle, Repository, Lease, Customer, Info
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.http import JsonResponse
 # from .models import 
 
 # Create your views here.
@@ -178,9 +179,14 @@ def home(request):
     return render(request, 'management/UI.html')
 
 def car_list(request):
-    cars = Vehicle.objects.all()
-    return render(request, 'management/UI.html', {'cars': cars})
-
+    # print(1)
+    vehicles = Vehicle.objects.all()  # 查询所有车辆信息
+    if vehicles.exists():
+        data = list(vehicles.values("Model"))  # 转换为 JSON 格式
+        return JsonResponse({"status": "success", "data": data})
+    else:
+        return JsonResponse({"status": "empty", "message": "暂无车辆信息"})
+    
 def get_repository_by_name(request):
     if request.method == "GET":
         name = request.GET.get("name")  # 获取点击的 name 参数

@@ -186,13 +186,10 @@
         <ul class="nav-links">
             <li><a href="#">首页</a></li>
             <li>
-                <a href="#" onclick="toggleCarList(event)">租车</a>
-                <ul id="car-list" style="display: none; padding-left: 20px;">
-                    {% for car in cars %}
-                        <li>{{ car.name }}</li>
-                    {% empty %}
-                        <li>暂无车辆信息</li>
-                    {% endfor %}
+                <!-- 点击事件触发 AJAX 请求 -->
+                <a href="#" onclick="fetchVehicles(event)">租车</a>
+                <ul id="vehicle-list" style="display: none; padding-left: 20px;">
+                    <!-- 动态填充车辆信息 -->
                 </ul>
             </li>
         </ul>
@@ -242,14 +239,40 @@
         </script>
 
         <script>
-            function toggleCarList(event) {
+            function fetchVehicles(event) {
                 event.preventDefault(); // 阻止默认链接行为
-                const carList = document.getElementById('car-list');
-                if (carList.style.display === 'none') {
-                    carList.style.display = 'block'; // 显示列表
-                } else {
-                    carList.style.display = 'none'; // 隐藏列表
-                }
+                
+
+                console.log("发送请求到 /management/cars/");
+
+                // 发送 AJAX 请求到后端 /management/cars/ 路径
+                fetch('/management/cars/')
+                    .then(response => response.json())
+                    .then(data => {
+                        const vehicleList = document.getElementById('vehicle-list');
+                       // const vehicleContainer = document.getElementById('vehicle-container');
+        
+                        // 清空旧内容
+                        vehicleList.innerHTML = '';
+                       // vehicleContainer.innerHTML = '';
+        
+                        if (data.status === "success") {
+                            let html = '';  // 展开侧边栏车辆列表
+                            data.data.forEach(vehicle => {
+                                html += `<li>${vehicle.Model}</li>`;
+                            });
+                            vehicleList.innerHTML = html;  // 在侧边栏中显示车辆信息
+                        //    vehicleContainer.innerHTML = `<h3>车辆列表</h3> <ul>${html}</ul>`;  // 主界面显示
+                            vehicleList.style.display = 'block';  // 显示侧边栏列表
+                        } else {
+                            vehicleList.innerHTML = '<li>暂无车辆信息</li>';
+                        //    vehicleContainer.innerHTML = `<p style="color: red;">${data.message}</p>`;
+                            vehicleList.style.display = 'block';
+                        }
+                    })
+                    .catch(error => {
+                        console.error("Error fetching vehicles:", error);
+                    });
             }
         </script>
 
