@@ -1,30 +1,12 @@
-from django.shortcuts import render
+
 from django.http import HttpResponse
 from django.template import loader
 from django.contrib import messages
 from django.contrib.auth.models import User
-from django.shortcuts import render, redirect
-from django.contrib import messages
 from django.contrib.auth import authenticate, login
-from django.shortcuts import render, redirect
-from django.contrib import messages
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Vehicle, Repository, Lease, Customer, Info
-from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-# from .models import 
-
-# Create your views here.
-
-
-# def detail(request, question_id):
-#     return HttpResponse()
-
-
-
-# management/views.py
-from django.shortcuts import render
-
 
 
 def register(request):
@@ -55,10 +37,6 @@ def register(request):
     
     return render(request, 'management/register.html')
 
-
-
-
-
 def login_view(request):
     if request.method == 'POST':
         username = request.POST['username']
@@ -70,41 +48,6 @@ def login_view(request):
         else:
             messages.error(request, 'Invalid username or password.')
     return render(request, 'management/login.html')
-
-
-# 租车页面视图
-# def rent_car_view(request):
-#     # 获取所有可供租赁的车辆，使用 Info 来查找关联的 Repository
-#     available_vehicles = Vehicle.objects.filter(info_model__Car_ID__Is_leased=False)
-
-#     if request.method == 'POST':
-#         # 获取客户ID和所选车辆ID
-#         customer_id = request.POST['customer_id']
-#         vehicle_id = request.POST['vehicle_id']
-        
-#         # 查找客户和车辆对象
-#         customer = Customer.objects.get(ID=customer_id)
-#         vehicle = Vehicle.objects.get(Model=vehicle_id)
-        
-#         # 找到对应的 Repository 条目
-#         repository = Repository.objects.get(Car_ID=vehicle_id)
-
-#         # 检查车辆是否已经租赁
-#         if repository.Is_leased:
-#             messages.error(request, "This vehicle is already leased!")
-#             return redirect('rent_car')
-
-#         # 创建租赁记录
-#         Lease.objects.create(Car_ID=repository, ID=customer)
-        
-#         # 更新仓库中的租赁状态
-#         repository.Is_leased = True
-#         repository.save()
-        
-#         messages.success(request, "Vehicle leased successfully!")
-#         return redirect('rent_car')
-    
-#     return render(request, 'management/rent_car.html', {'vehicles': available_vehicles})
 
 @login_required
 def rent_car_view(request):
@@ -143,9 +86,6 @@ def rent_car_view(request):
 
     available_vehicles = Vehicle.objects.filter(info_model__Car_ID__Is_leased=False)
     return render(request, 'management/rent_car.html', {'vehicles': available_vehicles})
-
-
-
 
 def home_view(request):
     return render(request, 'management/home.html')  # 创建并渲染一个主页模
