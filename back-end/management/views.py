@@ -13,6 +13,7 @@ from .models import Vehicle, Repository, Lease, Customer, Info
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
+from django.db import connection
 # from .models import 
 
 # Create your views here.
@@ -178,14 +179,14 @@ def rented_vehicles_view(request):
 def home(request):
     return render(request, 'management/UI.html')
 
-def car_list(request):
-    # print(1)
-    vehicles = Vehicle.objects.all()  # 查询所有车辆信息
-    if vehicles.exists():
-        data = list(vehicles.values("Model"))  # 转换为 JSON 格式
-        return JsonResponse({"status": "success", "data": data})
-    else:
-        return JsonResponse({"status": "empty", "message": "暂无车辆信息"})
+# def car_list(request):
+#     # print(1)
+#     vehicles = Vehicle.objects.all()  # 查询所有车辆信息
+#     if vehicles.exists():
+#         data = list(vehicles.values("Model"))  # 转换为 JSON 格式
+#         return JsonResponse({"status": "success", "data": data})
+#     else:
+#         return JsonResponse({"status": "empty", "message": "暂无车辆信息"})
     
 def get_repository_by_name(request):
     if request.method == "GET":
@@ -199,3 +200,70 @@ def get_repository_by_name(request):
             return JsonResponse({"status": "success", "data": data})
         except Vehicle.DoesNotExist:
             return JsonResponse({"status": "error", "message": "Vehicle not found"})
+        
+# def get_vehicle_details(request):
+#     """
+#     查询车辆的详细信息：Car_ID、Is_leased 和 price。
+#     """
+#     if request.method == "GET":
+#         car_name = request.GET.get("name")  # 获取车辆名称
+
+#         if not car_name:
+#             return JsonResponse({"status": "error", "message": "车辆名称不能为空"})
+
+#         # 执行 SQL 查询
+#         query = """
+#             SELECT a.Car_ID, a.Is_leased, b.price
+#             FROM Repository a, Vehicle b
+#             JOIN info c ON b.Model = c.Model
+#             WHERE a.Car_ID = c.Car_ID AND b.name = %s
+#         """
+#         with connection.cursor() as cursor:
+#             cursor.execute(query, [car_name])
+#             rows = cursor.fetchall()
+
+#         # 将查询结果转换为 JSON 格式
+#         data = [
+#             {"Car_ID": row[0], "Is_leased": row[1], "price": row[2]}
+#             for row in rows
+#         ]
+
+#         if data:
+#             return JsonResponse({"status": "success", "data": data})
+#         else:
+#             return JsonResponse({"status": "empty", "message": "未找到相关车辆信息"})
+
+def get_vehicles(request):
+    vehicles = Vehicle.objects.all()
+    if vehicles.exists():
+        data = list(vehicles.values("Model"))
+        return JsonResponse({"status": "success", "data": data})
+    else:
+        return JsonResponse({"status": "empty", "message": "暂无车辆信息"})
+
+# 获取具体车辆的详细信息
+def get_vehicle_details(request):
+    if request.method == "GET":
+        car_name = request.GET.get("name")
+        if not car_name:
+            return JsonResponse({"status": "error", "message": "车辆名称不能为空"})
+
+        query = """
+            SELECT a."Car_ID", a."Is_leased", b."Price"
+            FROM management_repository a, management_vehicle b
+            JOIN management_info c ON b."Model" = c."Model_id"
+            WHERE a."Car_ID" = c."Car_ID_id" AND b."Model" = %s
+        """
+        with connection.cursor() as cursor:
+            cursor.execute(query, [car_name])
+            rows = cursor.fetchall()
+
+        data = [
+            {"Car_ID": row[0], "Is_leased": row[1], "Price": row[2]}
+            for row in rows
+        ]
+
+        if data:
+            return JsonResponse({"status": "success", "data": data})
+        else:
+            return JsonResponse({"status": "empty", "message": "未找到车辆详情"})

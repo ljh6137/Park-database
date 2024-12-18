@@ -177,6 +177,62 @@
             font-size: 36px;
             color: #ff6347; /* 橙红色 */
         }
+
+        /* 表格容器样式 */
+        .table-container {
+            width: 90%;
+            margin: 20px auto;
+            overflow-x: auto;
+        }
+
+        /* 表格样式 */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: #ffffff;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        /* 表头样式 */
+        thead {
+            background-color: #f4f4f4;
+            font-weight: bold;
+        }
+
+        thead th {
+            padding: 15px 10px;
+            border-bottom: 2px solid #eaeaea;
+            color: #333;
+            text-transform: uppercase;
+        }
+
+        /* 表格内容样式 */
+        tbody td {
+            padding: 12px 10px;
+            border-bottom: 1px solid #eaeaea;
+            color: #555;
+        }
+
+        tbody tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        /* 按钮样式 */
+        .action-button {
+            padding: 8px 12px;
+            background-color: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 14px;
+            transition: background-color 0.3s;
+        }
+
+        .action-button:hover {
+            background-color: #0056b3;
+        }
+
     </style>
 </head>
 <body>
@@ -185,10 +241,17 @@
         <h1 class="custom-font">Rent Your Car</h1>
         <ul class="nav-links">
             <li><a href="#">首页</a></li>
-            <li>
+            {% comment %} <li>
                 <!-- 点击事件触发 AJAX 请求 -->
                 <a href="#" onclick="fetchVehicles(event)">租车</a>
                 <ul id="vehicle-list" style="display: none; padding-left: 20px;">
+                    <!-- 动态填充车辆信息 -->
+                </ul>
+            </li> {% endcomment %}
+            <li>
+                <!-- 点击租车展开车辆列表 -->
+                <a href="#" onclick="fetchVehicles(event)">租车</a>
+                <ul id="vehicle-list" style="padding-left: 20px; display: none;">
                     <!-- 动态填充车辆信息 -->
                 </ul>
             </li>
@@ -209,10 +272,25 @@
                     <a href="{% url 'register' %}" class="register-button">Register</a>
                 {% endif %}
             </div>
-            {% comment %} <div id="repository-container">
-                <p>点击左侧车辆名称，查看相关 Repository 数据。</p>
-            </div> {% endcomment %}
         </div>
+        <div class="table-container">
+            {% comment %} <h2 style="text-align: center;">车辆详细信息</h2> {% endcomment %}
+            <table>
+                <thead>
+                    <tr>
+                        <th>车牌号</th>
+                        <th>租赁状态</th>
+                        <th>价格</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody id="vehicle-details">
+                    <!-- 动态填充内容 -->
+                </tbody>
+            </table>
+        </div>
+
+
         <!-- JavaScript 脚本 -->
         <script>
             function fetchRepository(name) {
@@ -240,6 +318,75 @@
 
         <script>
             function fetchVehicles(event) {
+                event.preventDefault();
+                fetch('/management/get-vehicles/')
+                    .then(response => response.json())
+                    .then(data => {
+                        const vehicleList = document.getElementById('vehicle-list');
+                        vehicleList.innerHTML = ''; // 清空旧内容
+        
+                        if (data.status === "success") {
+                            let html = '';
+                            data.data.forEach(vehicle => {
+                                html += `<li>
+                                            <a href="#" onclick="fetchVehicleDetails('${vehicle.Model}')">
+                                                ${vehicle.Model} 
+                                            </a>
+                                        </li>`;
+                            });
+                            vehicleList.innerHTML = html;
+                            vehicleList.style.display = 'block'; // 显示车辆列表
+                        } else {
+                            vehicleList.innerHTML = '<li>暂无车辆信息</li>';
+                            vehicleList.style.display = 'block';
+                        }
+                    })
+                    .catch(error => {
+                        console.error("Error fetching vehicles:", error);
+                    });
+            }
+        
+            // 获取车辆详情
+            function fetchVehicleDetails(name) {
+                fetch(`/management/get-vehicle-details/?name=${name}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        const container = document.getElementById('vehicle-details');
+                        container.innerHTML = ''; // 清空旧内容
+
+                        if (data.status === "success") {
+                            let html = '';
+                            data.data.forEach(item => {
+                                html += `
+                                    <tr>
+                                        <td>${item.Car_ID}</td>
+                                        <td>${item.Is_leased ? "已租赁" : "可租赁"}</td>
+                                        <td>￥${item.Price}</td>
+                                        <td>
+                                            <a href="#" class="action-button">租赁</a>
+                                        </td>
+                                    </tr>
+                                `;
+                            });
+                            container.innerHTML = html;
+                        } else {
+                            container.innerHTML = `
+                                <tr>
+                                    <td colspan="4" style="color: red;">${data.message}</td>
+                                </tr>
+                            `;
+                        }
+                    })
+                    .catch(error => {
+                        console.error("Error fetching vehicle details:", error);
+                        document.getElementById('vehicle-details').innerHTML = `
+                            <tr>
+                                <td colspan="4" style="color: red;">发生错误，请稍后再试。</td>
+                            </tr>
+                        `;
+                    });
+            }
+            {% comment %} function fetchVehicles(event) {
                 event.preventDefault(); // 阻止默认链接行为
                 
 
@@ -274,6 +421,41 @@
                         console.error("Error fetching vehicles:", error);
                     });
             }
+            function fetchVehicleDetails(name) {
+                fetch(`/get-vehicle-details/?name=${name}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        const container = document.getElementById('vehicle-details');
+        
+                        if (data.status === "success") {
+                            let html = `<h3>车辆详细信息 - ${name}</h3>`;
+                            html += `<table border="1" cellspacing="0" cellpadding="5">
+                                        <tr>
+                                            <th>Car ID</th>
+                                            <th>Is Leased</th>
+                                            <th>Price</th>
+                                        </tr>`;
+        
+                            data.data.forEach(item => {
+                                html += `<tr>
+                                            <td>${item.Car_ID}</td>
+                                            <td>${item.Is_leased ? "已租赁" : "可租赁"}</td>
+                                            <td>${item.price}</td>
+                                        </tr>`;
+                            });
+        
+                            html += `</table>`;
+                            container.innerHTML = html;
+                        } else {
+                            container.innerHTML = `<p style="color: red;">${data.message}</p>`;
+                        }
+                    })
+                    .catch(error => {
+                        console.error("Error fetching vehicle details:", error);
+                        document.getElementById('vehicle-details').innerHTML =
+                            `<p style="color: red;">发生错误，请稍后再试。</p>`;
+                    });
+            } {% endcomment %}
         </script>
 
     </div>

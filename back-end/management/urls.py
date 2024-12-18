@@ -24,6 +24,7 @@ urlpatterns = [
     path('login/', views.login_view, name='login'),
     path('rent_car/', views.rent_car_view, name='rent_car'),
     path('', views.home, name='home'),
-    path('cars/', views.car_list, name='car_list'),
-    path('api/get-repository/', views.get_repository_by_name, name='get_repository'),
+    # path('cars/', views.car_list, name='car_list'),    
+    path('get-vehicles/', views.get_vehicles, name='get_vehicles'),
+    path('get-vehicle-details/', views.get_vehicle_details, name='get_vehicle_details'),
 ]
