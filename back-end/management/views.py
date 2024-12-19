@@ -222,10 +222,30 @@ def get_vehicle_details(request):
             return JsonResponse({"status": "empty", "message": "未找到车辆详情"})
         
 @login_required
+# def homepage(request):
+#     # 假设租赁车辆从数据库获取
+#     rented_cars = [
+#         {"license_plate": "ABC123", "model": "Toyota Camry", "price": 300},
+#         {"license_plate": "XYZ456", "model": "Honda Accord", "price": 350},
+#     ]
+#     return render(request, 'management/homepage.html', {'rented_cars': rented_cars})
 def homepage(request):
-    # 假设租赁车辆从数据库获取
-    rented_cars = [
-        {"license_plate": "ABC123", "model": "Toyota Camry", "price": 300},
-        {"license_plate": "XYZ456", "model": "Honda Accord", "price": 350},
-    ]
-    return render(request, 'management/homepage.html', {'rented_cars': rented_cars})
+    # 检查用户是否已登录
+    if request.user.is_authenticated:
+        # 获取当前用户的租赁车辆信息
+        rented_cars = Lease.objects.filter(ID__user=request.user).select_related('Car_ID')
+        
+        # 格式化租赁车辆数据
+        rented_cars_data = [
+            {
+                "license_plate": lease.Car_ID.Model,  # 假设车型(Model)为车牌号
+                "model": lease.Car_ID.Model,
+                "price": lease.Car_ID.Price,
+            }
+            for lease in rented_cars
+        ]
+    else:
+        rented_cars_data = []
+
+    # 渲染模板并传递租赁车辆数据
+    return render(request, 'management/homepage.html', {'rented_cars': rented_cars_data})
