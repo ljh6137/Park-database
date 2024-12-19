@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard UI</title>
+    <title>首页 - 车辆租赁管理系统</title>
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&display=swap" rel="stylesheet">
     <style>
         /* 用户信息样式 */
@@ -196,118 +196,60 @@
 <body>
     <!-- 左侧导航栏 -->
     <div class="sidebar">
-        <h1 class="custom-font">Rent Your Car</h1>
+        <h1>Rent Your Car</h1>
         <ul class="nav-links">
             <li><a href="{% url 'homepage' %}">首页</a></li>
-            <li>
-                <a href="#" onclick="fetchVehicles(event)">租车</a>
-                <ul id="vehicle-list" style="padding-left: 20px; display: none;">
-                    <!-- 动态填充车辆信息 -->
-                </ul>
-            </li>
+            <!-- 更新租车链接，跳转到管理页面 -->
+            <li><a href="{% url 'ui' %}">租车</a></li>
         </ul>
     </div>
 
-    <!-- 主要内容区域 -->
+    <!-- 主要内容 -->
     <div class="main-container">
-        <!-- 头部 -->
         <div class="header">
-            <h2>Dashboard</h2>
+            <h2>欢迎来到车辆租赁管理系统</h2>
             <div class="user-info">
                 {% if user.is_authenticated %}
-                    <p>Welcome, <strong>{{ user.username }}</strong>!</p>
+                    <p>欢迎，<strong>{{ user.username }}</strong>!</p>
                 {% else %}
-                    <p>Please log in or register to start renting vehicles.</p>
-                    <a href="{% url 'login' %}" class="login-button">Login</a>
-                    <a href="{% url 'register' %}" class="register-button">Register</a>
+                    <p>请先登录或注册。</p>
+                    <a href="{% url 'login' %}">登录</a> | <a href="{% url 'register' %}">注册</a>
                 {% endif %}
             </div>
         </div>
 
-        <!-- 车辆表格 -->
-        <div class="table-container">
-            <h2 style="text-align: center;">车辆信息</h2>
-            <table>
-                <thead>
-                    <tr>
-                        <th>车牌号</th>
-                        <th>租赁状态</th>
-                        <th>价格</th>
-                        <th>操作</th>
-                    </tr>
-                </thead>
-                <tbody id="vehicle-details">
-                    <!-- 动态填充内容 -->
-                </tbody>
-            </table>
+        <div class="card-container">
+            <div class="card">
+                <h3>我的租赁</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>车牌号</th>
+                            <th>车型</th>
+                            <th>价格</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for car in rented_cars %}
+                            <tr>
+                                <td>{{ car.license_plate }}</td>
+                                <td>{{ car.model }}</td>
+                                <td>￥{{ car.price }}</td>
+                            </tr>
+                        {% empty %}
+                            <tr>
+                                <td colspan="3">暂无租赁车辆</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <div class="card">
+                <h3>热门推荐车辆</h3>
+                <p>推荐的车辆将在此处展示。</p>
+            </div>
         </div>
     </div>
-
-    <!-- JavaScript 脚本 -->
-    <script>
-        function fetchVehicles(event) {
-            event.preventDefault();
-            fetch('/management/get-vehicles/')
-                .then(response => response.json())
-                .then(data => {
-                    const vehicleList = document.getElementById('vehicle-list');
-                    vehicleList.innerHTML = ''; // 清空旧内容
-
-                    if (data.status === "success") {
-                        let html = '';
-                        data.data.forEach(vehicle => {
-                            html += `<li>
-                                        <a href="#" onclick="fetchVehicleDetails('${vehicle.Model}')">
-                                            ${vehicle.Model}
-                                        </a>
-                                    </li>`;
-                        });
-                        vehicleList.innerHTML = html;
-                        vehicleList.style.display = 'block'; // 显示车辆列表
-                    } else {
-                        vehicleList.innerHTML = '<li>暂无车辆信息</li>';
-                        vehicleList.style.display = 'block';
-                    }
-                })
-                .catch(error => {
-                    console.error("Error fetching vehicles:", error);
-                });
-        }
-
-        function fetchVehicleDetails(name) {
-            fetch(`/management/get-vehicle-details/?name=${name}`)
-                .then(response => response.json())
-                .then(data => {
-                    const container = document.getElementById('vehicle-details');
-                    container.innerHTML = ''; // 清空旧内容
-
-                    if (data.status === "success") {
-                        let html = '';
-                        data.data.forEach(item => {
-                            html += `
-                                <tr>
-                                    <td>${item.Car_ID}</td>
-                                    <td>${item.Is_leased ? "已租赁" : "可租赁"}</td>
-                                    <td>￥${item.Price}</td>
-                                    <td>
-                                        <a href="#" class="action-button">租赁</a>
-                                    </td>
-                                </tr>
-                            `;
-                        });
-                        container.innerHTML = html;
-                    } else {
-                        container.innerHTML = `
-                            <tr>
-                                <td colspan="4" style="color: red;">${data.message}</td>
-                            </tr>
-                        `;
-                    }
-                })
-                .catch(error => {
-                    console.error("Error fetching vehicle details:", error);
-                });
-        }
-    </script>
 </body>
+
 </html>

@@ -103,8 +103,8 @@ def rent_car_view(request):
     available_vehicles = Vehicle.objects.filter(info_model__Car_ID__Is_leased=False)
     return render(request, 'management/rent_car.html', {'vehicles': available_vehicles})
 
-def home_view(request):
-    return render(request, 'management/home.html')  # 创建并渲染一个主页模
+def ui(request):
+    return render(request, 'management/UI.html')  # 创建并渲染一个主页模
 
 @login_required
 def rented_vehicles_view(request):
@@ -220,3 +220,12 @@ def get_vehicle_details(request):
             return JsonResponse({"status": "success", "data": data})
         else:
             return JsonResponse({"status": "empty", "message": "未找到车辆详情"})
+        
+@login_required
+def homepage(request):
+    # 假设租赁车辆从数据库获取
+    rented_cars = [
+        {"license_plate": "ABC123", "model": "Toyota Camry", "price": 300},
+        {"license_plate": "XYZ456", "model": "Honda Accord", "price": 350},
+    ]
+    return render(request, 'management/homepage.html', {'rented_cars': rented_cars})

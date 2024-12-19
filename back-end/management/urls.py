@@ -23,8 +23,9 @@ urlpatterns = [
     path('register/', views.register, name='register'),
     path('login/', views.login_view, name='login'),
     path('rent_car/', views.rent_car_view, name='rent_car'),
-    path('', views.home, name='home'),
+    path('ui/', views.ui, name='ui'),
     # path('cars/', views.car_list, name='car_list'),    
     path('get-vehicles/', views.get_vehicles, name='get_vehicles'),
     path('get-vehicle-details/', views.get_vehicle_details, name='get_vehicle_details'),
+    path('', views.homepage, name='homepage'),
 ]
