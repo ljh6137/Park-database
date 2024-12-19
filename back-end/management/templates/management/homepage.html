@@ -6,6 +6,11 @@
     <title>首页 - 车辆租赁管理系统</title>
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&display=swap" rel="stylesheet">
     <style>
+        .custom-font {
+            font-family: 'Dancing Script', cursive;
+            font-size: 36px;
+            color: #333;
+        }
         /* 用户信息样式 */
         .user-info {
             display: flex;
@@ -196,7 +201,7 @@
 <body>
     <!-- 左侧导航栏 -->
     <div class="sidebar">
-        <h1>Rent Your Car</h1>
+        <h1 class="custom-font">Rent Your Car</h1>
         <ul class="nav-links">
             <li><a href="{% url 'homepage' %}">首页</a></li>
             <!-- 更新租车链接，跳转到管理页面 -->
