@@ -60,7 +60,7 @@ def login_view(request):
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
-            return redirect('home')  # 登录成功后跳转到用户仪表盘
+            return redirect('homepage')  # 登录成功后跳转到用户仪表盘
         else:
             messages.error(request, 'Invalid username or password.')
     return render(request, 'management/login.html')
