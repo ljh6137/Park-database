@@ -32,6 +32,6 @@ class Info(models.Model):
     Model = models.ForeignKey('Vehicle', on_delete=models.CASCADE, related_name='info_model')
 
 class Lease(models.Model):
-    Car_ID = models.ForeignKey(Vehicle, on_delete=models.CASCADE)
+    Car_ID = models.ForeignKey(Repository, on_delete=models.CASCADE)
     ID = models.ForeignKey(Customer, to_field='ID', on_delete=models.CASCADE)  # 确保外键引用 'ID'
 
