@@ -308,3 +308,33 @@ def lease_vehicle(request):
             return JsonResponse({"status": "error", "message": "租赁失败，请稍后再试。"})
 
     return JsonResponse({"status": "error", "message": "无效的请求方法"})
+
+
+@login_required
+def return_vehicle(request):
+    if request.method == 'POST':
+        vehicle_id = request.POST.get('vehicle_id')
+
+        if not vehicle_id:
+            messages.error(request, "Vehicle ID is required.")
+            return redirect('homepage')
+
+        try:
+            # 获取当前登录用户的租赁记录
+            lease = Lease.objects.get(Car_ID__Car_ID=vehicle_id, ID__user=request.user)
+        except Lease.DoesNotExist:
+            messages.error(request, "You have not rented this vehicle.")
+            return redirect('homepage')
+
+        # 取消租赁并更新仓库的车辆状态
+        repository = lease.Car_ID
+        repository.Is_leased = False  # 标记车辆为未租赁
+        repository.save()
+
+        # 删除租赁记录
+        lease.delete()
+
+        messages.success(request, f"You have successfully returned the vehicle: {vehicle_id}.")
+        return redirect('homepage')
+
+    return redirect('homepage')
