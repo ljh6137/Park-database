@@ -296,7 +296,9 @@
                                     <td>${item.Is_leased ? "已租赁" : "可租赁"}</td>
                                     <td>￥${item.Price}</td>
                                     <td>
-                                        <a href="#" class="action-button">租赁</a>
+                                        ${item.Is_leased
+                                            ? '<button disabled class="action-button" style="background-color: gray; cursor: not-allowed;">已租赁</button>'
+                                            : `<button class="action-button" onclick="leaseVehicle('${item.Car_ID}')">租赁</button>`}
                                     </td>
                                 </tr>
                             `;
@@ -314,6 +316,49 @@
                     console.error("Error fetching vehicle details:", error);
                 });
         }
+
+        function leaseVehicle(carId) {
+            fetch('/management/lease-vehicle/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': getCookie('csrftoken')  // 获取 CSRF Token
+                },
+                body: JSON.stringify({ car_id: carId })  // 传递 car_id 值
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === "success") {
+                        alert(data.message); // 显示成功消息
+                        fetchVehicleDetails(); // 刷新车辆列表
+                    } else {
+                        alert(data.message); // 显示错误消息
+                    }
+                })
+                .catch(error => {
+                    console.error("Error leasing vehicle:", error);
+                    alert("租赁失败，请稍后再试。");
+                });
+        }
+        
+        // 获取 CSRF Token 的函数
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+
+
+
     </script>
 </body>
 </html>

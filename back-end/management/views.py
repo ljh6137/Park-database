@@ -10,6 +10,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.db import connection
 # from .models import 
+import json
 
 # Create your views here.
 
@@ -249,3 +250,43 @@ def homepage(request):
 
     # 渲染模板并传递租赁车辆数据
     return render(request, 'management/homepage.html', {'rented_cars': rented_cars_data})
+
+@login_required
+def lease_vehicle(request):
+    """
+    租赁车辆视图：更新车辆状态并创建租赁记录
+    """
+    if request.method == "POST":
+        try:
+            # 接收 JSON 数据
+            data = json.loads(request.body)
+            car_id = data.get("car_id")  # 获取车牌号
+            user_id = request.user.username  # 获取当前用户ID
+            print(user_id)
+            if not car_id:
+                return JsonResponse({"status": "error", "message": "车辆ID不能为空"})
+
+            # 更新车辆租赁状态
+            update_query = """
+                UPDATE management_repository
+                SET "Is_leased" = TRUE
+                WHERE "Car_ID" = %s
+            """
+            # 插入租赁记录
+            insert_query = """
+                INSERT INTO management_lease ("ID_id","Car_ID_id")
+                VALUES (%s, %s)
+            """
+            
+            with connection.cursor() as cursor:
+                cursor.execute(update_query, [car_id])  # 更新车辆状态
+                cursor.execute(insert_query, [user_id, car_id])  # 插入租赁记录
+            
+            # print(1)
+            return JsonResponse({"status": "success", "message": "车辆租赁成功！"})
+
+        except Exception as e:
+            print(f"Error leasing vehicle: {e}")
+            return JsonResponse({"status": "error", "message": "租赁失败，请稍后再试。"})
+
+    return JsonResponse({"status": "error", "message": "无效的请求方法"})
