@@ -280,7 +280,6 @@ def lease_vehicle(request):
             data = json.loads(request.body)
             car_id = data.get("car_id")  # 获取车牌号
             user_id = request.user.username  # 获取当前用户ID
-            print(user_id)
             if not car_id:
                 return JsonResponse({"status": "error", "message": "车辆ID不能为空"})
 
@@ -296,6 +295,7 @@ def lease_vehicle(request):
                 VALUES (%s, %s)
             """
             
+            print(car_id)
             with connection.cursor() as cursor:
                 cursor.execute(update_query, [car_id])  # 更新车辆状态
                 cursor.execute(insert_query, [user_id, car_id])  # 插入租赁记录
