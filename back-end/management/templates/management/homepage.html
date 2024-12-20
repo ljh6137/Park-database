@@ -215,7 +215,7 @@
             <h2>欢迎来到车辆租赁管理系统</h2>
             <div class="user-info">
                 {% if user.is_authenticated %}
-                    <p>欢迎，<strong>{{ user.username }}</strong>!</p>
+                    <p>Welcome,<strong>{{ user.username }}</strong>!</p>
                 {% else %}
                     <p>请先登录或注册。</p>
                     <a href="{% url 'login' %}">登录</a> | <a href="{% url 'register' %}">注册</a>
