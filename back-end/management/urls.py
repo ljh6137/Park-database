@@ -28,4 +28,5 @@ urlpatterns = [
     path('get-vehicles/', views.get_vehicles, name='get_vehicles'),
     path('get-vehicle-details/', views.get_vehicle_details, name='get_vehicle_details'),
     path('', views.homepage, name='homepage'),
+    path('lease-vehicle/', views.lease_vehicle, name='lease_vehicle'),
 ]
