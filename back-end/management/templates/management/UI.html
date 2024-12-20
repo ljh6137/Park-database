@@ -298,7 +298,7 @@
                                     <td>
                                         ${item.Is_leased
                                             ? '<button disabled class="action-button" style="background-color: gray; cursor: not-allowed;">已租赁</button>'
-                                            : `<button class="action-button" onclick="leaseVehicle('${item.Car_ID}')">租赁</button>`}
+                                            : `<button class="action-button" onclick="leaseVehicle('${item.Car_ID}', '${name}')">租赁</button>`}
                                     </td>
                                 </tr>
                             `;
@@ -317,7 +317,7 @@
                 });
         }
 
-        function leaseVehicle(carId) {
+        function leaseVehicle(carId, name) {
             fetch('/management/lease-vehicle/', {
                 method: 'POST',
                 headers: {
@@ -330,7 +330,7 @@
                 .then(data => {
                     if (data.status === "success") {
                         alert(data.message); // 显示成功消息
-                        fetchVehicleDetails(); // 刷新车辆列表
+                        fetchVehicleDetails(name); // 刷新车辆列表
                     } else {
                         alert(data.message); // 显示错误消息
                     }
