@@ -246,27 +246,28 @@ def get_vehicle_details(request):
 
 @login_required
 def homepage(request):
+    if request.method == "GET":
     # 获取当前用户的租赁车辆信息
-    rented_cars = Lease.objects.filter(ID__user=request.user).select_related('Car_ID')
+        rented_cars = Lease.objects.filter(ID__user=request.user).select_related('Car_ID')
 
-    rented_cars_data = []
-    for lease in rented_cars:
-        # 获取关联的 Repository 和 Vehicle 信息
-        car = lease.Car_ID
-        car_info = car.info_set.first()  # 获取车辆的关联信息
-        vehicle = car_info.Model if car_info else None  # 获取车辆的模型（Vehicle）
+        rented_cars_data = []
+        for lease in rented_cars:
+            # 获取关联的 Repository 和 Vehicle 信息
+            car = lease.Car_ID
+            car_info = car.info_set.first()  # 获取车辆的关联信息
+            vehicle = car_info.Model if car_info else None  # 获取车辆的模型（Vehicle）
 
-        # 格式化租赁车辆数据
-        rented_cars_data.append({
-            "license_plate": car.Car_ID,  # 使用 Repository 表中的 Car_ID 作为车牌号
-            "model": vehicle.Model if vehicle else "Unknown",  # 获取车型
-            "price": vehicle.Price if vehicle else "Unknown",  # 获取价格
-        })
+            # 格式化租赁车辆数据
+            rented_cars_data.append({
+                "license_plate": car.Car_ID,  # 使用 Repository 表中的 Car_ID 作为车牌号
+                "model": vehicle.Model if vehicle else "Unknown",  # 获取车型
+                "price": vehicle.Price if vehicle else "Unknown",  # 获取价格
+            })
 
-    # 渲染模板并传递租赁车辆数据
-    return render(request, 'management/homepage.html', {'rented_cars': rented_cars_data})
-
-
+        # 渲染模板并传递租赁车辆数据
+        return render(request, 'management/homepage.html', {'rented_cars': rented_cars_data})
+    elif request.method == "POST":
+        pass
 
 
 @login_required

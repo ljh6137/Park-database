@@ -251,6 +251,9 @@
 
     <!-- JavaScript 脚本 -->
     <script>
+        window.onload = function () {
+            fetchVehicles(new Event('load')); // 模拟传入一个事件对象
+        };
         function fetchVehicles(event) {
             event.preventDefault();
             fetch('/management/get-vehicles/')
