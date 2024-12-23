@@ -86,8 +86,8 @@
  
  
  
-\title{\textbf{\Large{中文报告\LaTeX{}模板}}}
-\author{ Author\thanks{footnotes} }
+\title{\textbf{\Large{车辆租赁管理系统实验报告}}}
+\author{ 林杰泓 22336137\\刘艺凡 22336162}
 %\date{\today}
 %\date{2021/10/21}
  
@@ -106,78 +106,32 @@
 % \large{\textbf{Abstract}}
 % \end{center}
  
-\begin{adjustwidth}{1cm}{1cm}
-\hspace{1.5em}Here is the first par. of abstract.Here is the first par. of abstract.
+% \begin{adjustwidth}{1cm}{1cm}
+% \hspace{1.5em}Here is the first par. of abstract.Here is the first par. of abstract.
  
-\noindent\hspace{1.5em}Here is the second par. of abstract.Here is the second par. of abstract.
-\end{adjustwidth}
+% \noindent\hspace{1.5em}Here is the second par. of abstract.Here is the second par. of abstract.
+% \end{adjustwidth}
  
 %\thispagestyle{empty}       %本页不显示页码
 %\newpage                    %分页
 %%\tableofcontents\thispagestyle{empty}
 %\newpage
 %\setcounter{page}{1}        %从下面开始编页，页脚格式为导言部分设置的格式
+\newpage 
+\tableofcontents
+\newpage
+\section{实验题目}
+设计一个车辆租赁管理系统，包括车辆信息管理、租赁管理、客户管理等功能。车辆信息管理负责车辆
+信息的添加、修改和查询；租赁管理负责租赁信息的录入、修改和查询；客户管理负责客户信息的添
+加、修改和查询。
+\subsection{系统结构图}
+\subsection{系统功能模块图}
  
- 
-\section{第一部分}
-这是第一部分
-\subsection{第一部分的子部分}
-这里是第一部分的子部分
- 
-\section{第二部分}
-这里是第二部分 \cite{ref1,ref2}
-\subsection{第二部分的子部分}
-这里是第二部分的子部分
- 
-\section{一些工具}
-插入公式
-\begin{equation}\label{eq}
-  \gamma _2^{\text{C}} = \frac{{{P_{RT}}g}}{{{P_{BT}}d_{_{{B_2}2}}^{ - \alpha } + {N_0}}}
-\end{equation}
- 
-%插入图片
-%\begin{figure}[H]   %*表示可跨栏，如果不需要可去掉
-%\centering
-%\subfigure[$\sum {{I_C}}  < {I_B}$]{
-%  \includegraphics[width=7cm]{1.eps}}
-%  %\hspace{0cm}      %两张图片之间的距离
-%%\hfill               %撑满整行
-%\centering
-%\subfigure[$\sum {{I_C}}  > {I_B}$]{
-%  \includegraphics[width=7cm]{2.eps}}
-%\caption{系统的模式选择}\label{fig}
-%\end{figure}
- 
-插入表格
-\begin{table}[H] \wuhao             %局部字体设置大小
-   \centering
-  \caption{系统模型符号}\label{tab}
-  \begin{tabular}{c|c}
-    \toprule                  %设置为顶线默认格式 加粗
-    % after \\: \hline or \cline{col1-col2} \cline{col3-col4} ...
-    符号 & 说明 \\
-    \hline                  %普通横线
-    ${{B_1}\mbox{、}{B_2}}$ & 基站的下标表示 \\
-    ${C_1}\mbox{、}{C_2}$ & 蜂窝用户的下标表示 \\
-    $D$ & D2D用户的下标表示 \\
-    $R$ & 中继用户的下标表示 \\
-    ${P_{it}}\left( {i = B,C,D,R} \right)$ & 终端$i$的发射功率 \\
-    ${d_{ij}}(i,j = {B_k},{C_k},1,2,R;i \ne j,k = 1,2)$ & 设备$i$到设备$j$的距离 \\
-    ${h_{ij}}(i,j = {B_k},{C_k},1,2,R;i \ne j,k = 1,2)$ &$i$-$j$ 链路的信道系数\\
-    ${n_i}\left( {{n_i}\sim N\left( {\mu ,{N_0}} \right)} \right)$ & 高斯白噪声 \\
-    ${P_{ij}} = {P_{iT}}d_{ij}^{ - \alpha }$ & 终端$j$收到的终端$i$发送的信号功率\\
-    $\alpha$ & 路径衰落系数 \\
-    \bottomrule                %设置为底线默认格式
-  \end{tabular}
-\end{table}
- 
-%引用：图\ref{fig},式\eqref{eq},表\ref{tab}
+\section{需求分析}
 
-\begin{thebibliography}{99}
-	\setlength{\parskip}{0pt} %段落之间的竖直距离
-	\bibitem{ref1}吴承恩. 西游记~[M], 明14XX年.
-	\bibitem{ref2} 玄奘. 大唐西域记学报~[J], 唐6XX年, 1(2): 23-55.
-\end{thebibliography}
+\subsection{E-R图}
+\subsection{数据库模式}
+ 
 
 \end{document}
 
