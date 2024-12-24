@@ -336,8 +336,12 @@ def return_vehicle(request):
         lease.delete()
 
         messages.success(request, f"You have successfully returned the vehicle: {vehicle_id}.")
+<<<<<<< HEAD
         
         # JsonResponse({"status": "success", "message": "车辆租赁成功！"})
+=======
+        # return JsonResponse({"status": "success", "message": "车辆租赁成功！"})
+>>>>>>> bd0853fe834fb3eb55dcd1aa99faef786d4171b1
         return redirect('homepage')
 
     return redirect('homepage')
