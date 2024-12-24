@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999996 (TeX Live 2024) (preloaded format=xelatex 2024.10.6)  20 DEC 2024 19:50
+This is XeTeX, Version 3.141592653-2.6-0.999996 (TeX Live 2024) (preloaded format=xelatex 2024.10.6)  23 DEC 2024 17:52
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -765,21 +765,28 @@ File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 \tf@toc=\write4
 \openout4 = `report.toc'.
 
- [2] [3] (./report.aux)
+ [2]
+File: pic/sap.png Graphic file (type bmp)
+<pic/sap.png>
+File: pic/system_function_modules.png Graphic file (type bmp)
+<pic/system_function_modules.png>
+File: pic/er.png Graphic file (type bmp)
+<pic/er.png>
+ [3] [4] [5] (./report.aux)
  ***********
 LaTeX2e <2023-11-01> patch level 1
 L3 programming layer <2022/07/14>
  ***********
 Package rerunfilecheck Info: File `report.out' has not changed.
-(rerunfilecheck)             Checksum: E48FF3193E03F62537ADFC49B29C40F6;537.
+(rerunfilecheck)             Checksum: DE4A51B16CDEE6E93DB3D230711C98D2;537.
  ) 
 Here is how much of TeX's memory you used:
- 17551 strings out of 474773
- 374993 string characters out of 5758619
- 1924842 words of memory out of 5000000
- 39393 multiletter control sequences out of 15000+600000
+ 17600 strings out of 474773
+ 376484 string characters out of 5758619
+ 1933842 words of memory out of 5000000
+ 39437 multiletter control sequences out of 15000+600000
  573152 words of font info for 125 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
- 93i,11n,97p,1188b,346s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 93i,11n,97p,1188b,350s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
-Output written on report.pdf (3 pages).
+Output written on report.pdf (5 pages).
