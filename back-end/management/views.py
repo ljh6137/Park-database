@@ -336,6 +336,7 @@ def return_vehicle(request):
         lease.delete()
 
         messages.success(request, f"You have successfully returned the vehicle: {vehicle_id}.")
+        # return JsonResponse({"status": "success", "message": "车辆租赁成功！"})
         return redirect('homepage')
 
     return redirect('homepage')
