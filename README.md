@@ -2,7 +2,10 @@
 
 This repository contains the final assignment for the Database Systems course in SYSU. In this assignment, we design a system to manage car leasing with simple UI, enabling users to rent cars in a convenient way.
 
-### How to Use
+### Demo
+
+
+### Getting Started
 
 Due to environmental constraints, the system can only be run locally. We provide a script ``init.sh`` to help you build this system more easily. Before your ``bash init.sh``. You should change ``DB_USER="your_username"`` and ``DB_PASSWORD="your_password" `` to your own.
 
