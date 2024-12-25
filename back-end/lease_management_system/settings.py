@@ -134,7 +134,8 @@ AUTHENTICATION_BACKENDS = (
 
 LOGIN_REDIRECT_URL = 'dashboard'  # 登录后默认跳转到仪表盘页面
 
-
+STATIC_URL = '/static/'
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 
 LOGGING = {
     'version': 1,

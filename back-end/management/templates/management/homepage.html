@@ -6,6 +6,25 @@
     <title>首页 - 车辆租赁管理系统</title>
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&display=swap" rel="stylesheet">
     <style>
+        /* body {
+            font-family: Arial, sans-serif;
+            background: url('/static/images/2.jpg') no-repeat center center fixed;
+            background-size: cover;
+            margin: 0;
+            padding: 0;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+        } */
+
         .custom-font {
             font-family: 'Dancing Script', cursive;
             font-size: 36px;
@@ -56,8 +75,18 @@
         }
 
         /* 左侧导航栏样式 */
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: url('/static/images/2.jpg') no-repeat center center fixed;
+            background-size: cover;
+            display: flex;
+            flex-direction: row; /* 水平排列 sidebar 和 main-container */
+        }
+
+        /* 左侧导航栏 */
         .sidebar {
-            width: 250px;
+            width: 250px; /* 固定宽度 */
             background-color: #031b37;
             color: #ffffff;
             height: 100vh;
@@ -65,6 +94,14 @@
             display: flex;
             flex-direction: column;
         }
+
+        /* 主要内容区域 */
+        .main-container {
+            flex: 1; /* 剩余宽度 */
+            padding: 20px;
+            overflow: auto; /* 防止内容溢出 */
+        }
+
 
         .sidebar h1 {
             margin: 0 0 20px 0;
@@ -244,10 +281,16 @@
     <!-- 主要内容 -->
     <div class="main-container">
         <div class="header">
-            <h2>Yours</h2>
+            <h2 style="font-size: 24px; font-family: 'Dancing Script', cursive; color: #7b1efc; font-weight: bold;">
+                Homepage
+            </h2>
             <div class="user-info">
                 {% if user.is_authenticated %}
-                    <p>Welcome, <strong>{{ user.username }}</strong>!</p>
+                    <p style="font-size: 24px; font-family: 'Dancing Script', cursive; color: #7b1efc; font-weight: bold;">
+                        Welcome, <strong>{{ user.username }}</strong>
+                    </p>
+                
+
                 {% else %}
                     <p>请先登录或注册。</p>
                     <a href="{% url 'login' %}">登录</a> | <a href="{% url 'register' %}">注册</a>
@@ -258,7 +301,7 @@
         <!-- 我的租赁部分 -->
         <div class="card-container">
             <div class="card">
-                <h3>我的租赁</h3>
+                <h3 style="text-align: center;">我的租赁</h3>
                 <div class="table-container">
                     <table>
                         <thead>
