@@ -1,4 +1,4 @@
-
+import logging
 from django.http import HttpResponse
 from django.template import loader
 from django.contrib import messages
@@ -23,7 +23,7 @@ import json
 # management/views.py
 from django.shortcuts import render
 
-
+logger = logging.getLogger('myapp')
 
 def register(request):
     if request.method == 'GET':
@@ -37,16 +37,18 @@ def register(request):
         
         # 检查用户名是否已经存在
         if User.objects.filter(username=username).exists():
+            logger.warning(f"Username {username} already exists.")
             messages.error(request, 'Username already exists. Please choose another one.')
             return render(request, 'management/register.html')
         
-        # 创建用户并加密密码
-        user = User.objects.create_user(username=username, password=password)
+        
+        
         
         # 创建对应的 Customer 实例
         customer = Customer.objects.create(user=user, ID=username, name=username, contact="")  # 可以根据需要设置默认的 contact
         
         # 提示用户注册成功
+        logger.info(f"User {username} registered successfully.")
         messages.success(request, 'Registration successful! Please log in.')
         
         # 注册成功后，跳转到登录页面
@@ -61,8 +63,10 @@ def login_view(request):
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
+            logger.info(f"User {username} logged in successfully.")
             return redirect('homepage')  # 登录成功后跳转到用户仪表盘
         else:
+            logger.error(f"Failed login attempt for username {username}.")
             messages.error(request, 'Invalid username or password.')
     return render(request, 'management/login.html')
 
@@ -70,11 +74,12 @@ def login_view(request):
 def rent_car_view(request):
     if request.method == 'POST':
         vehicle_id = request.POST.get('vehicle_id')
-
+        logger.debug(f"Attempting to rent vehicle with ID: {vehicle_id}")
         try:
             # 获取当前登录的用户来查找关联的 Customer 实例
             customer = get_object_or_404(Customer, user=request.user)
         except Customer.DoesNotExist:
+            logger.error(f"Vehicle with ID {vehicle_id} not found.")
             messages.error(request, "You need to complete your customer profile before renting a car.")
             return redirect('profile')  # 重定向到用户个人资料页面或其他页面
 
@@ -87,17 +92,19 @@ def rent_car_view(request):
         try:
             repository = Repository.objects.get(Car_ID=vehicle_id)
         except Repository.DoesNotExist:
+            logger.error(f"Repository entry for vehicle with ID {vehicle_id} not found.")
             messages.error(request, "Repository entry for vehicle not found.")
             return redirect('rent_car')
 
         if repository.Is_leased:
+            logger.warning(f"Vehicle with ID {vehicle_id} is already leased.")
             messages.error(request, "This vehicle is already leased!")
             return redirect('rent_car')
 
         Lease.objects.create(Car_ID=repository, ID=customer)
         repository.Is_leased = True
         repository.save()
-
+        logger.info(f"Vehicle with ID {vehicle_id} leased successfully to user {request.user.username}.")
         messages.success(request, "Vehicle leased successfully!")
         return redirect('rent_car')
 
@@ -125,6 +132,7 @@ def rented_vehicles_view(request):
         for lease in leases:
             vehicle = lease.Car_ID.Model  # 获取租赁车辆的模型
             rented_vehicles.append(vehicle)
+            logger.info(f"User {user.username} rented vehicles: {rented_vehicles}")
     else:
         rented_vehicles = []
 
@@ -334,7 +342,7 @@ def return_vehicle(request):
 
         # 删除租赁记录
         lease.delete()
-
+        logger.info(f"User {request.user.username} returned vehicle with ID {vehicle_id}.")
         messages.success(request, f"You have successfully returned the vehicle: {vehicle_id}.")
         
         # JsonResponse({"status": "success", "message": "车辆租赁成功！"})

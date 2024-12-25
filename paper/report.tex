@@ -31,7 +31,9 @@
 \usepackage{algorithm}
 \usepackage{algorithmic}
 \usepackage{changepage}
- 
+\usepackage{listings}
+\usepackage{xcolor}
+
  
  
 %%%%%%%%%%%%%%%%%%%%%%%
@@ -84,7 +86,18 @@
 \usepackage{hyperref} %bookmarks
 \hypersetup{colorlinks, bookmarks, unicode} %unicode
  
- 
+\lstset{
+  basicstyle=\ttfamily\normalsize,
+  keywordstyle=\mathcal,
+  numbers=left,
+  numberstyle=\tiny,
+  frame=single,
+  breaklines=true,
+  backgroundcolor=\color{gray!10},
+  keywordstyle=\color{blue}\bfseries,
+  commentstyle=\color{orange!50!black},
+  stringstyle=\color{red!50!black},
+} 
  
 \title{\textbf{\Large{车辆租赁管理系统实验报告}}}
 \author{ 林杰泓 22336137\\刘艺凡 22336162}
@@ -126,7 +139,7 @@
 加、修改和查询。
 \section{需求分析}
 
-功能需求：
+\subsection{功能需求}
 
 \begin{itemize}
     \item 车辆信息管理：包括车辆的添加、修改、查询。每辆车有编号、品牌、型号、车牌号、租金等信息。
@@ -134,7 +147,7 @@
     \item 客户管理：管理客户信息，包含客户ID、姓名、联系方式等。
 \end{itemize}
 
-非功能需求：
+\subsection{非功能需求}
 
 \begin{itemize}
     \item 安全性：对用户的权限进行控制，确保只有管理员可以进行修改操作。
@@ -151,6 +164,33 @@
     \label{fig:sap}  % 图片标签，便于引用
 \end{figure}
 
+车辆租赁管理系统采用分层架构设计，
+主要分为表现层、业务逻辑层和数据访问层，各层次的功能和作用如下：
+
+\begin{itemize}
+    \item 表现层（前端）:\\
+    表现层是系统与用户交互的部分，负责用户界面的显示和操作处理，
+    包括车辆信息的查询、客户信息录入、租赁信息的修改等功能。
+    具体技术采用HTML、CSS等前端技术，确保界面美观和用户体验友好。
+    \item 业务逻辑层（后端）:\\
+    业务逻辑层位于表现层与数据访问层之间，
+    是系统功能实现的核心部分，主要负责接收前端请求、
+    处理业务逻辑并与数据库交互。车辆管理、租赁管理和客户管理的功能均在该层实现。
+    本系统采用Django框架开发业务逻辑层，
+    支持高效的请求响应和模块化开发。
+    
+    \item 数据访问层（数据库）:\\
+    数据访问层是系统的数据存储和管理部分，负责与数据库交互，
+    执行SQL查询操作以实现数据的增删改查。
+    本系统选用PostgreSQL作为数据库管理系统，
+    设计了满足第三范式（3NF）的数据库结构，确保数据存储的规范性和完整性。
+\end{itemize}
+
+各层通过接口进行数据交互：表现层将用户请求发送给业务逻辑层，
+业务逻辑层根据功能需求调用数据访问层与数据库交互，
+最终返回结果至表现层供用户查看和操作。
+这种分层设计提升了系统的可维护性和扩展性。
+
 针对需求分析，我们得到了系统结构图，如图\ref{fig:sap}所示。
 
 \subsection{系统功能模块图}
@@ -161,6 +201,25 @@
     \caption{系统功能模块图}  % 图片标题
     \label{fig:sfm}  % 图片标签，便于引用
 \end{figure}
+
+车辆租赁管理系统的功能模块图以系统需求为基础，分为三个主要功能模块：
+车辆信息管理模块、
+租赁管理模块和客户信息管理模块。各模块的功能和相互关系描述如下：
+
+\begin{itemize}
+    \item 车辆信息管理模块：实现车辆信息的添加、修改等功能。\\
+    添加功能用于录入车辆基本信息，如车辆编号、车型、租赁价格等。\\
+    修改功能用于更新车辆状态或属性，如车辆的租赁状态、等。\\
+    
+    \item 租赁管理模块：实现租赁交易的管理，包括租赁信息的录入、修改和查询。\\
+    录入功能用于记录租赁交易信息，如租赁车辆、客户、起始日期、结束日期及费用等。\\
+    修改功能允许调整租赁的相关信息，如租赁时间或费用的变更。\\
+    查询功能支持客户查找租赁记录，方便查看历史交易。
+    \item 客户信息管理模块：实现客户信息的管理，包括添加、修改和查询功能。\\
+    添加功能用于录入新客户的信息，如姓名、联系方式、身份证号等。\\
+    修改功能用于更新客户信息，如更改联系方式或地址。\\
+    查询功能支持按客户姓名或其他条件检索客户信息，便于用户管理客户数据。\\
+\end{itemize}
 
 针对需求分析，我们得到了系统的功能模块图，如图\ref{fig:sfm}所示。
 
@@ -173,15 +232,254 @@
     \label{fig:er}  % 图片标签，便于引用
 \end{figure}
 
+E-R图说明
+
+车辆租赁管理系统的E-R图描述了系统中的主要实体及其之间的关系，
+反映了系统的数据结构和逻辑关系。根据系统需求分析，设计了以下实体及其属性：
+
+\subsection{实体及属性}
+
+\begin{itemize}
+    \item 客户（Customer）属性：\\
+    用户（User）：与Django的内置用户模型进行一对一关联，扩展用户信息。\\
+    ID（主键）：客户唯一标识符。\\
+    姓名（name）：客户姓名。\\
+    联系方式（contact）：客户的联系方式。\\
+
+    \item 车辆（Vehicle）属性：\\
+    型号（Model，主键）：车辆的唯一标识。\\
+    价格（Price）：车辆的租赁价格。\\
+
+    \item 车辆库（Repository）属性：\\
+    车辆ID（Car\_ID，主键）：标识库中每辆车的唯一编号。\\
+    是否租赁（Is\_leased）：表示车辆是否已被租赁。\\
+
+    \item 车辆信息（Info）属性：\\
+    车辆ID（Car\_ID，外键）：引用车辆库中的车辆ID。\\
+    型号（Model，外键）：引用车辆表中的型号信息。\\
+    
+    \item 租赁记录（Lease）属性：\\
+    车辆ID（Car\_ID，外键）：关联车辆库中的车辆。\\
+    客户ID（ID，外键）：关联客户表中的客户。\\
+\end{itemize}
+
+\subsection{实体之间的关系} 
+\begin{itemize}
+\item 客户与租赁记录：
+一个客户可以进行多次租赁记录（1对多）。
+
+\item 车辆与车辆库：
+车辆库中的每辆车属于一个车辆型号（多对一）。
+
+\item 车辆库与租赁记录：
+每辆车在租赁记录中最多出现一次（1对1）。
+
+\item 车辆库与车辆信息：
+每辆车在车辆信息表中有对应的详细记录（1对1）。
+\end{itemize}
+
 针对需求分析，画出E-R图表示的概念模型，如图\ref{fig:er}所示。
 
 \subsection{数据库模式}
- 
-\section{数据库的保护}
 
-\subsection{安全性}
 
-\subsection{完备性}
+
+
+根据车辆租赁管理系统的需求和 E-R 图，将概念模型转换为关系模型，设计出满足第三范式（3NF）的数据库模式。具体如下：
+
+\subsection*{1. 表设计}
+
+\subsubsection*{1.1 客户表（Customer）}
+\begin{tabular}{|l|l|l|l|}
+\hline
+字段名 & 数据类型 & 约束 & 说明 \\
+\hline
+ID & VARCHAR(10) & PRIMARY KEY & 客户唯一标识符 \\
+\hline
+user\_id & INTEGER & UNIQUE, NOT NULL & 关联 Django 用户表 \\
+\hline
+name & VARCHAR(50) & NOT NULL & 客户姓名 \\
+\hline
+contact & VARCHAR(15) & NOT NULL & 客户联系方式 \\
+\hline
+\end{tabular}
+
+\subsubsection*{1.2 车辆表（Vehicle）}
+\begin{tabular}{|l|l|l|l|}
+\hline
+字段名 & 数据类型 & 约束 & 说明 \\
+\hline
+Model & VARCHAR(50) & PRIMARY KEY & 车辆型号 \\
+\hline
+Price & INTEGER & NOT NULL & 租赁价格 \\
+\hline
+\end{tabular}
+
+\subsubsection*{1.3 车辆库表（Repository）}
+\begin{tabular}{|l|l|l|l|}
+\hline
+字段名 & 数据类型 & 约束 & 说明 \\
+\hline
+Car\_ID & VARCHAR(10) & PRIMARY KEY & 车辆唯一标识符 \\
+\hline
+Is\_leased & BOOLEAN & DEFAULT FALSE & 是否被租赁 \\
+\hline
+\end{tabular}
+
+\subsubsection*{1.4 车辆信息表（Info）}
+\begin{tabular}{|l|l|l|l|}
+\hline
+字段名 & 数据类型 & 约束 & 说明 \\
+\hline
+Car\_ID & VARCHAR(10) & FOREIGN KEY (Repository.Car\_ID), NOT NULL & 关联车辆库表 \\
+\hline
+Model & VARCHAR(50) & FOREIGN KEY (Vehicle.Model), NOT NULL & 关联车辆型号 \\
+\hline
+\end{tabular}
+
+\subsubsection*{1.5 租赁记录表（Lease）}
+\begin{tabular}{|l|l|l|l|}
+\hline
+字段名 & 数据类型 & 约束 & 说明 \\
+\hline
+ID & VARCHAR(10) & FOREIGN KEY (Customer.ID), NOT NULL & 关联客户表 \\
+\hline
+Car\_ID & VARCHAR(10) & FOREIGN KEY (Repository.Car\_ID), NOT NULL & 关联车辆库表 \\
+\hline
+\end{tabular}
+
+\subsection*{2. 数据库模式特点}
+
+\begin{enumerate}
+    \item \textbf{满足第三范式（3NF）}
+    \begin{itemize}
+        \item 消除冗余：每个表只存储一种实体的属性，避免数据冗余。
+        \item 数据依赖明确：所有非主键字段完全依赖于主键。
+    \end{itemize}
+    \item \textbf{完整性约束}
+    \begin{itemize}
+        \item 主键约束：每个表都有明确的主键，保证数据唯一性。
+        \item 外键约束：通过外键建立表间关系，保证数据一致性。
+    \end{itemize}
+    \item \textbf{扩展性}
+    \begin{itemize}
+        \item 模块化表设计便于功能扩展，如增加车辆维修管理、客户等级管理等功能。
+    \end{itemize}
+\end{enumerate}
+
+
+\subsection{安全性与完备性}
+
+
+为了确保车辆租赁管理系统的数据库安全性与完备性，采取了以下设计和实现措施：
+
+\subsubsection{用户认证与权限管理}
+\begin{itemize}
+    \item \textbf{用户认证}：通过 Django 内置的用户认证系统（Authentication System），对系统用户进行登录验证，确保只有授权用户能够访问系统。
+    \item \textbf{权限控制}：基于角色分配权限，不同用户（如管理员和普通用户）拥有不同的数据库访问权限。例如：
+    \begin{itemize}
+        \item 管理员：拥有添加、修改、删除数据的权限。
+        \item 普通用户：仅能查看车辆信息和提交租赁请求。
+    \end{itemize}
+\end{itemize}
+
+\subsubsection{数据完整性约束}
+\begin{itemize}
+    \item \textbf{主键约束}：每张表都有主键，确保每条记录具有唯一标识符。
+    \item \textbf{外键约束}：外键关系保证了数据的一致性，例如租赁记录表中的车辆 ID 和客户 ID 必须合法且存在。
+    \item \textbf{非空约束}：关键字段（如客户姓名、联系方式等）设置为非空，确保数据完整。
+    \item \textbf{默认值约束}：为布尔字段（如车辆是否租赁）设置默认值，减少人为错误。
+\end{itemize}
+
+\subsubsection{数据保护与加密}
+\begin{itemize}
+    \item \textbf{敏感数据加密}：对于用户的敏感信息（如密码），使用 Django 提供的密码哈希功能进行加密存储。
+\end{itemize}
+
+Django 的 User 模型已经内置了密码哈希功能，
+因此只需要使用 create\_user 或 set\_password 方法来处理用户密码。
+下面是我们实现的思路：
+
+\begin{lstlisting}[language=python]
+    # 创建用户并加密密码
+    user = User.objects.create_user(username=username, password=password)
+\end{lstlisting}
+
+\subsubsection{日志记录与审计}
+\begin{itemize}
+    \item 系统记录所有数据库操作的日志，包括数据添加、修改、删除等关键操作。
+    \item 日志可用于追踪用户操作行为，及时发现和响应潜在的安全威胁。
+\end{itemize}
+
+\begin{lstlisting}[language=python]
+    LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format': '{levelname} {asctime} {module} {message}',
+            'style': '{',
+        },
+        'simple': {
+            'format': '{levelname} {message}',
+            'style': '{',
+        },
+    },
+    'handlers': {
+        'console': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+            'formatter': 'simple',
+        },
+        'file': {
+            'level': 'INFO',
+            'class': 'logging.FileHandler',
+            'filename': 'myapp.log',
+            'formatter': 'verbose',
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['console'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+        'myapp': {
+            'handlers': ['console', 'file'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+    },
+}
+\end{lstlisting}
+
+在views.py中，我们可以记录用户操作日志，如下所示：
+
+\begin{lstlisting}[language=python]
+    if User.objects.filter(username=username).exists():
+            logger.warning(f"Username {username} already exists.")
+            messages.error(request, 'Username already exists. Please choose another one.')
+            return render(request, 'management/register.html')
+\end{lstlisting}
+
+然后我们操作后就可以在myapp.log文件中看到相关日志。
+
+\begin{lstlisting}[language=bash]
+    WARNING 2024-12-25 10:36:47,223 views Username demo already exists.
+    INFO 2024-12-25 10:41:41,707 views User demo logged in successfully.
+    INFO 2024-12-25 10:41:43,616 views User demo returned vehicle with ID XPENG001.
+    INFO 2024-12-25 10:41:54,603 views User demo returned vehicle with ID XPENG001.
+\end{lstlisting}
+
+\subsubsection{最小权限原则}
+\begin{itemize}
+    \item 数据库账户的权限设置遵循最小权限原则，只赋予完成任务所需的最低权限，避免权限过高导致的安全隐患。
+\end{itemize}
+
+通过以上安全性设计，系统能够有效保护数据免受未授权访问、篡改或丢失，确保数据库的完整性、保密性和可用性。
+
+
+
 
 
 \end{document}
