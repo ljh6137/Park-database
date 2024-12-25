@@ -43,7 +43,8 @@ def register(request):
         
         
         
-        
+        # 创 建 用 户 并 加 密 密 码
+        user = User.objects.create_user(username=username , password=password)
         # 创建对应的 Customer 实例
         customer = Customer.objects.create(user=user, ID=username, name=username, contact="")  # 可以根据需要设置默认的 contact
         
