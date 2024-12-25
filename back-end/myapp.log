@@ -2,8 +2,12 @@ WARNING 2024-12-25 10:36:47,223 views Username demo already exists.
 INFO 2024-12-25 10:41:41,707 views User demo logged in successfully.
 INFO 2024-12-25 10:41:43,616 views User demo returned vehicle with ID XPENG001.
 INFO 2024-12-25 10:41:54,603 views User demo returned vehicle with ID XPENG001.
+<<<<<<< HEAD
 ERROR 2024-12-25 15:27:46,558 views Failed login attempt for username demo.
 INFO 2024-12-25 15:32:11,338 views User demo registered successfully.
 WARNING 2024-12-25 15:32:36,829 views Username demo already exists.
 INFO 2024-12-25 15:33:02,626 views User demo logged in successfully.
 INFO 2024-12-25 15:33:35,698 views User demo2 registered successfully.
+=======
+INFO 2024-12-25 15:30:07,796 views User lyf registered successfully.
+>>>>>>> 7eebc48bc988a29956d49ab3e4a92a0f0c41374e
