@@ -11,7 +11,7 @@ from django.http import JsonResponse
 from django.db import connection
 # from .models import 
 import json
-
+from django.db import transaction
 # Create your views here.
 
 
@@ -24,38 +24,74 @@ import json
 from django.shortcuts import render
 
 logger = logging.getLogger('myapp')
+logger = logging.getLogger(__name__)
 
 def register(request):
     if request.method == 'GET':
         return render(request, 'management/register.html')
-    
+
     if request.method == 'POST':
-        # print(1)
-        # 获取提交的用户名和密码
-        username = request.POST['username']
-        password = request.POST['password']
-        
-        # 检查用户名是否已经存在
+        # 获取表单数据
+        username = request.POST.get('username', '').strip()
+        password = request.POST.get('password', '').strip()
+        contact = request.POST.get('contact', '').strip()
+
+        # 简单校验是否填写所有字段
+        if not username or not password or not contact:
+            messages.error(request, 'All fields are required.')
+            return render(request, 'management/register.html')
+
+        # 检查用户名是否已存在
         if User.objects.filter(username=username).exists():
-            logger.warning(f"Username {username} already exists.")
             messages.error(request, 'Username already exists. Please choose another one.')
             return render(request, 'management/register.html')
-        
-        
-        
-        # 创 建 用 户 并 加 密 密 码
-        user = User.objects.create_user(username=username , password=password)
-        # 创建对应的 Customer 实例
-        customer = Customer.objects.create(user=user, ID=username, name=username, contact="")  # 可以根据需要设置默认的 contact
-        
-        # 提示用户注册成功
-        logger.info(f"User {username} registered successfully.")
-        messages.success(request, 'Registration successful! Please log in.')
-        
-        # 注册成功后，跳转到登录页面
-        return redirect('login')
-    
+
+        try:
+            # 创建用户和客户信息
+            with transaction.atomic():
+                user = User.objects.create_user(username=username, password=password)
+                Customer.objects.create(user=user, ID=username, name=username, contact=contact)
+
+            messages.success(request, 'Registration successful! Please log in.')
+            return redirect('login')
+
+        except Exception as e:
+            logger.error(f"Error during registration: {e}")
+            messages.error(request, 'An error occurred during registration. Please try again.')
+            return render(request, 'management/register.html')
+
     return render(request, 'management/register.html')
+# def register(request):
+#     if request.method == 'GET':
+#         return render(request, 'management/register.html')
+    
+#     if request.method == 'POST':
+#         # print(1)
+#         # 获取提交的用户名和密码
+#         username = request.POST['username']
+#         password = request.POST['password']
+        
+#         # 检查用户名是否已经存在
+#         if User.objects.filter(username=username).exists():
+#             logger.warning(f"Username {username} already exists.")
+#             messages.error(request, 'Username already exists. Please choose another one.')
+#             return render(request, 'management/register.html')
+        
+        
+        
+#         # 创 建 用 户 并 加 密 密 码
+#         user = User.objects.create_user(username=username , password=password)
+#         # 创建对应的 Customer 实例
+#         customer = Customer.objects.create(user=user, ID=username, name=username, contact="")  # 可以根据需要设置默认的 contact
+        
+#         # 提示用户注册成功
+#         logger.info(f"User {username} registered successfully.")
+#         messages.success(request, 'Registration successful! Please log in.')
+        
+#         # 注册成功后，跳转到登录页面
+#         return redirect('login')
+    
+#     return render(request, 'management/register.html')
 
 def login_view(request):
     if request.method == 'POST':
