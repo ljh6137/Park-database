@@ -232,12 +232,10 @@
     \label{fig:er}  % 图片标签，便于引用
 \end{figure}
 
-E-R图说明
-
 车辆租赁管理系统的E-R图描述了系统中的主要实体及其之间的关系，
 反映了系统的数据结构和逻辑关系。根据系统需求分析，设计了以下实体及其属性：
 
-\subsection{实体及属性}
+\subsubsection{实体及属性}
 
 \begin{itemize}
     \item 客户（Customer）属性：\\
@@ -263,7 +261,7 @@ E-R图说明
     客户ID（ID，外键）：关联客户表中的客户。\\
 \end{itemize}
 
-\subsection{实体之间的关系} 
+\subsubsection{实体之间的关系} 
 \begin{itemize}
 \item 客户与租赁记录：
 一个客户可以进行多次租赁记录（1对多）。
@@ -287,9 +285,12 @@ E-R图说明
 
 根据车辆租赁管理系统的需求和 E-R 图，将概念模型转换为关系模型，设计出满足第三范式（3NF）的数据库模式。具体如下：
 
-\subsection*{1. 表设计}
+\subsubsection{表设计}
 
-\subsubsection*{1.1 客户表（Customer）}
+
+\begin{table}[h!]
+    \centering
+    \caption{客户表（Customer）}
 \begin{tabular}{|l|l|l|l|}
 \hline
 字段名 & 数据类型 & 约束 & 说明 \\
@@ -303,8 +304,12 @@ name & VARCHAR(50) & NOT NULL & 客户姓名 \\
 contact & VARCHAR(15) & NOT NULL & 客户联系方式 \\
 \hline
 \end{tabular}
+\end{table}
 
-\subsubsection*{1.2 车辆表（Vehicle）}
+
+\begin{table}[h!]
+    \centering
+    \caption{车辆表（Vehicle）}
 \begin{tabular}{|l|l|l|l|}
 \hline
 字段名 & 数据类型 & 约束 & 说明 \\
@@ -314,8 +319,12 @@ Model & VARCHAR(50) & PRIMARY KEY & 车辆型号 \\
 Price & INTEGER & NOT NULL & 租赁价格 \\
 \hline
 \end{tabular}
+\end{table}
 
-\subsubsection*{1.3 车辆库表（Repository）}
+
+\begin{table}[h!]
+    \centering
+    \caption{车辆库表（Repository）}
 \begin{tabular}{|l|l|l|l|}
 \hline
 字段名 & 数据类型 & 约束 & 说明 \\
@@ -325,8 +334,12 @@ Car\_ID & VARCHAR(10) & PRIMARY KEY & 车辆唯一标识符 \\
 Is\_leased & BOOLEAN & DEFAULT FALSE & 是否被租赁 \\
 \hline
 \end{tabular}
+\end{table}
 
-\subsubsection*{1.4 车辆信息表（Info）}
+
+\begin{table}[h!]
+    \centering
+    \caption{车辆信息表（Info）}
 \begin{tabular}{|l|l|l|l|}
 \hline
 字段名 & 数据类型 & 约束 & 说明 \\
@@ -336,8 +349,12 @@ Car\_ID & VARCHAR(10) & FOREIGN KEY (Repository.Car\_ID), NOT NULL & 关联车�
 Model & VARCHAR(50) & FOREIGN KEY (Vehicle.Model), NOT NULL & 关联车辆型号 \\
 \hline
 \end{tabular}
+\end{table}
 
-\subsubsection*{1.5 租赁记录表（Lease）}
+
+\begin{table}[h!]
+    \centering
+    \caption{租赁记录表（Lease）}
 \begin{tabular}{|l|l|l|l|}
 \hline
 字段名 & 数据类型 & 约束 & 说明 \\
@@ -347,8 +364,9 @@ ID & VARCHAR(10) & FOREIGN KEY (Customer.ID), NOT NULL & 关联客户表 \\
 Car\_ID & VARCHAR(10) & FOREIGN KEY (Repository.Car\_ID), NOT NULL & 关联车辆库表 \\
 \hline
 \end{tabular}
+\end{table}
 
-\subsection*{2. 数据库模式特点}
+\subsubsection{数据库模式特点}
 
 \begin{enumerate}
     \item \textbf{满足第三范式（3NF）}
