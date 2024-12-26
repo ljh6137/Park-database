@@ -1,23 +1,23 @@
-## Rent Your Car: A System for Managing Car Leasing and Delivering Exceptional Convenience to Users
+# Rent Your Car: A System for Managing Car Leasing and Delivering Exceptional Convenience to Users
 
 This repository contains the final assignment for the Database Systems course in SYSU. In this assignment, we design a system to manage car leasing with simple UI, enabling users to rent cars in a convenient way.
 
-### Demo
+## Demo
 **Concise** Interface, **Convenient** Usability, and **Abundant** Information
-![](paper\pic\demo.gif)
+![](paper/pic/demo_censored.gif)
 
-### Getting Started
+## Getting Started
 
 Due to environmental constraints, the system can only be run locally. 
 
-#### Environment Preparation
+### Environment Preparation
 
 We use Django to develop this system.
 ``` shell
 pip install Django
 ```
 
-#### Lauch Demo Locally
+### Lauch Demo Locally
 
 We provide a script ``init.sh`` to help you build this system more easily. Before your ``bash init.sh``. You should change ``DB_USER="your_username"`` and ``DB_PASSWORD="your_password" `` to your own.
 
@@ -28,10 +28,10 @@ python manage.py runserver
 
 NOTICE: The path in ``init.sh`` may be subtly different in different systems.
 
-### Acknowledgement
+## Acknowledgement
 
 [GLM4](https://github.com/THUDM/GLM-4) generates some images used in the UI.
 
 [ChatGPT-4o](https://openai.com/index/hello-gpt-4o/) collaborate on some codes.
 
-### License
+## License
