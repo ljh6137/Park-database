@@ -33,6 +33,8 @@
 \usepackage{changepage}
 \usepackage{listings}
 \usepackage{xcolor}
+\usepackage{booktabs}
+\usepackage{enumitem}
 
  
  
@@ -58,7 +60,7 @@
 \renewcommand{\algorithmicrequire}{ \textbf{Input:}}     % use Input in the format of Algorithm
 \renewcommand{\algorithmicensure}{ \textbf{Initialize:}} % use Initialize in the format of Algorithm
 \renewcommand{\algorithmicreturn}{ \textbf{Output:}}     % use Output in the format of Algorithm
-\renewcommand{\abstractname}{\textbf{\large {摘\quad 要}}} %更改摘要二字的样式
+\renewcommand{\abstractname}{\textbf{\large {引\quad 言}}} %更改摘要二字的样式
 \newcommand{\xiaosi}{\fontsize{12pt}{\baselineskip}}     %\xiaosi代替设置12pt字号命令,不加\selectfont,行间距设置无效
 \newcommand{\wuhao}{\fontsize{10.5pt}{10.5pt}\selectfont}
  
@@ -100,7 +102,7 @@
 } 
  
 \title{\textbf{\Large{车辆租赁管理系统实验报告}}}
-\author{ 林杰泓 22336137\\刘艺凡 22336162}
+\author{ 林杰泓 22336137 刘艺凡 22336162}
 %\date{\today}
 %\date{2021/10/21}
  
@@ -130,6 +132,10 @@
 %%\tableofcontents\thispagestyle{empty}
 %\newpage
 %\setcounter{page}{1}        %从下面开始编页，页脚格式为导言部分设置的格式
+\begin{abstract}
+
+\end{abstract}
+
 \newpage 
 \tableofcontents
 \newpage
@@ -137,6 +143,7 @@
 设计一个车辆租赁管理系统，包括车辆信息管理、租赁管理、客户管理等功能。车辆信息管理负责车辆
 信息的添加、修改和查询；租赁管理负责租赁信息的录入、修改和查询；客户管理负责客户信息的添
 加、修改和查询。
+\section{概要设计}
 \section{需求分析}
 
 \subsection{功能需求}
@@ -239,7 +246,8 @@
 
 \subsubsection{实体及属性}
 
-\begin{itemize}
+\begin{itemize}[leftmargin=0.3cm]
+% \begin{itemize}
     \item 客户（Customer）属性：\\
     用户（User）：与Django的内置用户模型进行一对一关联，扩展用户信息。\\
     ID（主键）：客户唯一标识符。\\
@@ -264,7 +272,7 @@
 \end{itemize}
 
 \subsubsection{实体之间的关系} 
-\begin{itemize}
+\begin{itemize}[leftmargin=0.3cm]
 \item 客户与租赁记录：
 一个客户可以进行多次租赁记录（一对多）。
 
@@ -277,7 +285,6 @@
 \item 车辆库与车辆信息：
 每辆车在车辆信息表中有对应的详细记录（一对一）。
 \end{itemize}
-
 针对需求分析，画出E-R图表示的概念模型，如图\ref{fig:er}所示。
 
 \subsection{数据库模式}
@@ -499,7 +506,7 @@ Django 的 User 模型已经内置了密码哈希功能，
 通过以上安全性设计，系统能够有效保护数据免受未授权访问、篡改或丢失，确保数据库的完整性、保密性和可用性。
 
 \section{最终效果展示}
-
+经过精细的设计，我们实现了具备有注册登录功能的全面的租车管理系统。
 
 
 \end{document}
