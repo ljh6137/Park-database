@@ -32,4 +32,10 @@ python manage.py runserver
 
 NOTICE: The path in ``init.sh`` may be subtly different in different systems.
 
+### Acknowledgement
+
+[GLM4](https://github.com/THUDM/GLM-4) generates some images used in the UI.
+
+[ChatGPT-4o](https://openai.com/index/hello-gpt-4o/) collaborate on some codes.
+
 ### License
