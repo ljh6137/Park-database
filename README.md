@@ -3,12 +3,8 @@
 This repository contains the final assignment for the Database Systems course in SYSU. In this assignment, we design a system to manage car leasing with simple UI, enabling users to rent cars in a convenient way.
 
 ### Demo
-**Convenient** to register and login.
-![](paper\pic\login.png)
-**Concise** page to manage the car you rent.
-![](paper\pic\ui.png)
-**Abundant** cars and **Convenient** for leasing.
-![](paper\pic\homepage.png)
+**Concise** Interface, **Convenient** Usability, and **Abundant** Information
+![](paper\pic\demo.gif)
 
 ### Getting Started
 
