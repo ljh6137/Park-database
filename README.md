@@ -28,7 +28,7 @@ Then, run command and enter url http://127.0.0.1:8000/management/ in your browse
 python manage.py runserver
 ```
 
-NOTICE: The path in ``init.sh`` may be subtly different in different systems.
+>NOTICE: The path in ``init.sh`` may be subtly different in different systems.
 
 ## Acknowledgement
 
