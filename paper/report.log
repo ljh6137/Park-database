@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999996 (TeX Live 2024) (preloaded format=xelatex 2024.3.18)  27 DEC 2024 20:44
+This is XeTeX, Version 3.141592653-2.6-0.999996 (TeX Live 2024) (preloaded format=xelatex 2024.3.18)  27 DEC 2024 20:53
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -855,7 +855,7 @@ Overfull \hbox (25.06064pt too wide) in paragraph at lines 383--392
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
 [7] [8]
-Overfull \hbox (26.80568pt too wide) in paragraph at lines 442--445
+Overfull \hbox (26.80568pt too wide) in paragraph at lines 447--450
 []\TU/TimesNewRoman(0)/m/n/12 Django \TU/SimSun(1)/m/n/12 的 \TU/TimesNewRoman(0)/m/n/12 User \TU/SimSun(1)/m/n/12 模 型 已 经 内 置 了 密 码 哈 希 功 能，|  因 此 只 需 要 使 用 \TU/TimesNewRoman(0)/m/n/12 create_user \TU/SimSun(1)/m/n/12 或 \TU/TimesNewRoman(0)/m/n/12 set_password
  []
 
@@ -887,7 +887,7 @@ Package fontspec Info: Font family 'FangSong(0)' created for font 'FangSong'
 
  [9]
 LaTeX Font Info:    Font shape `TU/lmtt/bx/n' in size <12> not available
-(Font)              Font shape `TU/lmtt/b/n' tried instead on input line 502.
+(Font)              Font shape `TU/lmtt/b/n' tried instead on input line 507.
  (d:/Latex/Texlive/texlive/2024/texmf-dist/tex/latex/listings/lstlang1.sty
 File: lstlang1.sty 2024/02/21 1.10 listings language file
 ) (d:/Latex/Texlive/texlive/2024/texmf-dist/tex/latex/listings/lstlang1.sty
@@ -898,15 +898,15 @@ LaTeX2e <2023-11-01> patch level 1
 L3 programming layer <2022/08/05>
  ***********
 Package rerunfilecheck Info: File `report.out' has not changed.
-(rerunfilecheck)             Checksum: F70F1A191F533853E233DC720266A950;2446.
+(rerunfilecheck)             Checksum: FAFC0A535B35CC82BFEE016EDAA0C776;2900.
  ) 
 Here is how much of TeX's memory you used:
  20062 strings out of 474773
  422674 string characters out of 5755059
- 2109842 words of memory out of 5000000
+ 2093842 words of memory out of 5000000
  41845 multiletter control sequences out of 15000+600000
  573401 words of font info for 136 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
- 93i,12n,97p,1188b,1884s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 93i,12n,97p,1188b,1874s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
 Output written on report.pdf (11 pages).
