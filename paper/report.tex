@@ -12,7 +12,9 @@
  
 %\linespread{1.5} %设置全文行间距
  
- 
+% \usepackage[backend=bibtex]{biblatex} 
+
+\bibliographystyle{plain}
 %\usepackage[english]{babel}
 %\usepackage{float}     %放弃美学排版图表
 \usepackage{fontspec}   %修改字体
@@ -102,7 +104,7 @@
 } 
  
 \title{\textbf{\Large{车辆租赁管理系统实验报告}}}
-\author{ 林杰泓 22336137 刘艺凡 22336162}
+\author{ 林杰泓 22336137 \\刘艺凡 22336162}
 %\date{\today}
 %\date{2021/10/21}
  
@@ -111,7 +113,21 @@
 \begin{document}
  
 \maketitle
-%\tableofcontents
+
+\begin{abstract}
+本任务关注设计车辆租赁管理系统，设计目的在于为用户和管理人员提供一个功能全面、操作便捷的车辆租赁平台，既能满足用户快速获取租车服务的需求，也能帮助管理人员在后台轻松实现对租车业务的高效管理
+租车系统有三大核心的要求，车辆信息管理、租赁管理、客户管理。(1) 车辆信息管理要求记录和维护所有车辆的基本信息、租赁状态以及被租赁信息。 (2) 租赁管理要求对租车订单的创建、查询、修改等功能，需要能够高效处理订单状态。 (3) 客户管理要求对客户的基本信息、租车信息等数据进行管理，确保客户信息的安全性和准确性。
+此外，车辆租赁管理系统还需要提供良好的交互页面，注重用户交互的便捷，确保前端与数据库之间的数据交互高效可靠。同时，系统需要设计合理的权限管理机制，确保客户与管理员能够在各自权限范围内安全使用系统数据。
+
+在车辆租赁管理系统的设计中，我们采用Django Web框架作为后端技术栈，使用PostgreSQL作为数据库管理系统的信息，采用HTML，CSS，JavaScript框架开发前端交互页面。由于条件限制，本系统只支持本地部署。该系统开发人员为刘艺凡~(22336162)和林杰泓~(22336137)。系统需求分析，结构设计及功能模块设计由本组开发人员共同分析设计。
+并由林杰泓负责用户信息管理及用户租赁管理的前端和后端开发和设计，由刘艺凡负责车辆信息管理和车辆信息管理的前端和后端的设计和开发。系统交互页面的设计及优化由两人共同完成。同时，我们共同负责了系统的安全性设计，包括对用户，车辆信息的保护，以及对用户，管理员的权限设置及授权。
+
+我们在附件中提供了开发系统的相关代码。同时，为了便于查看和了解该车辆租赁管理系统的成果，我们提供了demo——\textbf{demo.gif}，展示了该系统的功能。
+此外，为了方便本地部署该系统，我们提供脚本\textbf{init.sh}用于构建简化对系统数据库的构建，同时也提供了 \textbf{README.md}作为指引，讲述部署系统以及使用系统的方法。更进一步的，当系统部署成功后，我们可以通过访问链接\href{http://127.0.0.1:8000/management/register}{http://127.0.0.1:8000/management/register} 进入系统的注册页面，以用户的视角开始体验该车辆租赁管理系统。
+
+\end{abstract}
+
+% \tableofcontents
  
 % \begin{abstract}
 % 本模板可以提供一般性单栏文档的生成，可以根据需要选择是否要目录、摘要，可自行选择日期生成方式，参考文献使用交叉引用条目形式使用，便于编辑和管理。务必注意，latex编译器需要选择xelatex.
@@ -132,9 +148,7 @@
 %%\tableofcontents\thispagestyle{empty}
 %\newpage
 %\setcounter{page}{1}        %从下面开始编页，页脚格式为导言部分设置的格式
-\begin{abstract}
 
-\end{abstract}
 
 \newpage 
 \tableofcontents
@@ -144,9 +158,9 @@
 信息的添加、修改和查询；租赁管理负责租赁信息的录入、修改和查询；客户管理负责客户信息的添
 加、修改和查询。
 \section{概要设计}
-\section{需求分析}
+\subsection{需求分析}
 
-\subsection{功能需求}
+\subsubsection{功能需求}
 
 \begin{itemize}
     \item 车辆信息管理：包括车辆的添加、修改、查询。每辆车有编号、品牌、型号、车牌号、租金等信息。
@@ -154,7 +168,7 @@
     \item 客户管理：管理客户信息，包含客户ID、姓名、联系方式等。
 \end{itemize}
 
-\subsection{非功能需求}
+\subsubsection{非功能需求}
 
 \begin{itemize}
     \item 安全性：对用户的权限进行控制，确保只有管理员可以进行修改操作。
@@ -162,9 +176,9 @@
     \item 界面友好性：设计直观的用户界面，保证用户能够方便地操作和管理信息。
 \end{itemize}
 
-\section{系统设计}
+% \section{系统设计}
 
-\subsection{系统结构图}
+\subsection{系统结构}
 
 \begin{figure}[htbp]  % figure 环境用于插入图片并进行浮动
     \centering  % 图片居中
@@ -202,7 +216,7 @@
 
 针对需求分析，我们得到了系统结构图，如图\ref{fig:sap}所示。
 
-\subsection{系统功能模块图}
+\subsection{系统功能模块}
 
 \begin{figure}[htbp]  % figure 环境用于插入图片并进行浮动
     \centering  % 图片居中
@@ -232,6 +246,8 @@
 \vspace{-0.8cm}
 针对需求分析，我们得到了系统的功能模块图，如图\ref{fig:sfm}所示。
 
+\section{详细设计}
+
 \subsection{E-R图}
 
 \begin{figure}[htbp]  % figure 环境用于插入图片并进行浮动
@@ -242,7 +258,7 @@
 \end{figure}
 
 车辆租赁管理系统的E-R图描述了系统中的主要实体及其之间的关系，
-反映了系统的数据结构和逻辑关系。根据系统需求分析，设计了以下实体及其属性：
+反映了系统的数据结构和逻辑关系~\cite{silberschatz2011database}。根据系统需求分析，设计了以下实体及其属性：
 
 \subsubsection{实体及属性}
 
@@ -505,9 +521,12 @@ Django 的 User 模型已经内置了密码哈希功能，
 
 通过以上安全性设计，系统能够有效保护数据免受未授权访问、篡改或丢失，确保数据库的完整性、保密性和可用性。
 
-\section{最终效果展示}
+\section{调试与运行结果}
+\subsection{问题与调试}
+\subsection{最终结果展示}
 经过精细的设计，我们实现了具备有注册登录功能的全面的租车管理系统。
 
-
+\section{总结}
+\bibliography{custom}
 \end{document}
 
