@@ -132,7 +132,10 @@ AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
 )
 
-LOGIN_REDIRECT_URL = 'dashboard'  # 登录后默认跳转到仪表盘页面
+LOGIN_REDIRECT_URL = '/management/'  
+
+LOGIN_URL = '/management/login/'  # 登录页面
+
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]

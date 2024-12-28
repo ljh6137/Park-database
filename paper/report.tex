@@ -3,7 +3,7 @@
  
 \documentclass[UTF8,a4paper,12pt]{ctexart}
 \usepackage[left=2.50cm, right=2.50cm, top=2.50cm, bottom=2.50cm]{geometry} %页边距
-\CTEXsetup[format={\Large\bfseries}]{section} %设置章标题字号为Large，居左
+% \CTEXsetup[format={\Large\bfseries}]{section} %设置章标题字号为Large，居左
 %\CTEXsetup[number={\chinese{section}}]{section}
 %\CTEXsetup[name={（,）}]{subsection}
 %\CTEXsetup[number={\chinese{subsection}}]{subsection}
@@ -38,7 +38,7 @@
 \usepackage{booktabs}
 \usepackage{enumitem}
 
- 
+
  
 %%%%%%%%%%%%%%%%%%%%%%%
 % -- text font --
@@ -68,7 +68,7 @@
  
 \usepackage{fancyhdr} %设置全文页眉、页脚的格式
 \pagestyle{fancy}
-\lhead{}           %页眉左边设为空
+\lhead{\leftmark}           %页眉左边设为空
 \chead{}           %页眉中间
 \rhead{}           %页眉右边
 %\rhead{\includegraphics[width=1.2cm]{1.eps}}  %页眉右侧放置logo
@@ -97,12 +97,23 @@
   numberstyle=\tiny,
   frame=single,
   breaklines=true,
+  showstringspaces=false,  
   backgroundcolor=\color{gray!10},
   keywordstyle=\color{blue}\bfseries,
   commentstyle=\color{orange!50!black},
   stringstyle=\color{red!50!black},
 } 
- 
+
+\lstdefinelanguage{JavaScript}{
+  morekeywords={function, return, var, let, const, if, else, for, while},
+  sensitive=true,
+  comment=[l]{//},
+  morecomment=[s]{/*}{*/},
+  morestring=[b]',
+  morestring=[b]",
+  alsoletter={\#},
+}
+
 \title{\textbf{\Large{车辆租赁管理系统实验报告}}}
 \author{ 林杰泓 22336137 \\刘艺凡 22336162}
 %\date{\today}
@@ -308,7 +319,9 @@
 
 
 
-根据车辆租赁管理系统的需求和 E-R 图，将概念模型转换为关系模型，设计出满足第三范式（3NF）的数据库模式。具体如下：
+根据车辆租赁管理系统的需求和 E-R 图，
+将概念模型转换为关系模型，设计出满足第三范式（3NF）的数据库模式。
+具体如下：
 
 \subsubsection{表设计}
 
@@ -415,6 +428,134 @@ Car\_ID & VARCHAR(10) & FOREIGN KEY (Repository.Car\_ID), NOT NULL & 关联车�
 \subsection{车辆信息管理模块设计与开发}
 \subsection{租赁管理模块设计与开发}
 \subsection{客户管理模块设计与开发}
+
+\begin{figure}[htbp]  % figure 环境用于插入图片并进行浮动
+    \centering  % 图片居中
+    \includegraphics[width=0.8\textwidth]{pic/user_management.png}
+    \caption{用户管理模块图}  % 图片标题
+    \label{fig:um}  % 图片标签，便于引用
+\end{figure}
+
+
+总体设计如图\ref{fig:um}所示
+
+客户管理模块包括用户注册、登录、车辆租赁等核心功能，旨在为系统提供完整的客户管理与操作流程。
+
+\subsubsection{用户注册功能（Register）}
+注册功能实现了用户创建账户的操作，并且在创建用户时，将其信息保存到自定义的 \texttt{Customer} 表中，确保系统能够关联用户和客户之间的关系。
+
+\textbf{实现流程}：
+\begin{itemize}
+    \item \textbf{GET 请求}：用户访问注册页面时，渲染 \texttt{register.html} 模板。
+    \item \textbf{POST 请求}：用户提交注册表单数据时，首先进行简单校验（确保所有字段填写）。如果数据不完整或者用户名已存在，返回错误提示。
+    \item 然后，使用 Django 的 \texttt{transaction.atomic()} 来保证数据的一致性，在同一个事务中创建 \texttt{User} 和 \texttt{Customer} 实例。
+    \item 如果一切正常，返回成功信息并重定向到登录页面。
+\end{itemize}
+
+\textbf{主要算法}：
+\begin{itemize}
+    \item \textbf{字段校验}：确保用户输入的所有字段有效。
+    \item \textbf{事务控制}：通过 \texttt{transaction.atomic()} 保证 \texttt{User} 和 \texttt{Customer} 的数据一致性。
+    \item \textbf{异常捕获}：通过 \texttt{try-except} 结构处理注册过程中可能出现的异常，并记录日志。
+\end{itemize}
+
+\textbf{代码片段}：
+\begin{lstlisting}[language=Python]
+# POST 请求时
+if request.method == 'POST':
+    username = request.POST.get('username', '').strip()
+    password = request.POST.get('password', '').strip()
+    contact = request.POST.get('contact', '').strip()
+
+    # 校验必填字段
+    if not username or not password or not contact:
+        messages.error(request, 'All fields are required.')
+        return render(request, 'management/register.html')
+
+    # 检查用户名是否已存在
+    if User.objects.filter(username=username).exists():
+        messages.error(request, 'Username already exists. Please choose another one.')
+        return render(request, 'management/register.html')
+
+    # 创建用户和客户信息
+    try:
+        with transaction.atomic():
+            user = User.objects.create_user(username=username, password=password)
+            Customer.objects.create(user=user, ID=username, name=username, contact=contact)
+
+        messages.success(request, 'Registration successful! Please log in.')
+        return redirect('login')
+
+    except Exception as e:
+        logger.error(f"Error during registration: {e}")
+        messages.error(request, 'An error occurred during registration. Please try again.')
+        return render(request, 'management/register.html')
+\end{lstlisting}
+
+\subsubsection{用户登录功能（Login）}
+登录功能允许已注册的用户通过用户名和密码登录。系统会验证用户的凭证，
+如果正确则跳转到主页homepage，否则提示登录失败。
+
+\textbf{实现流程}：
+\begin{itemize}
+    \item 用户提交用户名和密码后，使用 \texttt{authenticate()} 验证其凭证。
+    \item 如果验证成功，使用 \texttt{login()} 登录用户并重定向到主页。
+    \item 如果验证失败，记录错误日志并返回错误信息。
+\end{itemize}
+
+\textbf{主要算法}：
+\begin{itemize}
+    \item \textbf{身份验证}：通过 \texttt{authenticate()} 校验用户名和密码。
+    \item \textbf{登录操作}：通过 \texttt{login()} 将用户登录状态保存在会话中。
+\end{itemize}
+
+\textbf{代码片段}：
+\begin{lstlisting}[language=Python]
+def login_view(request):
+    if request.method == 'POST':
+        username = request.POST['username']
+        password = request.POST['password']
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+            login(request, user)
+            logger.info(f"User {username} logged in successfully.")
+            return redirect('homepage')  # 登录成功后跳转到用户仪表盘
+        else:
+            logger.error(f"Failed login attempt for username {username}.")
+            messages.error(request, 'Invalid username or password.')
+    return render(request, 'management/login.html')
+\end{lstlisting}
+
+\subsubsection{系统中的用户信息记录}
+
+通过上述登录功能的实现，我们就可以在租车系统中的任何位置获取到当前登录的用户信息
+（如用户名、联系方式等），以便于后续的租车操作和信息管理。
+
+我们可以通过view函数中的request对象获取当前登录的用户信息，如下所示：
+
+\begin{lstlisting}[language=Python]
+    user_id = request.user.username  # 获取当前用户ID
+\end{lstlisting}
+
+因为Django 默认会将 request.user 传递到模板中，
+所以我们也可以通过直接在模板中访问它，而不需要在视图中显式传递，如下所示：
+
+\begin{lstlisting}[language=JavaScript]
+    {% if user.is_authenticated %}
+    <p style="font-size: 24px; font-family: 'Dancing Script', cursive; color: #7b1efc; font-weight: bold;">
+        Welcome, <strong>{{ user.username }}</strong>
+    </p>
+\end{lstlisting}
+
+当然，如果没有登录，我们会判断出来，通过按钮跳转到login或者register页面。
+
+\begin{lstlisting}[language=JavaScript]
+    {% else %}
+        <p>Please log in or register to start renting vehicles.</p>
+        <a href="{% url 'login' %}" class="login-button">Login</a>
+        <a href="{% url 'register' %}" class="register-button">Register</a>
+    {% endif %}
+\end{lstlisting}
 
 \subsection{安全性与完备性}
 
@@ -528,6 +669,103 @@ Django 的 User 模型已经内置了密码哈希功能，
 
 \section{调试与运行结果}
 \subsection{问题与调试}
+
+
+\subsubsection{\texttt{request.user} 为匿名用户}
+
+如果用户没有登录，\texttt{request.user} 会是一个 \texttt{AnonymousUser} 实例，而不是 \texttt{User} 实例。在这种情况下，\texttt{request.user} 的属性（如 \texttt{username}、\texttt{email}）可能会导致错误或不符合预期。
+
+\paragraph{解决方法：}
+\begin{itemize}
+    \item 使用 \texttt{request.user.is\_authenticated} 判断用户是否登录，以避免访问匿名用户的属性。
+    \item 如果用户未登录，确保有对应的处理策略。
+\end{itemize}
+
+
+\begin{lstlisting}[language=Python]
+    user_id = request.user.username  # 获取当前用户ID
+\end{lstlisting}
+
+\subsubsection{\texttt{Customer} 模型与 \texttt{User} 模型的关系未正确配置}
+
+在代码中，如果通过 \texttt{User} 对象来查找 \texttt{Customer} 对象时，确保 \texttt{User} 和 \texttt{Customer} 模型之间的关系正确配置（例如，\texttt{Customer} 是通过 \texttt{User} 外键关联的）。
+
+\paragraph{解决方法：}
+\begin{itemize}
+    \item 确保在 \texttt{Customer} 模型中有一个外键字段指向 \texttt{User} 模型，并且关系设置正确。
+\end{itemize}
+
+\begin{lstlisting}[language=Python]
+    class Customer(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    ID = models.CharField(max_length=10, primary_key=True)  # 使用 'ID' 作为主键
+    name = models.CharField(max_length=50)
+    contact = models.CharField(max_length=15)
+
+    def __str__(self):
+        return self.name
+\end{lstlisting}
+
+\begin{itemize}
+    \item 使用 \texttt{get\_object\_or\_404} 来获取关联的 \texttt{Customer} 对象，确保捕获 \texttt{Customer.DoesNotExist} 异常。
+\end{itemize}
+
+\begin{lstlisting}[language=Python]
+from django.shortcuts import get_object_or_404  
+
+try:
+    # 获取当前登录的用户来查找关联的 Customer 实例
+    customer = get_object_or_404(Customer, user=request.user)
+\end{lstlisting}
+
+\subsubsection{用户信息在模板中无法访问}
+
+如果在模板中无法访问 \texttt{request.user} 或 \texttt{user} 变量，可能是由于模板没有正确获取上下文中的用户信息。
+
+\paragraph{解决方法：}
+\begin{itemize}
+    \item 确保模板中有 if user.is\_authenticated 判断语句，并正确引用 \texttt{user} 变量。
+    \item 如果自定义了中间件或修改了上下文，需要确保 \texttt{user} 被传递到模板中。
+\end{itemize}
+
+\begin{lstlisting}[language=HTML]
+    <div class="user-info">
+        {% if user.is_authenticated %}
+            <p style="font-size: 24px; font-family: 'Dancing Script', cursive; color: #7b1efc; font-weight: bold;">
+                Welcome, <strong>{{ user.username }}</strong>
+            </p>
+        {% else %}
+            <p>Please log in or register to start renting vehicles.</p>
+            <a href="{% url 'login' %}" class="login-button">Login</a>
+            <a href="{% url 'register' %}" class="register-button">Register</a>
+        {% endif %}
+    </div>
+\end{lstlisting}
+
+\subsubsection{\texttt{@login\_required} 装饰器没有正确应用}
+
+\texttt{@login\_required} 装饰器要求用户登录才能访问视图，如果没有正确应用，可能会导致未登录用户能够访问需要登录才能访问的视图。
+
+\paragraph{解决方法：}
+\begin{itemize}
+    \item 确保视图函数上正确应用了 \texttt{@login\_required} 装饰器。
+\end{itemize}
+
+\begin{lstlisting}[language=Python]
+from django.contrib.auth.decorators import login_required  
+@login_required
+def rent_car_view(request):
+\end{lstlisting}
+
+\begin{itemize}
+    \item 如果 \texttt{@login\_required} 装饰器不适用，用户会被自动重定向到登录页面。可以通过设置 \texttt{LOGIN\_URL} 来修改重定向的登录页面：
+\end{itemize}
+
+\begin{lstlisting}[language=Python]
+LOGIN_URL = '/management/login/'  # 登录页面
+\end{lstlisting}
+
+
 \subsection{最终结果展示}
 经过精细的设计，我们实现了具备有注册登录功能的全面的租车管理系统。
 
