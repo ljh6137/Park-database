@@ -678,9 +678,34 @@ def lease_vehicle(request):
 
 \subsubsection{还车功能的算法实现}
 
+系统尝试查找与当前登录用户相关联的租赁记录，查找条件包括：
+车辆 ID 和用户 ID。如果没有找到匹配的租赁记录（即用户没有租过这辆车），
+则抛出 Lease.DoesNotExist 异常，
+并向用户显示错误信息，提示其没有租用此车辆，并将其重定向到主页。
 
+\begin{lstlisting}[language=Python]
+    try:
+        lease = Lease.objects.get(Car_ID__Car_ID=vehicle_id, ID__user=request.user)
+    except Lease.DoesNotExist:
+        messages.error(request, "You have not rented this vehicle.")
+        return redirect('homepage')
+\end{lstlisting}
 
+通过 lease 对象获取到租赁记录中关联的仓库车辆对象 Car\_ID，
+然后将 Is\_leased 字段更新为 False，
+表示该车辆已经被归还并且重新可用。之后调用 save() 方法保存更新。
 
+\begin{lstlisting}[language=Python]
+    repository = lease.Car_ID
+    repository.Is_leased = False  # 标记车辆为未租赁
+    repository.save()
+\end{lstlisting}
+
+删除租赁记录，以便用户不再与这辆车有关联，并且租赁记录从数据库中移除。
+
+\begin{lstlisting}[language=Python]
+    lease.delete()
+\end{lstlisting}
 
 \subsection{客户管理模块设计与开发}
 
@@ -810,6 +835,50 @@ def login_view(request):
         <a href="{% url 'login' %}" class="login-button">Login</a>
         <a href="{% url 'register' %}" class="register-button">Register</a>
     {% endif %}
+\end{lstlisting}
+
+用户应该在看到自己的账号名下有什么已经租聘的车辆。
+正如我们在3.4.3的还车算法中看到的，我们只需要在前端将当前用户名下的车辆渲染出来即可。
+
+\begin{lstlisting}[language=JavaScript]
+    <!-- 我的租赁部分 -->
+        <div class="card-container">
+            <div class="card">
+                <h3 style="text-align: center;">我的租赁</h3>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>车牌号</th>
+                                <th>车型</th>
+                                <th>价格</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for car in rented_cars %}
+                                <tr>
+                                    <td>{{ car.license_plate }}</td>
+                                    <td>{{ car.model }}</td>
+                                    <td>￥{{ car.price }}</td>
+                                    <td>
+                                        <!-- 还车按钮 -->
+                                        <form action="{% url 'return_vehicle' %}" method="POST" style="display:inline;">
+                                            {% csrf_token %}
+                                            <input type="hidden" name="vehicle_id" value="{{ car.license_plate }}">
+                                            <button type="submit" class="btn-danger">还车</button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            {% empty %}
+                                <tr>
+                                    <td colspan="4">暂无租赁车辆</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
 \end{lstlisting}
 
 \subsection{安全性与完备性}
