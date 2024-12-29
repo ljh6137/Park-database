@@ -1021,8 +1021,78 @@ LOGIN_URL = '/management/login/'  # 登录页面
 \end{lstlisting}
 
 \subsection{最终结果展示}
-经过精细的设计，我们实现了具备有注册登录功能的全面的租车管理系统。
+经过精细的设计，我们实现了具备有注册登录功能的全面的精美的租车管理系统。在这个阶段中，我们将以用户视角展示我们的车辆租赁管理系统。
+\subsubsection{注册与登录}
+图~\ref{fig:reg}展示了该系统的注册页面，用户在注册页面中填入用户名，密码和邮箱，在不发生用户冲突的情况下即可注册成功。注册成功后页面会跳转到登录界面便于用户登录。由于对用户信息的保护这个过程是加密的，非明文的，所以这个过程对客户来说时安全的，无需担心的。
+\begin{figure}[htbp]  % figure 环境用于插入图片并进行浮动
+    \centering  % 图片居中
+    \includegraphics[width=0.8\textwidth]{pic/reg.png}
+    % \includegraphics[width=0.8\textwidth]{pic/log.png}
+    \caption{用户注册界面}  % 图片标题
+    \label{fig:reg}  % 图片标签，便于引用
+\end{figure}
 
+图\ref{fig:log}展示了该系统的登录界面，用户可以主动访问该界面，或者在注册成功后跳转到该界面进行登录。用户只需填写刚才注册的用户名和密码，在信息校验成功后即登录成功，将会进入专属该用户的首页中。在登录页面，我们还加入了注册界面跳转连接，当用户发现没有账号时可以在登录页面便利地跳转到注册页面进行注册。
+\begin{figure}[htbp]  % figure 环境用于插入图片并进行浮动
+    \centering  % 图片居中
+    % \includegraphics[width=0.8\textwidth]{pic/reg.png}
+    \includegraphics[width=0.8\textwidth]{pic/log.png}
+    \caption{用户登录界面}  % 图片标题
+    \label{fig:log}  % 图片标签，便于引用
+\end{figure}
+
+\subsubsection{用户首页}
+登录成功进入用户首页后，用户可以查看自己当前的租车状态。在该侧面的侧边栏由两个按键，一个是首页，用户可以通过这个按键访问首页即图片现实的内容。另一个是租车，用户可以通过租车键查看车辆品牌，并进一步访问详细车辆信息。
+\begin{figure}[htbp]  % figure 环境用于插入图片并进行浮动
+    \centering  % 图片居中
+    % \includegraphics[width=0.8\textwidth]{pic/reg.png}
+    \includegraphics[width=0.8\textwidth]{pic/home.png}
+    \caption{用户首页}  % 图片标题
+    \label{fig:home}  % 图片标签，便于引用
+\end{figure}
+
+当用户租车后，该用户的租车信息会显示在首页中，如图~\ref{fig:rent}所示
+\begin{figure}[htbp]  % figure 环境用于插入图片并进行浮动
+    \centering  % 图片居中
+    % \includegraphics[width=0.8\textwidth]{pic/reg.png}
+    \includegraphics[width=0.8\textwidth]{pic/rent.png}
+    \caption{用户租车信息列表}  % 图片标题
+    \label{fig:rent}  % 图片标签，便于引用
+\end{figure}
+然后，用户通过点击还车键即可一键还车。换车后该车辆信息会从主页中移除，如图~\ref{fig:afrent}所示。
+\begin{figure}[htbp]  % figure 环境用于插入图片并进行浮动
+    \centering  % 图片居中
+    % \includegraphics[width=0.8\textwidth]{pic/reg.png}
+    \includegraphics[width=0.8\textwidth]{pic/afrent.png}
+    \caption{用户还车后列表信息}  % 图片标题
+    \label{fig:afrent}  % 图片标签，便于引用
+\end{figure}
+
+\subsubsection{租车查询}
+用户可以通过点击侧栏租车按键，查看车辆品牌信息，如图~\ref{fig:br}所示。
+\begin{figure}[htbp]  % figure 环境用于插入图片并进行浮动
+    \centering  % 图片居中
+    % \includegraphics[width=0.8\textwidth]{pic/reg.png}
+    \includegraphics[width=0.8\textwidth]{pic/br.png}
+    \caption{侧栏车辆品牌信息}  % 图片标题
+    \label{fig:br}  % 图片标签，便于引用
+\end{figure}
+进一步的，用户可以点击自己感兴趣的车辆品牌，此时交互页面会跳转到含有该品牌车辆详细信息的界面供用户查看，如图~\ref{fig:car}所示。
+\begin{figure}[htbp]  % figure 环境用于插入图片并进行浮动
+    \centering  % 图片居中
+    % \includegraphics[width=0.8\textwidth]{pic/reg.png}
+    \includegraphics[width=0.8\textwidth]{pic/car.png}
+    \caption{详细车辆信息}  % 图片标题
+    \label{fig:car}  % 图片标签，便于引用
+\end{figure}
+对于想租的车辆，用户可以点击相应的租赁按钮进行租赁。当租赁成功后，页面会更新车辆状态，原按键变灰暂时不可用，如图~\ref{fig:rented}所示。
+\begin{figure}[htbp]  % figure 环境用于插入图片并进行浮动
+    \centering  % 图片居中
+    % \includegraphics[width=0.8\textwidth]{pic/reg.png}
+    \includegraphics[width=0.8\textwidth]{pic/rented.png}
+    \caption{详细车辆信息}  % 图片标题
+    \label{fig:rented}  % 图片标签，便于引用
+\end{figure}
 
 \section{总结}
 \bibliography{custom}
