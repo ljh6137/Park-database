@@ -131,7 +131,7 @@
 此外，车辆租赁管理系统还需要提供良好的交互页面，注重用户交互的便捷，确保前端与数据库之间的数据交互高效可靠。同时，系统需要设计合理的权限管理机制，确保客户与管理员能够在各自权限范围内安全使用系统数据。
 
 在车辆租赁管理系统的设计中，我们采用Django Web框架作为后端技术栈，使用PostgreSQL作为数据库管理系统的信息，采用HTML，CSS，JavaScript框架开发前端交互页面。由于条件限制，本系统只支持本地部署。该系统开发人员为刘艺凡~(22336162)和林杰泓~(22336137)。系统需求分析，结构设计及功能模块设计由本组开发人员共同分析设计。
-并由林杰泓负责用户信息管理及用户租赁管理的前端和后端开发和设计，由刘艺凡负责车辆信息管理和车辆信息管理的前端和后端的设计和开发。系统交互页面的设计及优化由两人共同完成。同时，我们共同负责了系统的安全性设计，包括对用户，车辆信息的保护，以及对用户，管理员的权限设置及授权。
+并由林杰泓负责用户信息管理及用户租赁管理的前端和后端开发和设计，由刘艺凡负责车辆信息管理和车辆租赁信息管理的前端和后端的设计和开发。系统交互页面的设计及优化由两人共同完成。同时，我们共同负责了系统的安全性设计，包括对用户，车辆信息的保护，以及对用户，管理员的权限设置及授权。
 
 我们在附件中提供了开发系统的相关代码。同时，为了便于查看和了解该车辆租赁管理系统的成果，我们提供了demo——\textbf{demo.gif}，展示了该系统的功能。
 此外，为了方便本地部署该系统，我们提供脚本\textbf{init.sh}用于构建简化对系统数据库的构建，同时也提供了 \textbf{README.md}作为指引，讲述部署系统以及使用系统的方法。更进一步的，当系统部署成功后，我们可以通过访问链接\href{http://127.0.0.1:8000/management/register}{http://127.0.0.1:8000/management/register} 进入系统的注册页面，以用户的视角开始体验该车辆租赁管理系统。
@@ -426,7 +426,262 @@ Car\_ID & VARCHAR(10) & FOREIGN KEY (Repository.Car\_ID), NOT NULL & 关联车�
 % \subsection{主要功能模块设计与开发}
 
 \subsection{车辆信息管理模块设计与开发}
+车辆信息管理模块需要维护数据中的所有车辆，同时还需要提供良好的交互界面，便于用户使用和了解车辆信息。
+对此，该模块的前端设计需要提供方便客户查询车辆信息和租赁的交互界面，而后端则需要维护车辆的信息。该模块的总体设计如图~\ref{fig:carman}所示，
+\begin{figure}[htbp]  % figure 环境用于插入图片并进行浮动
+    \centering  % 图片居中
+    \includegraphics[width=0.9\textwidth]{pic/carman.pdf}
+    \caption{车辆信息管理模块图}  % 图片标题
+    \label{fig:carman}  % 图片标签，便于引用
+\end{figure}
+在前端，用户可以方便地查看仓库中车辆的品牌，在了解相应的车品牌后，可以查看该品牌相关的车辆并了解车辆的信息。而后端则需要对用户的行为做出合理的反应，即使反馈用户所查看的信息。
+
+\subsubsection{实现流程}
+当用户进入交互页面后，用户可以在侧边栏点击租车键，然后租车键下会展开车辆品牌信息，供用户查看。这些展开的车辆品牌也是可交互的，用户可以点击感兴趣的品牌进一步查看相应品牌的车辆有哪些，然后查看车辆的具体信息。
+而用户的一系列点击行为，在后端会引发相应的数据库查询。
+
+\subsubsection{主要算法}
+实现这一模块的核心思想在于，通过用户点击 HTML 页面中的相关按钮，触发相应的 JavaScript 操作，而 JavaScript 函数进一步通过指定的 URL 调用后端服务以执行相应的查询逻辑。
+
+在HTML文件中，添加一个租车标签，并设置onclick属性，用来指定点击该元素时要执行的JavaScript函数fetchVehicles(event)，通过该函数动态填充车辆品牌列表。
+\begin{lstlisting}[language=HTML]
+<li>
+    <a href="#" onclick="fetchVehicles(event)">租车</a>
+    <ul id="vehicle-list" style="padding-left: 20px; display: none;"> </ul>
+</li>
+\end{lstlisting}
+
+编写相关的JavaScript函数fetchVehicles(event)查询相应的车辆品牌。在函数中，我们通过URL连接后端端口得到车辆品牌，然后再函数中填充车辆品牌列表。
+\begin{lstlisting}[language=JavaScript]
+function fetchVehicles(event) {
+    event.preventDefault();
+    fetch('/management/get-vehicles/')
+        .then(response => response.json())
+        .then(data => {
+            const vehicleList = document.getElementById('vehicle-list');
+            vehicleList.innerHTML = ''; 
+
+            if (data.status === "success") {
+                let html = '';
+                data.data.forEach(vehicle => {
+                    html += `<li>
+                                <a href="#" onclick="fetchVehicleDetails('${vehicle.Model}')">
+                                    ${vehicle.Model}
+                                </a>
+                            </li>`;
+                });
+                vehicleList.innerHTML = html;
+                vehicleList.style.display = 'block'; // 显示车辆列表
+            } else {
+                vehicleList.innerHTML = '<li>暂无车辆信息</li>';
+                vehicleList.style.display = 'block';
+            }
+        })
+        .catch(error => {
+            console.error("Error fetching vehicles:", error);
+        });
+}
+\end{lstlisting}
+
+在后端views.py中编写该函数对应的相关行为，即select Model from Vehicle并返回给前端。
+\begin{lstlisting}[language=Python]
+def get_vehicles(request):
+    vehicles = Vehicle.objects.all()
+    if vehicles.exists():
+        data = list(vehicles.values("Model"))
+        return JsonResponse({"status": "success", "data": data})
+    else:
+        return JsonResponse({"status": "empty", "message": "暂无车辆信息"})
+\end{lstlisting}
+
+为了使用户可以根据车辆品牌了解车辆信息，我们需要将这些车辆品牌的标签设置为可跳转可查询的标签。在函数fetchVehicles中，我们在车辆品牌的标签处添加onclick行为，使其在被点击后可以反馈用户相关的车辆信息。
+\begin{lstlisting}[language=HTML]
+<a href="#" onclick="fetchVehicleDetails('${vehicle.Model}')">
+    ${vehicle.Model}
+</a>
+\end{lstlisting}
+
+在点击车辆品牌后，网页会触发JavaScript函数fetchVehicleDetails，这个函数会根据点击的车辆品牌返回相关的车辆和车辆信息。
+这个函数的实现也是类似的，通过访问相关的URL然后触发后端的数据库查询然后得到相关数据。
+\begin{lstlisting}[language=JavaScript]
+function fetchVehicleDetails(name) {
+
+fetch(`/management/get-vehicle-details/?name=${name}`)
+    .then(response => response.json())
+    .then(data => {
+        const container = 
+                    document.getElementById('vehicle-details');
+        container.innerHTML = ''; 
+
+        if (data.status === "success") {
+            let html = '';
+            data.data.forEach(item => {
+                html += `
+                    <tr>
+                        <td>${item.Car_ID}</td>
+                        <td>
+                        ${item.Is_leased ? "已租赁" : "可租赁"}
+                        </td>
+                        <td>￥${item.Price}</td>
+                        <td>
+    ${item.Is_leased
+        ? '<button disabled class="action-button" style="background-color: gray; cursor: not-allowed;">已租赁</button>'
+        : `<button class="action-button" onclick="leaseVehicle('${item.Car_ID}', '${name}')">租赁</button>`}
+                        </td>
+                    </tr>
+                `;
+            });
+            container.innerHTML = html;
+        } else {
+            container.innerHTML = `
+                <tr>
+                    <td colspan="4" style="color: red;">${data.message}</td>
+                </tr>
+            `;
+        }
+    })
+    .catch(error => {
+        console.error("Error fetching vehicle details:", error);
+    });
+
+}
+\end{lstlisting}
+
+在后端，后端根据点击的车辆品牌name进行数据库查询，即发生如下查询行为：
+\begin{lstlisting}[language=SQL]
+SELECT a.Car_ID, a.Is_leased, b.Price
+FROM Repository a, Vehicle b
+JOIN Info c ON b.Model = c.Model_id
+WHERE a.Car_ID = c.Car_ID_id AND b.Model = name
+\end{lstlisting}
+而我们在views.py需要将这个查询嵌入到python函数之后，具体实现如下
+\begin{lstlisting}[language=Python]
+def get_vehicle_details(request):
+    if request.method == "GET":
+        car_name = request.GET.get("name")
+        if not car_name:
+            return JsonResponse({"status": "error", "message": "车辆名称不能为空"})
+
+        query = """
+            SELECT a."Car_ID", a."Is_leased", b."Price"
+            FROM management_repository a, management_vehicle b
+            JOIN management_info c ON b."Model" = c."Model_id"
+            WHERE a."Car_ID" = c."Car_ID_id" AND b."Model" = %s
+        """
+        with connection.cursor() as cursor:
+            cursor.execute(query, [car_name])
+            rows = cursor.fetchall()
+
+        data = [
+            {"Car_ID": row[0], "Is_leased": row[1], "Price": row[2]}
+            for row in rows
+        ]
+
+        if data:
+            return JsonResponse({"status": "success", "data": data})
+        else:
+            return JsonResponse({"status": "empty", "message": "未找到车辆详情"})
+\end{lstlisting}
+至此，我们实现了车辆信息管理模块。
+
 \subsection{租赁管理模块设计与开发}
+租赁管理模块需要在交互界面实现租车和还车功能，这一功能需要便于客户的使用。同时，当客户进行租赁行为时，后端需要即使更新车辆租赁的状态，并将新的车辆租赁信息显示到用户交互页面。总体设计如图~\ref{fig:lease}所示，
+\begin{figure}[htbp]  % figure 环境用于插入图片并进行浮动
+    \centering  % 图片居中
+    \includegraphics[width=0.7\textwidth]{pic/lease.pdf}
+    \caption{用户管理模块图}  % 图片标题
+    \label{fig:lease}  % 图片标签，便于引用
+\end{figure}
+\subsubsection{实现流程}
+客户在展示车辆详细信息的页面中可以点击租车进行租车操作，然后可以在客户个人首页中点击还车按键进行还车操作。
+这些客户的行为会触发后端对数据库中车辆的租赁状态进行更新并反馈到交互页面中。
+\subsubsection{租车功能的算法实现}
+在车辆详细信息处添加租车按键，当点击按键时会触发JavaScript函数leaseVehicle进行租车行为。同时，对于被租车辆需要禁止租车行为的发生。
+\begin{lstlisting}[language=HTML]
+${item.Is_leased
+? '<button disabled class="action-button" style="background-color: gray; cursor: not-allowed;">已租赁</button>'
+: `<button class="action-button" onclick="leaseVehicle('${item.Car_ID}', '${name}')">租赁</button>`}
+\end{lstlisting}
+
+对于函数leaseVehicle，当用户在交互页面进行租车行为触发该函数时，该函数会向租车URL提交一个表单，传递租车的客户和租赁的具体车辆。当数据库更新成功后将刷新页面，更新交互页面的信息显示。
+\begin{lstlisting}[language=JavaScript]
+function leaseVehicle(carId, name) {
+    fetch('/management/lease-vehicle/', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': getCookie('csrftoken') 
+        },
+        body: JSON.stringify({ car_id: carId })  
+    })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === "success") {
+                fetchVehicleDetails(name); 
+            } else {
+                alert(data.message); 
+            }
+        })
+        .catch(error => {
+            console.error("Error leasing vehicle:", error);
+            alert("租赁失败，请稍后再试。");
+        });
+}
+\end{lstlisting}
+
+在后端，当其接收到客户提交的表单时，后端根据提交的客户信息ID和车辆信息CarID更新数据库中的关系，即select
+\begin{lstlisting}[language=SQL]
+UPDATE Repository
+SET Is_leased = TRUE
+WHERE Car_ID = CarID;
+INSERT INTO Lease (ID,Car_ID)
+VALUES (ID, CarID);
+\end{lstlisting}
+最后将这个SQL语句嵌入到view.py的相应处理函数中
+\begin{lstlisting}[language=Python]
+@login_required
+def lease_vehicle(request):
+    if request.method == "POST":
+        try:
+            data = json.loads(request.body)
+            car_id = data.get("car_id")  
+            user_id = request.user.username  
+            if not car_id:
+                return JsonResponse({"status": "error", "message": "车辆ID不能为空"})
+
+            update_query = """
+                UPDATE management_repository
+                SET "Is_leased" = TRUE
+                WHERE "Car_ID" = %s
+            """
+
+            insert_query = """
+                INSERT INTO management_lease ("ID_id","Car_ID_id")
+                VALUES (%s, %s)
+            """
+            
+            print(car_id)
+            with connection.cursor() as cursor:
+                cursor.execute(update_query, [car_id]) 
+                cursor.execute(insert_query, [user_id, car_id])  
+            
+
+            return JsonResponse({"status": "success", "message": "车辆租赁成功！"})
+
+        except Exception as e:
+            print(f"Error leasing vehicle: {e}")
+            return JsonResponse({"status": "error", "message": "租赁失败，请稍后再试。"})
+
+    return JsonResponse({"status": "error", "message": "无效的请求方法"})    
+\end{lstlisting}
+
+
+\subsubsection{还车功能的算法实现}
+
+
+
+
+
 \subsection{客户管理模块设计与开发}
 
 \begin{figure}[htbp]  % figure 环境用于插入图片并进行浮动
@@ -765,9 +1020,9 @@ def rent_car_view(request):
 LOGIN_URL = '/management/login/'  # 登录页面
 \end{lstlisting}
 
-
 \subsection{最终结果展示}
 经过精细的设计，我们实现了具备有注册登录功能的全面的租车管理系统。
+
 
 \section{总结}
 \bibliography{custom}
