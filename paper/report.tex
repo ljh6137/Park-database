@@ -691,7 +691,9 @@ function leaseVehicle(carId, name) {
 }
 \end{lstlisting}
 
-在后端，当其接收到客户提交的表单时，后端根据提交的客户信息ID和车辆信息CarID更新数据库中的关系，即select
+在后端，当其接收到客户提交的表单时，
+后端根据提交的客户信息ID和车辆信息CarID更新数据库中的关系，
+即select：
 \begin{lstlisting}[language=SQL]
 UPDATE Repository
 SET Is_leased = TRUE
@@ -699,7 +701,7 @@ WHERE Car_ID = CarID;
 INSERT INTO Lease (ID,Car_ID)
 VALUES (ID, CarID);
 \end{lstlisting}
-最后将这个SQL语句嵌入到view.py的相应处理函数中
+最后将这个SQL语句嵌入到view.py的相应处理函数中：
 \begin{lstlisting}[language=Python]
 @login_required
 def lease_vehicle(request):
@@ -779,7 +781,7 @@ def lease_vehicle(request):
 \end{figure}
 
 
-总体设计如图\ref{fig:um}所示
+总体设计如图\ref{fig:um}所示。
 
 客户管理模块包括用户注册、登录、车辆租赁等核心功能，旨在为系统提供完整的客户管理与操作流程。
 
@@ -972,7 +974,7 @@ def login_view(request):
 \end{itemize}
 
 Django 的 User 模型已经内置了密码哈希功能，
-因此只需要使用 create\_user 或 set\_password 方法来处理用户密码。
+因此只需要使用 create\_user 方法来处理用户密码。
 下面是我们实现的思路：
 
 \begin{lstlisting}[language=python]
@@ -1093,8 +1095,10 @@ Django 的 User 模型已经内置了密码哈希功能，
 \end{lstlisting}
 
 \begin{itemize}
-    \item 使用 \texttt{get\_object\_or\_404} 来获取关联的 \texttt{Customer} 对象，确保捕获 \texttt{Customer.DoesNotExist} 异常。
+    \item 使用 \verb|get_object_or_404| 来获取关联的 \verb|Customer.DoesNotExist| 异常。
 \end{itemize}
+
+
 
 \begin{lstlisting}[language=Python]
 from django.shortcuts import get_object_or_404  

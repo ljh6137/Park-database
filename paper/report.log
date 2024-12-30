@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999996 (TeX Live 2024) (preloaded format=xelatex 2024.10.6)  30 DEC 2024 17:08
+This is XeTeX, Version 3.141592653-2.6-0.999996 (TeX Live 2024) (preloaded format=xelatex 2024.10.6)  30 DEC 2024 17:38
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -1069,10 +1069,6 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
 [23]
-Overfull \hbox (26.80568pt too wide) in paragraph at lines 974--977
-[]\TU/TimesNewRoman(0)/m/n/12 Django \TU/SimSun(1)/m/n/12 的 \TU/TimesNewRoman(0)/m/n/12 User \TU/SimSun(1)/m/n/12 模 型 已 经 内 置 了 密 码 哈 希 功 能，|  因 此 只 需 要 使 用 \TU/TimesNewRoman(0)/m/n/12 create_user \TU/SimSun(1)/m/n/12 或 \TU/TimesNewRoman(0)/m/n/12 set_password
- []
-
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
 (fancyhdr)                Make it at least 14.49998pt, for example:
@@ -1101,10 +1097,6 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
 [26]
-Overfull \hbox (41.81696pt too wide) in paragraph at lines 1096--1097
-[]\TU/SimSun(1)/m/n/12 使 用 \TU/lmtt/m/n/12 get_object_or_404 \TU/SimSun(1)/m/n/12 来 获 取 关 联 的 \TU/lmtt/m/n/12 Customer \TU/SimSun(1)/m/n/12 对 象，|  确 保 捕 获 \TU/lmtt/m/n/12 Customer.DoesNotExist
- []
-
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
 (fancyhdr)                Make it at least 14.49998pt, for example:
