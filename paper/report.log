@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999996 (TeX Live 2024) (preloaded format=xelatex 2024.10.6)  29 DEC 2024 19:14
+This is XeTeX, Version 3.141592653-2.6-0.999996 (TeX Live 2024) (preloaded format=xelatex 2024.10.6)  30 DEC 2024 17:08
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -882,11 +882,6 @@ Underfull \hbox (badness 10000) in paragraph at lines 252--256
 File: pic/er.png Graphic file (type bmp)
 <pic/er.png>
 
-Underfull \hbox (badness 10000) in paragraph at lines 284--287
-
- []
-
-
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
 (fancyhdr)                Make it at least 14.49998pt, for example:
 (fancyhdr)                \setlength{\headheight}{14.49998pt}.
@@ -894,6 +889,11 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
 [6]
+Underfull \hbox (badness 10000) in paragraph at lines 284--287
+
+ []
+
+
 Underfull \hbox (badness 10000) in paragraph at lines 296--299
 
  []
@@ -906,12 +906,23 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
 [7]
-Overfull \hbox (25.06064pt too wide) in paragraph at lines 381--390
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 14.49998pt, for example:
+(fancyhdr)                \setlength{\headheight}{14.49998pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
+(fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
+
+[8]
+Overfull \hbox (25.06064pt too wide) in paragraph at lines 443--452
  [][] 
  []
 
 
-Overfull \hbox (25.06064pt too wide) in paragraph at lines 396--405
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
+
+Overfull \hbox (25.06064pt too wide) in paragraph at lines 458--467
  [][] 
  []
 
@@ -925,7 +936,7 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                You might also make \topmargin smaller to compensate:
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
-[8]
+[9]
 File: pic/carman.pdf Graphic file (type pdf)
 <use pic/carman.pdf>
 
@@ -936,13 +947,13 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                You might also make \topmargin smaller to compensate:
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
-[9] (d:/LaTex/texlive/2024/texmf-dist/tex/latex/listings/lstlang1.sty
+[10] (d:/LaTex/texlive/2024/texmf-dist/tex/latex/listings/lstlang1.sty
 File: lstlang1.sty 2024/02/21 1.10 listings language file
 ) (d:/LaTex/texlive/2024/texmf-dist/tex/latex/listings/lstmisc.sty
 File: lstmisc.sty 2024/02/21 1.10 (Carsten Heinz)
 )
 LaTeX Font Info:    Font shape `TU/lmtt/bx/n' in size <12> not available
-(Font)              Font shape `TU/lmtt/b/n' tried instead on input line 448.
+(Font)              Font shape `TU/lmtt/b/n' tried instead on input line 510.
 
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
@@ -951,7 +962,7 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                You might also make \topmargin smaller to compensate:
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
-[10] (d:/LaTex/texlive/2024/texmf-dist/tex/latex/listings/lstlang1.sty
+[11] (d:/LaTex/texlive/2024/texmf-dist/tex/latex/listings/lstlang1.sty
 File: lstlang1.sty 2024/02/21 1.10 listings language file
 )
 
@@ -961,7 +972,7 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                You might also make \topmargin smaller to compensate:
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
-[11]
+[12]
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
 (fancyhdr)                Make it at least 14.49998pt, for example:
@@ -969,20 +980,9 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                You might also make \topmargin smaller to compensate:
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
-[12] (d:/LaTex/texlive/2024/texmf-dist/tex/latex/listings/lstlang1.sty
+[13] (d:/LaTex/texlive/2024/texmf-dist/tex/latex/listings/lstlang1.sty
 File: lstlang1.sty 2024/02/21 1.10 listings language file
 )
-
-Package fancyhdr Warning: \headheight is too small (12.0pt): 
-(fancyhdr)                Make it at least 14.49998pt, for example:
-(fancyhdr)                \setlength{\headheight}{14.49998pt}.
-(fancyhdr)                You might also make \topmargin smaller to compensate:
-(fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
-
-[13]
-File: pic/lease.pdf Graphic file (type pdf)
-<use pic/lease.pdf>
-
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
 (fancyhdr)                Make it at least 14.49998pt, for example:
@@ -991,6 +991,9 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
 [14]
+File: pic/lease.pdf Graphic file (type pdf)
+<use pic/lease.pdf>
+
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
 (fancyhdr)                Make it at least 14.49998pt, for example:
@@ -1007,9 +1010,6 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
 [16]
-File: pic/user_management.png Graphic file (type bmp)
-<pic/user_management.png>
-
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
 (fancyhdr)                Make it at least 14.49998pt, for example:
@@ -1018,6 +1018,9 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
 [17]
+File: pic/user_management.png Graphic file (type bmp)
+<pic/user_management.png>
+
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
 (fancyhdr)                Make it at least 14.49998pt, for example:
@@ -1058,10 +1061,6 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
 [22]
-Overfull \hbox (26.80568pt too wide) in paragraph at lines 912--915
-[]\TU/TimesNewRoman(0)/m/n/12 Django \TU/SimSun(1)/m/n/12 的 \TU/TimesNewRoman(0)/m/n/12 User \TU/SimSun(1)/m/n/12 模 型 已 经 内 置 了 密 码 哈 希 功 能，|  因 此 只 需 要 使 用 \TU/TimesNewRoman(0)/m/n/12 create_user \TU/SimSun(1)/m/n/12 或 \TU/TimesNewRoman(0)/m/n/12 set_password
- []
-
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
 (fancyhdr)                Make it at least 14.49998pt, for example:
@@ -1069,11 +1068,11 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                You might also make \topmargin smaller to compensate:
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
-[23] (d:/LaTex/texlive/2024/texmf-dist/tex/latex/listings/lstlang1.sty
-File: lstlang1.sty 2024/02/21 1.10 listings language file
-) (d:/LaTex/texlive/2024/texmf-dist/tex/latex/listings/lstlang1.sty
-File: lstlang1.sty 2024/02/21 1.10 listings language file
-)
+[23]
+Overfull \hbox (26.80568pt too wide) in paragraph at lines 974--977
+[]\TU/TimesNewRoman(0)/m/n/12 Django \TU/SimSun(1)/m/n/12 的 \TU/TimesNewRoman(0)/m/n/12 User \TU/SimSun(1)/m/n/12 模 型 已 经 内 置 了 密 码 哈 希 功 能，|  因 此 只 需 要 使 用 \TU/TimesNewRoman(0)/m/n/12 create_user \TU/SimSun(1)/m/n/12 或 \TU/TimesNewRoman(0)/m/n/12 set_password
+ []
+
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
 (fancyhdr)                Make it at least 14.49998pt, for example:
@@ -1089,8 +1088,20 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                You might also make \topmargin smaller to compensate:
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
-[25]
-Overfull \hbox (41.81696pt too wide) in paragraph at lines 1034--1035
+[25] (d:/LaTex/texlive/2024/texmf-dist/tex/latex/listings/lstlang1.sty
+File: lstlang1.sty 2024/02/21 1.10 listings language file
+) (d:/LaTex/texlive/2024/texmf-dist/tex/latex/listings/lstlang1.sty
+File: lstlang1.sty 2024/02/21 1.10 listings language file
+)
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 14.49998pt, for example:
+(fancyhdr)                \setlength{\headheight}{14.49998pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
+(fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
+
+[26]
+Overfull \hbox (41.81696pt too wide) in paragraph at lines 1096--1097
 []\TU/SimSun(1)/m/n/12 使 用 \TU/lmtt/m/n/12 get_object_or_404 \TU/SimSun(1)/m/n/12 来 获 取 关 联 的 \TU/lmtt/m/n/12 Customer \TU/SimSun(1)/m/n/12 对 象，|  确 保 捕 获 \TU/lmtt/m/n/12 Customer.DoesNotExist
  []
 
@@ -1101,7 +1112,7 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                You might also make \topmargin smaller to compensate:
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
-[26]
+[27]
 File: pic/reg.png Graphic file (type bmp)
 <pic/reg.png>
 
@@ -1112,7 +1123,7 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                You might also make \topmargin smaller to compensate:
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
-[27]
+[28]
 File: pic/log.png Graphic file (type bmp)
 <pic/log.png>
 File: pic/home.png Graphic file (type bmp)
@@ -1125,7 +1136,7 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                You might also make \topmargin smaller to compensate:
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
-[28]
+[29]
 File: pic/rent.png Graphic file (type bmp)
 <pic/rent.png>
 File: pic/afrent.png Graphic file (type bmp)
@@ -1144,14 +1155,6 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                You might also make \topmargin smaller to compensate:
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
-[29] (./report.bbl)
-
-Package fancyhdr Warning: \headheight is too small (12.0pt): 
-(fancyhdr)                Make it at least 14.49998pt, for example:
-(fancyhdr)                \setlength{\headheight}{14.49998pt}.
-(fancyhdr)                You might also make \topmargin smaller to compensate:
-(fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
-
 [30]
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
@@ -1160,25 +1163,29 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                You might also make \topmargin smaller to compensate:
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
-[31] (./report.aux)
+[31] (./report.bbl)
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 14.49998pt, for example:
+(fancyhdr)                \setlength{\headheight}{14.49998pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
+(fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
+
+[32] (./report.aux)
  ***********
 LaTeX2e <2023-11-01> patch level 1
 L3 programming layer <2022/08/05>
  ***********
-
-
-LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
-
 Package rerunfilecheck Info: File `report.out' has not changed.
 (rerunfilecheck)             Checksum: 76050A23B19DFDBAE9237AB436E37560;5087.
  ) 
 Here is how much of TeX's memory you used:
- 20822 strings out of 474773
- 432696 string characters out of 5758619
- 2123842 words of memory out of 5000000
- 42590 multiletter control sequences out of 15000+600000
+ 20831 strings out of 474773
+ 433259 string characters out of 5758619
+ 2126842 words of memory out of 5000000
+ 42599 multiletter control sequences out of 15000+600000
  573232 words of font info for 135 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
  93i,12n,97p,1188b,1848s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
-Output written on report.pdf (31 pages).
+Output written on report.pdf (32 pages).

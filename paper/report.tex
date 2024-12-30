@@ -193,7 +193,7 @@
 
 \begin{figure}[htbp]  % figure 环境用于插入图片并进行浮动
     \centering  % 图片居中
-    \includegraphics[width=1\textwidth]{pic/sap.png}  % 设置图片宽度为文档宽度的一半
+    \includegraphics[width=0.8\textwidth]{pic/sap.png}  % 设置图片宽度为文档宽度的一半
     \caption{系统结构图}  % 图片标题
     \label{fig:sap}  % 图片标签，便于引用
 \end{figure}
@@ -231,7 +231,7 @@
 
 \begin{figure}[htbp]  % figure 环境用于插入图片并进行浮动
     \centering  % 图片居中
-    \includegraphics[width=1\textwidth]{pic/system_function_modules.png}  % 设置图片宽度为文档宽度的一半
+    \includegraphics[width=0.8\textwidth]{pic/system_function_modules.png}  % 设置图片宽度为文档宽度的一半
     \caption{系统功能模块图}  % 图片标题
     \label{fig:sfm}  % 图片标签，便于引用
 \end{figure}
@@ -263,7 +263,7 @@
 
 \begin{figure}[htbp]  % figure 环境用于插入图片并进行浮动
     \centering  % 图片居中
-    \includegraphics[width=1\textwidth]{pic/er.png}  % 设置图片宽度为文档宽度的一半
+    \includegraphics[width=0.8\textwidth]{pic/er.png}  % 设置图片宽度为文档宽度的一半
     \caption{E-R图}  % 图片标题
     \label{fig:er}  % 图片标签，便于引用
 \end{figure}
@@ -316,11 +316,73 @@
 
 \subsection{数据库模式}
 
+首先我们这个关系模型是满足3NF的，即第三范式。具体满足了一下条件：
+
+\textbf{满足第一范式（1NF）}
+
+\begin{itemize}
+    \item 所有字段的值都是原子值，没有重复的组或数组。比如，\texttt{Customer} 类中的字段 \texttt{name} 和 \texttt{contact} 都是单一值，没有包含集合或数组。
+    \item 每一列的值都是不可分割的。
+\end{itemize}
+
+\textbf{满足第二范式（2NF）}
+
+\begin{itemize}
+    \item 在满足第一范式的基础上，所有非主键属性完全依赖于主键。
+    \item 例如，\texttt{Customer} 类中的 \texttt{name} 和 \texttt{contact} 完全依赖于主键 \texttt{ID}。这个表中的每个字段都与主键 \texttt{ID} 相关，而不是仅仅部分依赖。
+    \item 在 \texttt{Lease} 类中，\texttt{Car\_ID} 和 \texttt{ID} 外键的组合确保了每条记录唯一地标识了一个租赁。 \texttt{ID} 外键依赖于 \texttt{Customer} 的 \texttt{ID}，而 \texttt{Car\_ID} 外键依赖于 \texttt{Repository} 的 \texttt{Car\_ID}。
+\end{itemize}
+
+\textbf{满足第三范式（3NF）}
+
+\begin{itemize}
+    \item 除了满足第二范式外，还要求所有非主键字段必须直接依赖于主键，而不能依赖于其他非主键字段。
+    \item 在 \texttt{Vehicle} 类中，字段 \texttt{Model} 是唯一标识一个车辆类型的字段，字段 \texttt{Price} 完全依赖于 \texttt{Model}。所以，\texttt{Vehicle} 表中的每个字段直接依赖于主键 \texttt{Model}。
+    \item \texttt{Repository} 类中的 \texttt{Car\_ID} 是主键，并且字段 \texttt{Is\_leased} 完全依赖于主键 \texttt{Car\_ID}，没有任何传递依赖。
+    \item \texttt{Info} 类通过外键将 \texttt{Car\_ID} 和 \texttt{Model} 与 \texttt{Repository} 和 \texttt{Vehicle} 表关联。 \texttt{Car\_ID} 和 \texttt{Model} 作为外键，确保了数据表之间的关联关系符合规范。
+    \item 在 \texttt{Lease} 类中，\texttt{Car\_ID} 和 \texttt{ID} 外键分别引用了 \texttt{Repository} 和 \texttt{Customer} 表，确保了租赁关系的唯一性，而不会引入冗余数据。
+\end{itemize}
+
+\textbf{具体范式分析}
+
+\begin{itemize}
+    \item \textbf{Customer}:
+    \begin{itemize}
+        \item 主键：\texttt{ID}，所有字段（\texttt{name} 和 \texttt{contact}）直接依赖于主键，符合第二范式。
+        \item 该表没有任何字段间的传递依赖，符合第三范式。
+    \end{itemize}
+    
+    \item \textbf{Vehicle}:
+    \begin{itemize}
+        \item 主键：\texttt{Model}，字段 \texttt{Price} 完全依赖于 \texttt{Model}，没有传递依赖，符合第二范式和第三范式。
+    \end{itemize}
+    
+    \item \textbf{Repository}:
+    \begin{itemize}
+        \item 主键：\texttt{Car\_ID}，字段 \texttt{Is\_leased} 完全依赖于 \texttt{Car\_ID}，符合第二范式和第三范式。
+    \end{itemize}
+    
+    \item \textbf{Info}:
+    \begin{itemize}
+        \item 外键 \texttt{Car\_ID} 引用 \texttt{Repository} 表，外键 \texttt{Model} 引用 \texttt{Vehicle} 表。所有字段依赖于外键，不存在传递依赖，符合第三范式。
+    \end{itemize}
+    
+    \item \textbf{Lease}:
+    \begin{itemize}
+        \item 外键 \texttt{Car\_ID} 引用 \texttt{Repository}，外键 \texttt{ID} 引用 \texttt{Customer}。这些字段是唯一标识租赁记录的，因此不会引入冗余数据，符合第三范式。
+    \end{itemize}
+\end{itemize}
+
+
+该设计通过外键建立了表与表之间的关系，
+并且每个表中的字段都直接依赖于主键，
+避免了冗余数据，符合第三范式的要求。
+
 
 
 
 根据车辆租赁管理系统的需求和 E-R 图，
-将概念模型转换为关系模型，设计出满足第三范式（3NF）的数据库模式。
+将概念模型转换为关系模型，设计出满足第三范式（上面已经给予证明）的数据库模式。
 具体如下：
 
 \subsubsection{表设计}
@@ -430,7 +492,7 @@ Car\_ID & VARCHAR(10) & FOREIGN KEY (Repository.Car\_ID), NOT NULL & 关联车�
 对此，该模块的前端设计需要提供方便客户查询车辆信息和租赁的交互界面，而后端则需要维护车辆的信息。该模块的总体设计如图~\ref{fig:carman}所示，
 \begin{figure}[htbp]  % figure 环境用于插入图片并进行浮动
     \centering  % 图片居中
-    \includegraphics[width=0.9\textwidth]{pic/carman.pdf}
+    \includegraphics[width=0.8\textwidth]{pic/carman.pdf}
     \caption{车辆信息管理模块图}  % 图片标题
     \label{fig:carman}  % 图片标签，便于引用
 \end{figure}
@@ -588,7 +650,7 @@ def get_vehicle_details(request):
 租赁管理模块需要在交互界面实现租车和还车功能，这一功能需要便于客户的使用。同时，当客户进行租赁行为时，后端需要即使更新车辆租赁的状态，并将新的车辆租赁信息显示到用户交互页面。总体设计如图~\ref{fig:lease}所示，
 \begin{figure}[htbp]  % figure 环境用于插入图片并进行浮动
     \centering  % 图片居中
-    \includegraphics[width=0.7\textwidth]{pic/lease.pdf}
+    \includegraphics[width=0.8\textwidth]{pic/lease.pdf}
     \caption{用户管理模块图}  % 图片标题
     \label{fig:lease}  % 图片标签，便于引用
 \end{figure}
@@ -1164,6 +1226,46 @@ LOGIN_URL = '/management/login/'  # 登录页面
 \end{figure}
 
 \section{总结}
+
+本实验设计旨在通过分析需求、设计系统架构和数据库结构，
+开发一个功能完整的车辆租赁管理系统。设计过程中，
+首先明确了系统所需实现的核心功能，
+包括车辆信息管理、租赁管理、客户管理及系统安全等，并结合实际需求制定了详细的功能模块划分和技术架构。
+系统架构上，采用了前后端交互的设计模式，
+前端采用HTML和CSS等技术进行界面设计，
+后端则基于Django框架处理数据逻辑及业务流程，
+数据库部分使用了PostgreSQL以保证系统的数据安全性和一致性。
+数据库设计遵循关系型数据库的设计规范，通过E-R图及关系模式分析，
+合理设计了各数据表之间的关联关系，
+并且通过标准化原则（如第三范式）保证了数据存储的高效性与无冗余性。
+
+系统的开发过程中，后端逻辑层通过Django框架实现了用户管理、
+车辆信息管理和租赁流程等功能模块，同时针对系统安全性进行了设计，
+主要包括用户身份验证、数据加密、权限控制等措施，保障了系统的基本安全要求。
+在前端设计上，注重界面的简洁性和用户操作的便捷性，通过直观的布局与交互设计，
+确保了良好的用户体验。系统开发完成后，通过多轮功能测试和压力测试，
+验证了各模块的稳定性与正确性，确保了系统的高效运行和良好的用户体验。
+
+尽管系统已初步实现了预定功能目标，但在实际应用中，
+仍存在一定的优化空间。在性能方面，数据库查询的效率有待提升，
+尤其是在面对大量数据和高并发访问时，可以通过增加索引、优化SQL查询、
+引入缓存机制等方式来优化响应时间和系统吞吐量。在系统架构方面，
+未来可以考虑引入微服务架构，以便更好地应对系统扩展和高可用性要求。
+此外，安全性方面，尽管基本采用了加密和权限控制，但还可以进一步完善，
+如增加基于角色的访问控制（RBAC）、
+引入多因素身份验证（MFA）等机制来增强系统的安全性。
+功能层面，未来可通过引入数据分析模块，为系统提供数据驱动的决策支持，
+例如租赁趋势分析、客户行为预测等，进一步提升系统的智能化水平。
+
+综上所述，本实验设计实现了一个完整的车辆租赁管理系统，
+涵盖了从需求分析到系统测试的全过程。
+尽管系统具备了基本的功能和稳定的运行状态，
+但在性能优化、安全增强和功能扩展等方面，
+仍有较大的提升空间。未来可以通过持续优化架构设计、
+引入新技术和完善系统功能，进一步提升系统的整体性能和用户体验。
+
+
+
 \bibliography{custom}
 \end{document}
 
