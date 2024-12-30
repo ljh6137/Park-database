@@ -12,6 +12,8 @@ from django.db import connection
 # from .models import 
 import json
 from django.db import transaction
+from .utils import generate_timestamp
+
 # Create your views here.
 
 
@@ -25,6 +27,7 @@ from django.shortcuts import render
 
 logger = logging.getLogger('myapp')
 logger = logging.getLogger(__name__)
+logging.basicConfig(level=logging.WARNING)
 
 def register(request):
     if request.method == 'GET':
@@ -247,23 +250,74 @@ def get_vehicle_details(request):
         if not car_name:
             return JsonResponse({"status": "error", "message": "车辆名称不能为空"})
 
+        # data_object = Repository.objects.get(id=car_name)
+
+        # 时间戳协议检查
+        # if transaction_timestamp < data_object.w_timestamp:
+            # return JsonResponse({"error": "读操作被拒绝：事务时间戳小于写时间戳"}, status=409)
+
+        # 允许读取操作，更新 R-timestamp(Q)
+        # data_object.r_timestamp = max(data_object.r_timestamp, transaction_timestamp)
+        # data_object.save()
+
+
+        # 事务时间戳
+        transaction_timestamp = generate_timestamp()  # 当前事务的时间戳
+        
         query = """
             SELECT a."Car_ID", a."Is_leased", b."Price"
             FROM management_repository a, management_vehicle b
             JOIN management_info c ON b."Model" = c."Model_id"
-            WHERE a."Car_ID" = c."Car_ID_id" AND b."Model" = %s
+            WHERE a."Car_ID" = c."Car_ID_id" AND b."Model" = %s AND %s >= a.w_timestamp
         """
-        with connection.cursor() as cursor:
-            cursor.execute(query, [car_name])
-            rows = cursor.fetchall()
+        # update_query = """
+        #         UPDATE management_repository
+        #         SET r_timestamp = max(r_timestamp, %d)
+        #         WHERE "Car_ID" = %s AND r_timestamp < w_timestamp
+        #     """
+        
+        update_query = """
+            UPDATE management_repository
+            SET r_timestamp = GREATEST(r_timestamp, %s)
+            WHERE (%s >= w_timestamp) AND "Car_ID" in (
+                SELECT a."Car_ID"
+                FROM management_repository a, management_vehicle b
+                JOIN management_info c ON b."Model" = c."Model_id"
+                WHERE a."Car_ID" = c."Car_ID_id" AND b."Model" = %s
+            )
+        """
 
-        data = [
-            {"Car_ID": row[0], "Is_leased": row[1], "Price": row[2]}
-            for row in rows
-        ]
+        with connection.cursor() as cursor:
+            try:
+                # 执行查询语句
+                cursor.execute(query, [car_name, transaction_timestamp])
+                rows = cursor.fetchall()
+
+                # 检查是否有结果
+                if not rows:
+                    print("未找到对应的记录或查询失败")
+                else:
+
+                    # 执行更新语句
+                    
+                    # print("qwqwqwqwqwqwqwqwqwqwqwqwqwqwqwqwqwqw")
+                    cursor.execute(update_query, [transaction_timestamp, transaction_timestamp, car_name])
+                    if cursor.rowcount == 0:  # rowcount 检查更新是否成功
+                        # print(transaction_timestamp)
+                        print("更新失败：r_timestamp >= w_timestamp，操作被拒绝")
+                    else:
+                        print("更新成功")
+
+            except Exception as e:
+                print(f"数据库操作失败: {e}")
+
+            data = [
+                {"Car_ID": row[0], "Is_leased": row[1], "Price": row[2]}
+                for row in rows
+            ]
 
         if data:
-            return JsonResponse({"status": "success", "data": data})
+            return JsonResponse({"status": "success", "data": data, "TS": transaction_timestamp})
         else:
             return JsonResponse({"status": "empty", "message": "未找到车辆详情"})
         
@@ -315,7 +369,10 @@ def homepage(request):
         pass
 
 
+lock_X = 0
+
 @login_required
+# @transaction.atomic
 def lease_vehicle(request):
     """
     租赁车辆视图：更新车辆状态并创建租赁记录
@@ -326,8 +383,24 @@ def lease_vehicle(request):
             data = json.loads(request.body)
             car_id = data.get("car_id")  # 获取车牌号
             user_id = request.user.username  # 获取当前用户ID
+            print("qwqwqwqwqwqwqwqwqwqwqwqwqwqwqwqwqwqw")
             if not car_id:
                 return JsonResponse({"status": "error", "message": "车辆ID不能为空"})
+
+            data_object = Repository.objects.get(Car_ID=car_id)
+            transaction_timestamp = data.get("ts")  # 当前事务的时间戳
+
+            print(transaction_timestamp)
+
+            # 时间戳协议检查
+            if transaction_timestamp < data_object.r_timestamp:
+                return JsonResponse({"message": "租车失败，车辆租赁信息已更改"}, status=409)
+
+            if transaction_timestamp < data_object.w_timestamp:
+                return JsonResponse({"message": "租车失败，车辆租赁信息已更改"}, status=409)
+
+            data_object.w_timestamp = transaction_timestamp
+            data_object.save()
 
             # 更新车辆租赁状态
             update_query = """

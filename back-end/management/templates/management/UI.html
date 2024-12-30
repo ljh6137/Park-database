@@ -316,6 +316,7 @@
 
     <!-- JavaScript 脚本 -->
     <script>
+        let TS = new Map();
         window.onload = function () {
             fetchVehicles(new Event('load')); // 模拟传入一个事件对象
         };
@@ -353,11 +354,17 @@
                 .then(response => response.json())
                 .then(data => {
                     const container = document.getElementById('vehicle-details');
-                    container.innerHTML = ''; // 清空旧内容
+                    container.innerHTML = ''; 
+
+                    const timestamp = data.TS;
+                    
+                    console.log(timestamp);
+
 
                     if (data.status === "success") {
                         let html = '';
                         data.data.forEach(item => {
+                            TS.set(item.Car_ID, timestamp);
                             html += `
                                 <tr>
                                     <td>${item.Car_ID}</td>
@@ -392,7 +399,7 @@
                     'Content-Type': 'application/json',
                     'X-CSRFToken': getCookie('csrftoken')  // 获取 CSRF Token
                 },
-                body: JSON.stringify({ car_id: carId })  // 传递 car_id 值
+                body: JSON.stringify({ car_id: carId, ts: TS.get(carId) })  // 传递 car_id 值
             })
                 .then(response => response.json())
                 .then(data => {
@@ -401,6 +408,7 @@
                         fetchVehicleDetails(name); // 刷新车辆列表
                     } else {
                         alert(data.message); // 显示错误消息
+                        fetchVehicleDetails(name); // 刷新车辆列表
                     }
                 })
                 .catch(error => {

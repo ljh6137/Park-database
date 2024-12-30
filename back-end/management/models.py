@@ -25,6 +25,8 @@ class Vehicle(models.Model):
 class Repository(models.Model):
     Car_ID=models.CharField(max_length=10,primary_key=True)
     Is_leased=models.BooleanField(default=False)
+    r_timestamp = models.BigIntegerField(default=0)  # R-timestamp(Q)
+    w_timestamp = models.BigIntegerField(default=0)  # W-timestamp(Q)
 
 class Info(models.Model):
     Car_ID = models.ForeignKey('Repository', on_delete=models.CASCADE)
