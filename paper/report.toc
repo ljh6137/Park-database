@@ -7,40 +7,40 @@
 \contentsline {subsection}{\numberline {2.3}系统功能模块}{5}{subsection.2.3}%
 \contentsline {section}{\numberline {3}详细设计}{6}{section.3}%
 \contentsline {subsection}{\numberline {3.1}E-R图}{6}{subsection.3.1}%
-\contentsline {subsubsection}{\numberline {3.1.1}实体及属性}{6}{subsubsection.3.1.1}%
+\contentsline {subsubsection}{\numberline {3.1.1}实体及属性}{7}{subsubsection.3.1.1}%
 \contentsline {subsubsection}{\numberline {3.1.2}实体之间的关系}{7}{subsubsection.3.1.2}%
-\contentsline {subsection}{\numberline {3.2}数据库模式}{8}{subsection.3.2}%
-\contentsline {subsubsection}{\numberline {3.2.1}表设计}{8}{subsubsection.3.2.1}%
-\contentsline {subsubsection}{\numberline {3.2.2}数据库模式特点}{9}{subsubsection.3.2.2}%
-\contentsline {subsection}{\numberline {3.3}车辆信息管理模块设计与开发}{9}{subsection.3.3}%
+\contentsline {subsection}{\numberline {3.2}数据库模式}{7}{subsection.3.2}%
+\contentsline {subsubsection}{\numberline {3.2.1}表设计}{9}{subsubsection.3.2.1}%
+\contentsline {subsubsection}{\numberline {3.2.2}数据库模式特点}{10}{subsubsection.3.2.2}%
+\contentsline {subsection}{\numberline {3.3}车辆信息管理模块设计与开发}{10}{subsection.3.3}%
 \contentsline {subsubsection}{\numberline {3.3.1}实现流程}{10}{subsubsection.3.3.1}%
-\contentsline {subsubsection}{\numberline {3.3.2}主要算法}{10}{subsubsection.3.3.2}%
-\contentsline {subsection}{\numberline {3.4}租赁管理模块设计与开发}{14}{subsection.3.4}%
-\contentsline {subsubsection}{\numberline {3.4.1}实现流程}{14}{subsubsection.3.4.1}%
-\contentsline {subsubsection}{\numberline {3.4.2}租车功能的算法实现}{15}{subsubsection.3.4.2}%
-\contentsline {subsubsection}{\numberline {3.4.3}还车功能的算法实现}{17}{subsubsection.3.4.3}%
-\contentsline {subsection}{\numberline {3.5}客户管理模块设计与开发}{17}{subsection.3.5}%
-\contentsline {subsubsection}{\numberline {3.5.1}用户注册功能（Register）}{18}{subsubsection.3.5.1}%
-\contentsline {subsubsection}{\numberline {3.5.2}用户登录功能（Login）}{19}{subsubsection.3.5.2}%
-\contentsline {subsubsection}{\numberline {3.5.3}系统中的用户信息记录}{20}{subsubsection.3.5.3}%
-\contentsline {subsection}{\numberline {3.6}安全性与完备性}{22}{subsection.3.6}%
-\contentsline {subsubsection}{\numberline {3.6.1}用户认证与权限管理}{22}{subsubsection.3.6.1}%
-\contentsline {subsubsection}{\numberline {3.6.2}数据完整性约束}{23}{subsubsection.3.6.2}%
-\contentsline {subsubsection}{\numberline {3.6.3}数据保护与加密}{23}{subsubsection.3.6.3}%
-\contentsline {subsubsection}{\numberline {3.6.4}日志记录与审计}{23}{subsubsection.3.6.4}%
-\contentsline {subsubsection}{\numberline {3.6.5}最小权限原则}{25}{subsubsection.3.6.5}%
-\contentsline {section}{\numberline {4}调试与运行结果}{25}{section.4}%
-\contentsline {subsection}{\numberline {4.1}问题与调试}{25}{subsection.4.1}%
-\contentsline {subsubsection}{\numberline {4.1.1}\texttt {request.user} 为匿名用户}{25}{subsubsection.4.1.1}%
-\contentsline {paragraph}{解决方法：}{25}{paragraph*.2}%
-\contentsline {subsubsection}{\numberline {4.1.2}\texttt {Customer} 模型与 \texttt {User} 模型的关系未正确配置}{25}{subsubsection.4.1.2}%
-\contentsline {paragraph}{解决方法：}{26}{paragraph*.3}%
-\contentsline {subsubsection}{\numberline {4.1.3}用户信息在模板中无法访问}{26}{subsubsection.4.1.3}%
-\contentsline {paragraph}{解决方法：}{26}{paragraph*.4}%
-\contentsline {subsubsection}{\numberline {4.1.4}\texttt {@login\_required} 装饰器没有正确应用}{27}{subsubsection.4.1.4}%
-\contentsline {paragraph}{解决方法：}{27}{paragraph*.5}%
-\contentsline {subsection}{\numberline {4.2}最终结果展示}{27}{subsection.4.2}%
-\contentsline {subsubsection}{\numberline {4.2.1}注册与登录}{28}{subsubsection.4.2.1}%
-\contentsline {subsubsection}{\numberline {4.2.2}用户首页}{29}{subsubsection.4.2.2}%
-\contentsline {subsubsection}{\numberline {4.2.3}租车查询}{29}{subsubsection.4.2.3}%
-\contentsline {section}{\numberline {5}总结}{30}{section.5}%
+\contentsline {subsubsection}{\numberline {3.3.2}主要算法}{11}{subsubsection.3.3.2}%
+\contentsline {subsection}{\numberline {3.4}租赁管理模块设计与开发}{15}{subsection.3.4}%
+\contentsline {subsubsection}{\numberline {3.4.1}实现流程}{16}{subsubsection.3.4.1}%
+\contentsline {subsubsection}{\numberline {3.4.2}租车功能的算法实现}{16}{subsubsection.3.4.2}%
+\contentsline {subsubsection}{\numberline {3.4.3}还车功能的算法实现}{18}{subsubsection.3.4.3}%
+\contentsline {subsection}{\numberline {3.5}客户管理模块设计与开发}{19}{subsection.3.5}%
+\contentsline {subsubsection}{\numberline {3.5.1}用户注册功能（Register）}{19}{subsubsection.3.5.1}%
+\contentsline {subsubsection}{\numberline {3.5.2}用户登录功能（Login）}{20}{subsubsection.3.5.2}%
+\contentsline {subsubsection}{\numberline {3.5.3}系统中的用户信息记录}{21}{subsubsection.3.5.3}%
+\contentsline {subsection}{\numberline {3.6}安全性与完备性}{23}{subsection.3.6}%
+\contentsline {subsubsection}{\numberline {3.6.1}用户认证与权限管理}{23}{subsubsection.3.6.1}%
+\contentsline {subsubsection}{\numberline {3.6.2}数据完整性约束}{24}{subsubsection.3.6.2}%
+\contentsline {subsubsection}{\numberline {3.6.3}数据保护与加密}{24}{subsubsection.3.6.3}%
+\contentsline {subsubsection}{\numberline {3.6.4}日志记录与审计}{24}{subsubsection.3.6.4}%
+\contentsline {subsubsection}{\numberline {3.6.5}最小权限原则}{26}{subsubsection.3.6.5}%
+\contentsline {section}{\numberline {4}调试与运行结果}{26}{section.4}%
+\contentsline {subsection}{\numberline {4.1}问题与调试}{26}{subsection.4.1}%
+\contentsline {subsubsection}{\numberline {4.1.1}\texttt {request.user} 为匿名用户}{26}{subsubsection.4.1.1}%
+\contentsline {paragraph}{解决方法：}{26}{paragraph*.2}%
+\contentsline {subsubsection}{\numberline {4.1.2}\texttt {Customer} 模型与 \texttt {User} 模型的关系未正确配置}{27}{subsubsection.4.1.2}%
+\contentsline {paragraph}{解决方法：}{27}{paragraph*.3}%
+\contentsline {subsubsection}{\numberline {4.1.3}用户信息在模板中无法访问}{27}{subsubsection.4.1.3}%
+\contentsline {paragraph}{解决方法：}{27}{paragraph*.4}%
+\contentsline {subsubsection}{\numberline {4.1.4}\texttt {@login\_required} 装饰器没有正确应用}{28}{subsubsection.4.1.4}%
+\contentsline {paragraph}{解决方法：}{28}{paragraph*.5}%
+\contentsline {subsection}{\numberline {4.2}最终结果展示}{28}{subsection.4.2}%
+\contentsline {subsubsection}{\numberline {4.2.1}注册与登录}{29}{subsubsection.4.2.1}%
+\contentsline {subsubsection}{\numberline {4.2.2}用户首页}{30}{subsubsection.4.2.2}%
+\contentsline {subsubsection}{\numberline {4.2.3}租车查询}{30}{subsubsection.4.2.3}%
+\contentsline {section}{\numberline {5}总结}{31}{section.5}%
