@@ -1034,7 +1034,7 @@ Django 的 User 模型已经内置了密码哈希功能，
 }
 \end{lstlisting}
 
-在views.py中，我们可以记录用户操作日志，如下所示：
+在views.py中，我们可以记录用户操作日志，如下所示（举例说明）：
 
 \begin{lstlisting}[language=python]
     if User.objects.filter(username=username).exists():
