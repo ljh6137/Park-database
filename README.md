@@ -5,8 +5,7 @@ This repository contains the final assignment for the Database Systems course in
 ## Demo
 **Concise** Interface, **Convenient** Usability, and **Abundant** Information
 
-<img src="./paper/pic/demo_censored-ezgif.com-resize.gif" style="width:100%; height:auto;" alt="图片描述" />
-<!-- ![](paper/pic/demo_censored.gif) -->
+<img src="./paper/pic/demo_censor.gif" style="width:100%; height:auto;" alt="图片描述" />
 
 ## Getting Started
 

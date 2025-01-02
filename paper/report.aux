@@ -40,9 +40,9 @@
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {3.4.1}实现流程}{16}{subsubsection.3.4.1}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {3.4.2}租车功能的算法实现}{16}{subsubsection.3.4.2}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {3.4.3}还车功能的算法实现}{18}{subsubsection.3.4.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.5}客户管理模块设计与开发}{19}{subsection.3.5}\protected@file@percent }
 \@writefile{lof}{\contentsline {figure}{\numberline {6}{\ignorespaces 用户管理模块图}}{19}{figure.6}\protected@file@percent }
 \newlabel{fig:um}{{6}{19}{用户管理模块图}{figure.6}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.5}客户管理模块设计与开发}{19}{subsection.3.5}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {3.5.1}用户注册功能（Register）}{19}{subsubsection.3.5.1}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {3.5.2}用户登录功能（Login）}{20}{subsubsection.3.5.2}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {3.5.3}系统中的用户信息记录}{21}{subsubsection.3.5.3}\protected@file@percent }
@@ -62,27 +62,37 @@
 \@writefile{toc}{\contentsline {paragraph}{解决方法：}{27}{paragraph*.4}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {4.1.4}\texttt  {@login\_required} 装饰器没有正确应用}{28}{subsubsection.4.1.4}\protected@file@percent }
 \@writefile{toc}{\contentsline {paragraph}{解决方法：}{28}{paragraph*.5}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.2}最终结果展示}{28}{subsection.4.2}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.2.1}注册与登录}{29}{subsubsection.4.2.1}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {7}{\ignorespaces 用户注册界面}}{29}{figure.7}\protected@file@percent }
-\newlabel{fig:reg}{{7}{29}{用户注册界面}{figure.7}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {8}{\ignorespaces 用户登录界面}}{29}{figure.8}\protected@file@percent }
-\newlabel{fig:log}{{8}{29}{用户登录界面}{figure.8}{}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.2.2}用户首页}{30}{subsubsection.4.2.2}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {9}{\ignorespaces 用户首页}}{30}{figure.9}\protected@file@percent }
-\newlabel{fig:home}{{9}{30}{用户首页}{figure.9}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {10}{\ignorespaces 用户租车信息列表}}{30}{figure.10}\protected@file@percent }
-\newlabel{fig:rent}{{10}{30}{用户租车信息列表}{figure.10}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {11}{\ignorespaces 用户还车后列表信息}}{30}{figure.11}\protected@file@percent }
-\newlabel{fig:afrent}{{11}{30}{用户还车后列表信息}{figure.11}{}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.2.3}租车查询}{30}{subsubsection.4.2.3}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {12}{\ignorespaces 侧栏车辆品牌信息}}{31}{figure.12}\protected@file@percent }
-\newlabel{fig:br}{{12}{31}{侧栏车辆品牌信息}{figure.12}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {13}{\ignorespaces 详细车辆信息}}{31}{figure.13}\protected@file@percent }
-\newlabel{fig:car}{{13}{31}{详细车辆信息}{figure.13}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {5}总结}{31}{section.5}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.2}事务的并发访问控制与恢复}{29}{subsection.4.2}\protected@file@percent }
+\newlabel{sec:recur}{{4.2}{29}{事务的并发访问控制与恢复}{subsection.4.2}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.2.1}问题分析}{29}{subsubsection.4.2.1}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {7}{\ignorespaces 并发访问冲突示例}}{29}{figure.7}\protected@file@percent }
+\newlabel{fig:exam}{{7}{29}{并发访问冲突示例}{figure.7}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.2.2}并发访问控制}{29}{subsubsection.4.2.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.2.3}恢复系统}{32}{subsubsection.4.2.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.3}最终结果展示}{32}{subsection.4.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.3.1}注册与登录}{33}{subsubsection.4.3.1}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {8}{\ignorespaces 用户注册界面}}{33}{figure.8}\protected@file@percent }
+\newlabel{fig:reg}{{8}{33}{用户注册界面}{figure.8}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {9}{\ignorespaces 用户登录界面}}{33}{figure.9}\protected@file@percent }
+\newlabel{fig:log}{{9}{33}{用户登录界面}{figure.9}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.3.2}用户首页}{34}{subsubsection.4.3.2}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {10}{\ignorespaces 用户首页}}{34}{figure.10}\protected@file@percent }
+\newlabel{fig:home}{{10}{34}{用户首页}{figure.10}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {11}{\ignorespaces 用户租车信息列表}}{34}{figure.11}\protected@file@percent }
+\newlabel{fig:rent}{{11}{34}{用户租车信息列表}{figure.11}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {12}{\ignorespaces 用户还车后列表信息}}{34}{figure.12}\protected@file@percent }
+\newlabel{fig:afrent}{{12}{34}{用户还车后列表信息}{figure.12}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.3.3}租车查询}{34}{subsubsection.4.3.3}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {13}{\ignorespaces 侧栏车辆品牌信息}}{35}{figure.13}\protected@file@percent }
+\newlabel{fig:br}{{13}{35}{侧栏车辆品牌信息}{figure.13}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {14}{\ignorespaces 详细车辆信息}}{35}{figure.14}\protected@file@percent }
+\newlabel{fig:car}{{14}{35}{详细车辆信息}{figure.14}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.3.4}并发访问控制}{35}{subsubsection.4.3.4}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {15}{\ignorespaces 详细车辆信息}}{36}{figure.15}\protected@file@percent }
+\newlabel{fig:rented}{{15}{36}{详细车辆信息}{figure.15}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {16}{\ignorespaces 并发访问控制}}{36}{figure.16}\protected@file@percent }
+\newlabel{fig:cur}{{16}{36}{并发访问控制}{figure.16}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {5}总结}{36}{section.5}\protected@file@percent }
 \bibdata{custom}
 \bibcite{silberschatz2011database}{1}
-\@writefile{lof}{\contentsline {figure}{\numberline {14}{\ignorespaces 详细车辆信息}}{32}{figure.14}\protected@file@percent }
-\newlabel{fig:rented}{{14}{32}{详细车辆信息}{figure.14}{}}
-\gdef \@abspage@last{32}
+\gdef \@abspage@last{37}

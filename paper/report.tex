@@ -129,9 +129,10 @@
 本任务关注设计车辆租赁管理系统，设计目的在于为用户和管理人员提供一个功能全面、操作便捷的车辆租赁平台，既能满足用户快速获取租车服务的需求，也能帮助管理人员在后台轻松实现对租车业务的高效管理
 租车系统有三大核心的要求，车辆信息管理、租赁管理、客户管理。(1) 车辆信息管理要求记录和维护所有车辆的基本信息、租赁状态以及被租赁信息。 (2) 租赁管理要求对租车订单的创建、查询、修改等功能，需要能够高效处理订单状态。 (3) 客户管理要求对客户的基本信息、租车信息等数据进行管理，确保客户信息的安全性和准确性。
 此外，车辆租赁管理系统还需要提供良好的交互页面，注重用户交互的便捷，确保前端与数据库之间的数据交互高效可靠。同时，系统需要设计合理的权限管理机制，确保客户与管理员能够在各自权限范围内安全使用系统数据。
+最后，我们还实现了基于\textbf{时间戳排序协议}的\textbf{并发访问控制}并且在发生并发访问冲突时实现了简易的\textbf{恢复系统}。
 
 在车辆租赁管理系统的设计中，我们采用Django Web框架作为后端技术栈，使用PostgreSQL作为数据库管理系统的信息，采用HTML，CSS，JavaScript框架开发前端交互页面。由于条件限制，本系统只支持本地部署。该系统开发人员为刘艺凡~(22336162)和林杰泓~(22336137)。系统需求分析，结构设计及功能模块设计由本组开发人员共同分析设计。
-并由林杰泓负责用户信息管理及用户租赁管理的前端和后端开发和设计，由刘艺凡负责车辆信息管理和车辆租赁信息管理的前端和后端的设计和开发。系统交互页面的设计及优化由两人共同完成。同时，我们共同负责了系统的安全性设计，包括对用户，车辆信息的保护，以及对用户，管理员的权限设置及授权。
+并由林杰泓负责用户信息管理及用户租赁管理的前端和后端开发和设计，由刘艺凡负责车辆信息管理，车辆租赁信息管理和并发管理控制的前端和后端的设计和开发。系统交互页面的设计及优化由两人共同完成。同时，我们共同负责了系统的安全性设计，包括对用户，车辆信息的保护，以及对用户，管理员的权限设置及授权。
 
 我们在附件中提供了开发系统的相关代码。同时，为了便于查看和了解该车辆租赁管理系统的成果，我们提供了demo——\textbf{demo.gif}，展示了该系统的功能。
 此外，为了方便本地部署该系统，我们提供脚本\textbf{init.sh}用于构建简化对系统数据库的构建，同时也提供了 \textbf{README.md}作为指引，讲述部署系统以及使用系统的方法。更进一步的，当系统部署成功后，我们可以通过访问链接\href{http://127.0.0.1:8000/management/register}{http://127.0.0.1:8000/management/register} 进入系统的注册页面，以用户的视角开始体验该车辆租赁管理系统。
@@ -657,6 +658,8 @@ def get_vehicle_details(request):
 \subsubsection{实现流程}
 客户在展示车辆详细信息的页面中可以点击租车进行租车操作，然后可以在客户个人首页中点击还车按键进行还车操作。
 这些客户的行为会触发后端对数据库中车辆的租赁状态进行更新并反馈到交互页面中。
+然而，由于这个模块是多用户并发访问的，所以如果不对租车事务加以控制则会带来事务的隔离性和原子性不能保证的问题。在~\ref{sec:recur}一节中，我们针对这个问题进行了详细的讨论。
+
 \subsubsection{租车功能的算法实现}
 在车辆详细信息处添加租车按键，当点击按键时会触发JavaScript函数leaseVehicle进行租车行为。同时，对于被租车辆需要禁止租车行为的发生。
 \begin{lstlisting}[language=HTML]
@@ -1155,6 +1158,150 @@ def rent_car_view(request):
 LOGIN_URL = '/management/login/'  # 登录页面
 \end{lstlisting}
 
+\subsection{事务的并发访问控制与恢复}
+\label{sec:recur}
+\subsubsection{问题分析}
+本系统是允许用户同时访问的，也就是说，在这个系统中用户的行为是并发的。
+而注意到，与车辆详细信息的关系表是可以被不同用户访问的，同时车辆的租赁状态也可以被不同用户的租车事务所改变，而对于其他的关系表，用户则只能访问与之有关的数据，不能访问其他数据。
+因此，在这个系统中只有当事务访问与车辆信息有关的关系表时，才有可能出现事务的隔离性被破坏的情况。
+
+更进一步的，在这个系统中，会改变车辆租赁状态的事务为，访问车辆信息并租赁车辆信息。当有多用户同时访问同一个车辆信息时，如果其中有用户租用了该车，这时因为其他用户看到的车辆信息是租用车辆前的车辆状态信息，所以他们仍然可以租用该车。这导致了一辆车同时被多个用户租用，也就导致了数据的不一致，使得事务的一致性，隔离性和原子性被破坏了。
+
+如图~\ref{fig:exam}所示，对同一辆车，前一个用户租用后，第二个用户因为网页页面没有刷新，导致得到车辆仍未被租的错误信息，从而两个用户租用了同一辆车，发生了的错误。
+\begin{figure}[htbp]  % figure 环境用于插入图片并进行浮动
+    \centering  % 图片居中
+    \includegraphics[width=1\textwidth]{pic/exam.png}
+    \caption{并发访问冲突示例}  % 图片标题
+    \label{fig:exam}  % 图片标签，便于引用
+\end{figure}
+
+\subsubsection{并发访问控制}
+在我们的系统中，我们使用时间戳排序协议来进行并发访问控制，而不采用封锁机制。这是因为，用户并不是在访问车辆信息后马上租用车辆的，相反的，用户往往总是处于浏览车辆信息的阶段，并在长时间后有可能租借车辆。如果我们引入共享锁和排他锁进行并发访问控制，就会因为总是有用户在浏览网页而占有共享锁，而使得一个用户在想租车时迟迟不能获得排他锁，而一直不能租车，导致\textbf{饥饿~(starvation)}发生。
+因此，我们选择使用时间戳排序协议。
+我们采用如下的时间戳排序协议。
+系统为每辆车$Q$维护以下两个时间戳:
+\vspace{-0.2cm}
+\begin{itemize}%[leftmargin=0.3cm]
+    \item 
+    $R-timestamp~(Q)$: 表示最后一次成功读取Q的事务时间戳。
+    \vspace{-0.2cm}
+    \item
+    $W-timestamp~(Q)$: 表示最后一次成功写入Q的事务时间戳。
+\end{itemize}
+
+当一个用户尝试进行一个访问租车事务时，这个事务会得到一个时间戳$TS~(T_i)$，并且这个事务在执行操作的过程中需要遵循以下规则
+\vspace{-0.2cm}
+\begin{itemize}%[leftmargin=0.3cm]
+    \item 访问车辆信息~(读操作)
+    \vspace{-0.2cm}
+    \begin{itemize}
+        \item 如果 \( TS(T_i) < W-timestamp(Q) \)，拒绝操作，回滚事务。
+        \item 如果 \( TS(T_i) \geq W-timestamp(Q) \)，允许操作，更新 \( R-timestamp(Q) = \max(R-timestamp(Q), TS(T_i)) \)。
+    \end{itemize}
+    \item 租用车辆~(写操作)
+    \vspace{-0.2cm}
+    \begin{itemize}
+        \item 如果 \( TS(T_i) < R-timestamp(Q) \)，拒绝操作，回滚事务。
+        \item 如果 \( TS(T_i) < W-timestamp(Q) \)，拒绝操作，回滚事务。
+        \item 其他情况下，允许写操作，更新 \( W-timestamp(Q) \)。
+    \end{itemize}
+\end{itemize}
+
+我们在原有代码的基础上进行修改实现该协议下的车辆租赁管理系统，为了获得一个时间戳，我们构建如下函数生成以毫秒为单位的时间戳
+\begin{lstlisting}[language=Python]
+import time
+def generate_timestamp():
+    return int(time.time() * 1000)
+\end{lstlisting}
+
+然后，我们在关系表Repository中添加两个时间戳属性
+\begin{lstlisting}[language=Python]
+r_timestamp = models.BigIntegerField(default=0)
+w_timestamp = models.BigIntegerField(default=0)
+\end{lstlisting}
+
+在JavaScript中添加变量管理每个车辆的时间戳
+\begin{lstlisting}[language=JavaScript]
+let TS = new Map();
+\end{lstlisting}
+
+当事务尝试访问车辆信息时有
+\begin{lstlisting}[language=Python]
+# 由于是第一次访问，所以先生成当前事务的时间戳
+transaction_timestamp = generate_timestamp()
+# 然后根据协议访问车辆信息
+query = """
+    SELECT a."Car_ID", a."Is_leased", b."Price"
+    FROM management_repository a, management_vehicle b
+    JOIN management_info c ON b."Model" = c."Model_id"
+    WHERE a."Car_ID" = c."Car_ID_id" AND b."Model" = %s AND %s >= a.w_timestamp
+"""
+with connection.cursor() as cursor:
+    # 执行查询语句
+    cursor.execute(query, [car_name, transaction_timestamp])
+    rows = cursor.fetchall()
+# 最后根据协议更新库中每个数据项的时间戳
+update_query = """
+    UPDATE management_repository
+    SET r_timestamp = GREATEST(r_timestamp, %s)
+    WHERE (%s >= w_timestamp) AND "Car_ID" in (
+        SELECT a."Car_ID"
+        FROM management_repository a, management_vehicle b
+        JOIN management_info c ON b."Model" = c."Model_id"
+        WHERE a."Car_ID" = c."Car_ID_id" AND b."Model" = %s
+    )
+"""
+with connection.cursor() as cursor:
+    # 执行更新语句
+    cursor.execute(update_query, [transaction_timestamp, transaction_timestamp, car_name])
+# 最后将产生的时间戳返回给该事务
+return JsonResponse({"status": "success", "data": data, "TS": transaction_timestamp})
+\end{lstlisting}
+
+获得时间戳后，事务维护其时间戳
+\begin{lstlisting}[language=JavaScript]
+const timestamp = data.TS;
+# 循环处理每个车辆的时间戳 (这里省略了循环的代码)
+TS.set(item.Car_ID, timestamp);
+\end{lstlisting}
+
+当用户想要租车时，事务将其时间戳传递到租车函数中
+\begin{lstlisting}[language=JavaScript]
+fetch('/management/lease-vehicle/', {
+    method: 'POST',
+    headers: {
+        //
+    },
+    body: JSON.stringify({ car_id: carId, ts: TS.get(carId) })  
+})
+\end{lstlisting}
+
+在租车函数中，函数根据事务提供的时间戳依照协议进行写操作
+\begin{lstlisting}[language=Python]
+# 获得当前事务传递的时间戳
+transaction_timestamp = data.get("ts")  
+data_object = Repository.objects.get(Car_ID=car_id)
+# 时间戳协议检查
+if transaction_timestamp < data_object.r_timestamp:
+    return JsonResponse({"message": "租车失败，车辆租赁信息已更改"}, status=409)
+if transaction_timestamp < data_object.w_timestamp:
+    return JsonResponse({"message": "租车失败，车辆租赁信息已更改"}, status=409)
+data_object.w_timestamp = transaction_timestamp
+data_object.save()
+# 当时间戳符合条件时进行写操作，否则函数返回状态数409提示系统发生了冲突，租赁操作不可以继续，并中断该操作
+#
+\end{lstlisting}
+
+\subsubsection{恢复系统}
+该本系统中，我们只考虑由于时间戳排序协议带来的事务故障。 在这种情况下，当故障发生时，我们可以知道这个事务的日志此时还没有写入数据，因此，我们不需要进行回滚，仅仅是中止该事务即可。
+当回滚事务后，我们选择redo这个事务。这时，这个事务获得一个新的时间戳并重新开始可以读取到新的数据。
+注意到，这个事务重新开始意味着重新读入数据，于是我们可以通过刷新页面的方式来获得新的时间戳并按照此时间戳重新开始事务。
+代码如下
+\begin{lstlisting}[language=JavaScript]
+alert(data.message); // 显示错误消息
+fetchVehicleDetails(name); // 刷新车辆列表
+\end{lstlisting}
+
 \subsection{最终结果展示}
 经过精细的设计，我们实现了具备有注册登录功能的全面的精美的租车管理系统。在这个阶段中，我们将以用户视角展示我们的车辆租赁管理系统。
 \subsubsection{注册与登录}
@@ -1229,6 +1376,15 @@ LOGIN_URL = '/management/login/'  # 登录页面
     \label{fig:rented}  % 图片标签，便于引用
 \end{figure}
 
+\subsubsection{并发访问控制}
+为了模拟并发访问冲突的情况，我们进行如下实验。分别在两个浏览器中用不同用户身份进入租车页面并查看同一个车辆信息，此时两个用户都可以看到车辆是可以租赁的。这时一个用户租用一辆车，此时另外一个用户由于没有刷新页面所以仍然可以租用那辆被租的车。这时我们点击租赁那辆车时，由于时间戳排序协议的存在，那辆车的写时间戳已经大于事物的时间戳，所以租车的行为不能发生。如图~\ref{fig:cur}所示，用户点击后系统发出信息提示车辆的信息已经被更改了，租车失败。当点击确认后页面会自动刷新，此时用户看到车已经被其他用户租用了。
+\begin{figure}[htbp]  % figure 环境用于插入图片并进行浮动
+    \centering  % 图片居中
+    \includegraphics[width=0.8\textwidth]{pic/cur.png}
+    \caption{并发访问控制}  % 图片标题
+    \label{fig:cur}  % 图片标签，便于引用
+\end{figure}
+
 \section{总结}
 
 本实验设计旨在通过分析需求、设计系统架构和数据库结构，
@@ -1246,6 +1402,7 @@ LOGIN_URL = '/management/login/'  # 登录页面
 系统的开发过程中，后端逻辑层通过Django框架实现了用户管理、
 车辆信息管理和租赁流程等功能模块，同时针对系统安全性进行了设计，
 主要包括用户身份验证、数据加密、权限控制等措施，保障了系统的基本安全要求。
+此外，还在系统中进行了并发访问控制，确保了多用户同时使用该系统时数据不会出现不一致的情况。
 在前端设计上，注重界面的简洁性和用户操作的便捷性，通过直观的布局与交互设计，
 确保了良好的用户体验。系统开发完成后，通过多轮功能测试和压力测试，
 验证了各模块的稳定性与正确性，确保了系统的高效运行和良好的用户体验。
@@ -1260,6 +1417,7 @@ LOGIN_URL = '/management/login/'  # 登录页面
 引入多因素身份验证（MFA）等机制来增强系统的安全性。
 功能层面，未来可通过引入数据分析模块，为系统提供数据驱动的决策支持，
 例如租赁趋势分析、客户行为预测等，进一步提升系统的智能化水平。
+在并发访问控制层面，虽然在当前系统中可能存在更简单的方法解决并发访问控制问题，但是我们的做法保证了更强大的泛化性，提供可以用于支持系统后续功能的并发访问控制。
 
 综上所述，本实验设计实现了一个完整的车辆租赁管理系统，
 涵盖了从需求分析到系统测试的全过程。
