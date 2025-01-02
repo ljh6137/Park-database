@@ -14,17 +14,6 @@ import json
 from django.db import transaction
 from .utils import generate_timestamp
 
-# Create your views here.
-
-
-# def detail(request, question_id):
-#     return HttpResponse()
-
-
-
-# management/views.py
-from django.shortcuts import render
-
 logger = logging.getLogger('myapp')
 logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.WARNING)
@@ -64,37 +53,6 @@ def register(request):
             return render(request, 'management/register.html')
 
     return render(request, 'management/register.html')
-# def register(request):
-#     if request.method == 'GET':
-#         return render(request, 'management/register.html')
-    
-#     if request.method == 'POST':
-#         # print(1)
-#         # 获取提交的用户名和密码
-#         username = request.POST['username']
-#         password = request.POST['password']
-        
-#         # 检查用户名是否已经存在
-#         if User.objects.filter(username=username).exists():
-#             logger.warning(f"Username {username} already exists.")
-#             messages.error(request, 'Username already exists. Please choose another one.')
-#             return render(request, 'management/register.html')
-        
-        
-        
-#         # 创 建 用 户 并 加 密 密 码
-#         user = User.objects.create_user(username=username , password=password)
-#         # 创建对应的 Customer 实例
-#         customer = Customer.objects.create(user=user, ID=username, name=username, contact="")  # 可以根据需要设置默认的 contact
-        
-#         # 提示用户注册成功
-#         logger.info(f"User {username} registered successfully.")
-#         messages.success(request, 'Registration successful! Please log in.')
-        
-#         # 注册成功后，跳转到登录页面
-#         return redirect('login')
-    
-#     return render(request, 'management/register.html')
 
 def login_view(request):
     if request.method == 'POST':
@@ -180,16 +138,7 @@ def rented_vehicles_view(request):
 
 def home(request):
     return render(request, 'management/UI.html')
-
-# def car_list(request):
-#     # print(1)
-#     vehicles = Vehicle.objects.all()  # 查询所有车辆信息
-#     if vehicles.exists():
-#         data = list(vehicles.values("Model"))  # 转换为 JSON 格式
-#         return JsonResponse({"status": "success", "data": data})
-#     else:
-#         return JsonResponse({"status": "empty", "message": "暂无车辆信息"})
-    
+ 
 def get_repository_by_name(request):
     if request.method == "GET":
         name = request.GET.get("name")  # 获取点击的 name 参数
@@ -203,38 +152,6 @@ def get_repository_by_name(request):
         except Vehicle.DoesNotExist:
             return JsonResponse({"status": "error", "message": "Vehicle not found"})
         
-# def get_vehicle_details(request):
-#     """
-#     查询车辆的详细信息：Car_ID、Is_leased 和 price。
-#     """
-#     if request.method == "GET":
-#         car_name = request.GET.get("name")  # 获取车辆名称
-
-#         if not car_name:
-#             return JsonResponse({"status": "error", "message": "车辆名称不能为空"})
-
-#         # 执行 SQL 查询
-#         query = """
-#             SELECT a.Car_ID, a.Is_leased, b.price
-#             FROM Repository a, Vehicle b
-#             JOIN info c ON b.Model = c.Model
-#             WHERE a.Car_ID = c.Car_ID AND b.name = %s
-#         """
-#         with connection.cursor() as cursor:
-#             cursor.execute(query, [car_name])
-#             rows = cursor.fetchall()
-
-#         # 将查询结果转换为 JSON 格式
-#         data = [
-#             {"Car_ID": row[0], "Is_leased": row[1], "price": row[2]}
-#             for row in rows
-#         ]
-
-#         if data:
-#             return JsonResponse({"status": "success", "data": data})
-#         else:
-#             return JsonResponse({"status": "empty", "message": "未找到相关车辆信息"})
-
 def get_vehicles(request):
     vehicles = Vehicle.objects.all()
     if vehicles.exists():
@@ -321,28 +238,6 @@ def get_vehicle_details(request):
         else:
             return JsonResponse({"status": "empty", "message": "未找到车辆详情"})
         
-# @login_required
-# def homepage(request):
-#     # 检查用户是否已登录
-#     if request.user.is_authenticated:
-#         # 获取当前用户的租赁车辆信息
-#         rented_cars = Lease.objects.filter(ID__user=request.user).select_related('Car_ID')
-        
-#         # 格式化租赁车辆数据
-#         rented_cars_data = [
-#             {
-#                 "license_plate": lease.Car_ID.Model,  # 假设车型(Model)为车牌号
-#                 "model": lease.Car_ID.Model,
-#                 "price": lease.Car_ID.Price,
-#             }
-#             for lease in rented_cars
-#         ]
-#     else:
-#         rented_cars_data = []
-
-#     # 渲染模板并传递租赁车辆数据
-#     return render(request, 'management/homepage.html', {'rented_cars': rented_cars_data})
-
 @login_required
 def homepage(request):
     if request.method == "GET":
