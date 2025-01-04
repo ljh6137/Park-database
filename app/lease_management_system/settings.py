@@ -78,7 +78,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'demo',
-        'USER': 'ljh',
+        'USER': 'demo',
         'PASSWORD': 'demo',
         'HOST': '127.0.0.1',
         'PORT': '5432',
@@ -134,7 +134,7 @@ AUTHENTICATION_BACKENDS = (
 
 LOGIN_REDIRECT_URL = '/management/'  
 
-LOGIN_URL = '/management/login/'  # 登录页面
+LOGIN_URL = '/management/login/'  
 
 
 STATIC_URL = '/static/'
