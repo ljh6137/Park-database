@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999996 (TeX Live 2024) (preloaded format=xelatex 2024.10.6)  2 JAN 2025 19:10
+This is XeTeX, Version 3.141592653-2.6-0.999996 (TeX Live 2024) (preloaded format=xelatex 2024.10.6)  4 JAN 2025 19:24
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -1076,7 +1076,11 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                You might also make \topmargin smaller to compensate:
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
-[24]
+[24] (d:/LaTex/texlive/2024/texmf-dist/tex/latex/listings/lstlang1.sty
+File: lstlang1.sty 2024/02/21 1.10 listings language file
+) (d:/LaTex/texlive/2024/texmf-dist/tex/latex/listings/lstlang1.sty
+File: lstlang1.sty 2024/02/21 1.10 listings language file
+)
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
 (fancyhdr)                Make it at least 14.49998pt, for example:
@@ -1084,11 +1088,7 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                You might also make \topmargin smaller to compensate:
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
-[25] (d:/LaTex/texlive/2024/texmf-dist/tex/latex/listings/lstlang1.sty
-File: lstlang1.sty 2024/02/21 1.10 listings language file
-) (d:/LaTex/texlive/2024/texmf-dist/tex/latex/listings/lstlang1.sty
-File: lstlang1.sty 2024/02/21 1.10 listings language file
-)
+[25]
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
 (fancyhdr)                Make it at least 14.49998pt, for example:
@@ -1142,6 +1142,8 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 [31]
 File: pic/reg.png Graphic file (type bmp)
 <pic/reg.png>
+File: pic/log.png Graphic file (type bmp)
+<pic/log.png>
 
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
@@ -1151,19 +1153,8 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
 [32]
-File: pic/log.png Graphic file (type bmp)
-<pic/log.png>
 File: pic/home.png Graphic file (type bmp)
 <pic/home.png>
-
-
-Package fancyhdr Warning: \headheight is too small (12.0pt): 
-(fancyhdr)                Make it at least 14.49998pt, for example:
-(fancyhdr)                \setlength{\headheight}{14.49998pt}.
-(fancyhdr)                You might also make \topmargin smaller to compensate:
-(fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
-
-[33]
 File: pic/rent.png Graphic file (type bmp)
 <pic/rent.png>
 File: pic/afrent.png Graphic file (type bmp)
@@ -1182,7 +1173,7 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                You might also make \topmargin smaller to compensate:
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
-[34]
+[33]
 File: pic/cur.png Graphic file (type bmp)
 <pic/cur.png>
 
@@ -1193,7 +1184,7 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                You might also make \topmargin smaller to compensate:
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
-[35]
+[34]
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
 (fancyhdr)                Make it at least 14.49998pt, for example:
@@ -1201,7 +1192,7 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                You might also make \topmargin smaller to compensate:
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
-[36] (./report.bbl)
+[35] (./report.bbl)
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
 (fancyhdr)                Make it at least 14.49998pt, for example:
@@ -1209,7 +1200,7 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                You might also make \topmargin smaller to compensate:
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
-[37] (./report.aux)
+[36] (./report.aux)
  ***********
 LaTeX2e <2023-11-01> patch level 1
 L3 programming layer <2022/08/05>
@@ -1218,12 +1209,12 @@ Package rerunfilecheck Info: File `report.out' has not changed.
 (rerunfilecheck)             Checksum: 52A6D20864602A4566737AA2F0885E50;5673.
  ) 
 Here is how much of TeX's memory you used:
- 20887 strings out of 474773
- 433993 string characters out of 5758619
- 2172842 words of memory out of 5000000
- 42652 multiletter control sequences out of 15000+600000
+ 20868 strings out of 474773
+ 433879 string characters out of 5758619
+ 2126842 words of memory out of 5000000
+ 42633 multiletter control sequences out of 15000+600000
  573240 words of font info for 136 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
- 93i,12n,97p,1188b,1911s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 93i,12n,97p,1188b,1909s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
-Output written on report.pdf (37 pages).
+Output written on report.pdf (36 pages).

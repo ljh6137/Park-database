@@ -765,7 +765,7 @@ def lease_vehicle(request):
 
 \begin{lstlisting}[language=Python]
     repository = lease.Car_ID
-    repository.Is_leased = False  # 标记车辆为未租赁
+    repository.Is_leased = False  
     repository.save()
 \end{lstlisting}
 
@@ -809,23 +809,16 @@ def lease_vehicle(request):
 
 \textbf{代码片段}：
 \begin{lstlisting}[language=Python]
-# POST 请求时
 if request.method == 'POST':
     username = request.POST.get('username', '').strip()
     password = request.POST.get('password', '').strip()
     contact = request.POST.get('contact', '').strip()
-
-    # 校验必填字段
     if not username or not password or not contact:
         messages.error(request, 'All fields are required.')
         return render(request, 'management/register.html')
-
-    # 检查用户名是否已存在
     if User.objects.filter(username=username).exists():
         messages.error(request, 'Username already exists. Please choose another one.')
         return render(request, 'management/register.html')
-
-    # 创建用户和客户信息
     try:
         with transaction.atomic():
             user = User.objects.create_user(username=username, password=password)
@@ -867,7 +860,7 @@ def login_view(request):
         if user is not None:
             login(request, user)
             logger.info(f"User {username} logged in successfully.")
-            return redirect('homepage')  # 登录成功后跳转到用户仪表盘
+            return redirect('homepage') 
         else:
             logger.error(f"Failed login attempt for username {username}.")
             messages.error(request, 'Invalid username or password.')
@@ -882,7 +875,7 @@ def login_view(request):
 我们可以通过view函数中的request对象获取当前登录的用户信息，如下所示：
 
 \begin{lstlisting}[language=Python]
-    user_id = request.user.username  # 获取当前用户ID
+    user_id = request.user.username  
 \end{lstlisting}
 
 因为Django 默认会将 request.user 传递到模板中，
@@ -930,7 +923,6 @@ def login_view(request):
                                     <td>{{ car.model }}</td>
                                     <td>￥{{ car.price }}</td>
                                     <td>
-                                        <!-- 还车按钮 -->
                                         <form action="{% url 'return_vehicle' %}" method="POST" style="display:inline;">
                                             {% csrf_token %}
                                             <input type="hidden" name="vehicle_id" value="{{ car.license_plate }}">
@@ -1090,7 +1082,7 @@ Django 的 User 模型已经内置了密码哈希功能，
 \begin{lstlisting}[language=Python]
     class Customer(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    ID = models.CharField(max_length=10, primary_key=True)  # 使用 'ID' 作为主键
+    ID = models.CharField(max_length=10, primary_key=True)  
     name = models.CharField(max_length=50)
     contact = models.CharField(max_length=15)
 
@@ -1108,7 +1100,6 @@ Django 的 User 模型已经内置了密码哈希功能，
 from django.shortcuts import get_object_or_404  
 
 try:
-    # 获取当前登录的用户来查找关联的 Customer 实例
     customer = get_object_or_404(Customer, user=request.user)
 \end{lstlisting}
 
@@ -1156,7 +1147,7 @@ def rent_car_view(request):
 \end{itemize}
 
 \begin{lstlisting}[language=Python]
-LOGIN_URL = '/management/login/'  # 登录页面
+LOGIN_URL = '/management/login/' 
 \end{lstlisting}
 
 \subsection{事务的并发访问控制与恢复}
@@ -1228,9 +1219,7 @@ let TS = new Map();
 
 当事务尝试访问车辆信息时有
 \begin{lstlisting}[language=Python]
-# 由于是第一次访问，所以先生成当前事务的时间戳
 transaction_timestamp = generate_timestamp()
-# 然后根据协议访问车辆信息
 query = """
     SELECT a."Car_ID", a."Is_leased", b."Price"
     FROM management_repository a, management_vehicle b
@@ -1238,10 +1227,8 @@ query = """
     WHERE a."Car_ID" = c."Car_ID_id" AND b."Model" = %s AND %s >= a.w_timestamp
 """
 with connection.cursor() as cursor:
-    # 执行查询语句
     cursor.execute(query, [car_name, transaction_timestamp])
     rows = cursor.fetchall()
-# 最后根据协议更新库中每个数据项的时间戳
 update_query = """
     UPDATE management_repository
     SET r_timestamp = GREATEST(r_timestamp, %s)
@@ -1253,16 +1240,13 @@ update_query = """
     )
 """
 with connection.cursor() as cursor:
-    # 执行更新语句
     cursor.execute(update_query, [transaction_timestamp, transaction_timestamp, car_name])
-# 最后将产生的时间戳返回给该事务
 return JsonResponse({"status": "success", "data": data, "TS": transaction_timestamp})
 \end{lstlisting}
 
 获得时间戳后，事务维护其时间戳
 \begin{lstlisting}[language=JavaScript]
 const timestamp = data.TS;
-# 循环处理每个车辆的时间戳 (这里省略了循环的代码)
 TS.set(item.Car_ID, timestamp);
 \end{lstlisting}
 
@@ -1279,18 +1263,14 @@ fetch('/management/lease-vehicle/', {
 
 在租车函数中，函数根据事务提供的时间戳依照协议进行写操作
 \begin{lstlisting}[language=Python]
-# 获得当前事务传递的时间戳
 transaction_timestamp = data.get("ts")  
 data_object = Repository.objects.get(Car_ID=car_id)
-# 时间戳协议检查
 if transaction_timestamp < data_object.r_timestamp:
     return JsonResponse({"message": "租车失败，车辆租赁信息已更改"}, status=409)
 if transaction_timestamp < data_object.w_timestamp:
     return JsonResponse({"message": "租车失败，车辆租赁信息已更改"}, status=409)
 data_object.w_timestamp = transaction_timestamp
 data_object.save()
-# 当时间戳符合条件时进行写操作，否则函数返回状态数409提示系统发生了冲突，租赁操作不可以继续，并中断该操作
-#
 \end{lstlisting}
 
 \subsubsection{恢复系统}
@@ -1299,8 +1279,8 @@ data_object.save()
 注意到，这个事务重新开始意味着重新读入数据，于是我们可以通过刷新页面的方式来获得新的时间戳并按照此时间戳重新开始事务。
 代码如下
 \begin{lstlisting}[language=JavaScript]
-alert(data.message); // 显示错误消息
-fetchVehicleDetails(name); // 刷新车辆列表
+alert(data.message); 
+fetchVehicleDetails(name); 
 \end{lstlisting}
 
 \subsection{最终结果展示}

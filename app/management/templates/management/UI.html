@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard UI</title>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+
+        .custom-font {
+            font-family: 'Dancing Script', cursive;
+            font-size: 36px;
+            color: #333;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 16px;
+            color: #333;
+        }
+
+        .user-info p {
+            margin: 0;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #007bff;
+        }
+
+        .login-button, .register-button, .logout-button {
+            text-decoration: none;
+            color: #ffffff;
+            background-color: #007bff;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 14px;
+            transition: background-color 0.3s;
+        }
+
+        .login-button:hover, .register-button:hover, .logout-button:hover {
+            background-color: #0056b3;
+        }
+
+        /* 基本页面样式 */
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f4f6f9;
+            display: flex;
+        }
+
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: url('/static/images/2.jpg') no-repeat center center fixed;
+            background-size: cover;
+            display: flex;
+            flex-direction: row; 
+        }
+
+
+        .sidebar {
+            width: 250px; 
+            background-color: #031b37;
+            color: #ffffff;
+            height: 100vh;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+        }
+
+
+        .main-container {
+            flex: 1; 
+            padding: 20px;
+            overflow: auto; 
+        }
+
+
+        .sidebar h1 {
+            margin: 0 0 20px 0;
+            font-size: 28px;
+            color: #ffffff;
+        }
+
+        .nav-links {
+            list-style: none;
+            padding: 0;
+        }
+
+        .nav-links li {
+            margin: 15px 0;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #a0a8b0;
+            font-size: 16px;
+            display: block;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: #ffffff;
+        }
+
+
+        .main-container {
+            flex: 1;
+            padding: 20px;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header h2 {
+            margin: 0;
+            font-size: 24px;
+            color: #333;
+        }
+
+        .email {
+            color: #333;
+            font-size: 14px;
+        }
+
+
+        .card-container {
+            display: flex;
+            justify-content: center;
+            width: 100%;
+            margin-top: 30px;
+        }
+
+        .card {
+            background-color: #ffffff;
+            padding: 30px; 
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+            width: 100%;
+            max-width: 1200px; 
+            min-height: 500px; 
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .card h3 {
+            margin: 0 0 20px 0; 
+            font-size: 24px; 
+            color: #333;
+            font-weight: 600;
+        }
+
+        .card p {
+            font-size: 16px; 
+            color: #555;
+        }
+
+
+        .table-container {
+            width: 100%;
+            margin-top: 30px;
+            overflow-x: auto;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            background-color: #fff;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: #ffffff;
+            text-align: center;
+        }
+
+
+        thead {
+            background-color: #007bff;
+            color: white;
+            font-weight: bold;
+        }
+
+        thead th {
+            padding: 20px;
+            text-transform: uppercase;
+        }
+
+  
+        tbody td {
+            padding: 20px; 
+            border-bottom: 1px solid #eaeaea;
+            color: #555;
+        }
+
+        tbody tr:hover {
+            background-color: #f1f1f1;
+        }
+
+
+        .action-button {
+            padding: 12px 18px; 
+            background-color: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+
+        .action-button:hover {
+            background-color: #0056b3;
+        }
+
+        .btn-danger {
+            background-color: #dc3545;
+            color: white;
+            padding: 12px 18px;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .btn-danger:hover {
+            background-color: #c82333;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="sidebar">
+        <h1 class="custom-font">Rent Your Car</h1>
+        <ul class="nav-links">
+            <li><a href="{% url 'homepage' %}">首页</a></li>
+            <li>
+                <a href="#" onclick="fetchVehicles(event)">租车</a>
+                <ul id="vehicle-list" style="padding-left: 20px; display: none;">
+                </ul>
+            </li>
+        </ul>
+    </div>
+
+
+    <div class="main-container">
+
+        <div class="header">
+            <h2 style="font-size: 24px; font-family: 'Dancing Script', cursive; color: #7b1efc; font-weight: bold;">
+                Dashboard
+            </h2>
+            
+            <div class="user-info">
+                {% if user.is_authenticated %}
+                    <p style="font-size: 24px; font-family: 'Dancing Script', cursive; color: #7b1efc; font-weight: bold;">
+                        Welcome, <strong>{{ user.username }}</strong>
+                    </p>
+                {% else %}
+                    <p>Please log in or register to start renting vehicles.</p>
+                    <a href="{% url 'login' %}" class="login-button">Login</a>
+                    <a href="{% url 'register' %}" class="register-button">Register</a>
+                {% endif %}
+            </div>
+        </div>
+
+
+        <div class="table-container">
+            <h2 style="text-align: center;">车辆信息</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>车牌号</th>
+                        <th>租赁状态</th>
+                        <th>价格</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody id="vehicle-details">
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+
+    <script>
+        let TS = new Map();
+        window.onload = function () {
+            fetchVehicles(new Event('load')); 
+        };
+        function fetchVehicles(event) {
+            event.preventDefault();
+            fetch('/management/get-vehicles/')
+                .then(response => response.json())
+                .then(data => {
+                    const vehicleList = document.getElementById('vehicle-list');
+                    vehicleList.innerHTML = ''; 
+
+                    if (data.status === "success") {
+                        let html = '';
+                        data.data.forEach(vehicle => {
+                            html += `<li>
+                                        <a href="#" onclick="fetchVehicleDetails('${vehicle.Model}')">
+                                            ${vehicle.Model}
+                                        </a>
+                                    </li>`;
+                        });
+                        vehicleList.innerHTML = html;
+                        vehicleList.style.display = 'block'; 
+                    } else {
+                        vehicleList.innerHTML = '<li>暂无车辆信息</li>';
+                        vehicleList.style.display = 'block';
+                    }
+                })
+                .catch(error => {
+                    console.error("Error fetching vehicles:", error);
+                });
+        }
+
+        function fetchVehicleDetails(name) {
+            fetch(`/management/get-vehicle-details/?name=${name}`)
+                .then(response => response.json())
+                .then(data => {
+                    const container = document.getElementById('vehicle-details');
+                    container.innerHTML = ''; 
+
+                    const timestamp = data.TS;
+                    
+                    console.log(timestamp);
+
+
+                    if (data.status === "success") {
+                        let html = '';
+                        data.data.forEach(item => {
+                            TS.set(item.Car_ID, timestamp);
+                            html += `
+                                <tr>
+                                    <td>${item.Car_ID}</td>
+                                    <td>${item.Is_leased ? "已租赁" : "可租赁"}</td>
+                                    <td>￥${item.Price}</td>
+                                    <td>
+                                        ${item.Is_leased
+                                            ? '<button disabled class="action-button" style="background-color: gray; cursor: not-allowed;">已租赁</button>'
+                                            : `<button class="action-button" onclick="leaseVehicle('${item.Car_ID}', '${name}')">租赁</button>`}
+                                    </td>
+                                </tr>
+                            `;
+                        });
+                        container.innerHTML = html;
+                    } else {
+                        container.innerHTML = `
+                            <tr>
+                                <td colspan="4" style="color: red;">${data.message}</td>
+                            </tr>
+                        `;
+                    }
+                })
+                .catch(error => {
+                    console.error("Error fetching vehicle details:", error);
+                });
+        }
+
+        function leaseVehicle(carId, name) {
+            fetch('/management/lease-vehicle/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': getCookie('csrftoken')  
+                },
+                body: JSON.stringify({ car_id: carId, ts: TS.get(carId) })  
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === "success") {
+
+                        fetchVehicleDetails(name);
+                    } else {
+                        alert(data.message); 
+                        fetchVehicleDetails(name); 
+                    }
+                })
+                .catch(error => {
+                    console.error("Error leasing vehicle:", error);
+                    alert("租赁失败，请稍后再试。");
+                });
+        }
+        
+
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+
+
+
+    </script>
+</body>
+</html>
