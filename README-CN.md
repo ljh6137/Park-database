@@ -18,7 +18,7 @@
 pip install Django
 ```
 
-### 本地启动演示
+### 本地部署
 
 我们提供了脚本 ``init.sh`` 来帮助您更轻松地构建此系统。在运行 ``bash init.sh`` 之前，您需要将脚本中的 ``DB_USER="your_username"`` 和 ``DB_PASSWORD="your_password"`` 更改为您自己的用户名和密码。
 
