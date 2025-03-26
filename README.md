@@ -1,6 +1,6 @@
 # Rent Your Car: A System for Managing Car Leasing and Delivering Exceptional Convenience to Users
 
-This repository contains the final assignment for the Database Systems course in SYSU. In this assignment, we design a system to manage car leasing with simple UI, enabling users to rent cars in a convenient way.
+This repository contains the final assignment for the Database Systems course in SYSU. In this assignment, we design a system to manage car leasing with simple UI, enabling users to rent cars in a convenient way. Furthermore, we implement concurrent access control based on timestamp protocol.
 
 ## Demo
 **Concise** Interface, **Convenient** Usability, and **Abundant** Information
