@@ -35,4 +35,3 @@ python manage.py runserver
 
 [ChatGPT-4o](https://openai.com/index/hello-gpt-4o/) collaborate on some codes.
 
-## License
